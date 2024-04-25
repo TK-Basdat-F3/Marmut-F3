@@ -1,15 +1,19 @@
 
 from django.urls import path
-from main.views import show_main
-from main.views import register
-from main.views import login_user
-from main.views import logout_user
+from . import views
+
 
 app_name = 'main'
 
 urlpatterns = [
-    path('', show_main, name='show_main'),
-    path('register/', register, name='register'),
-    path('login/', login_user, name='login'),
-    path('logout/', logout_user, name='logout'),
+    path('', views.show_main, name='show_main'),
+    path('register/', views.register, name='register'),
+    path('login/', views.login_user, name='login'),
+    path('logout/', views.logout_user, name='logout'),
+    path('manage_album_song/', views.manage_album_song, name='manage_album_song'),
+    path('create_album/', views.create_album, name='create_album'),
+    path('add_song_to_album/<uuid:album_id>/', views.add_song_to_album, name='add_song_to_album'),
+    path('create_song/', views.create_song, name='create_song'),
+    path('delete_album/<uuid:album_id>/', views.delete_album, name='delete_album'),
+    path('delete_song/<uuid:song_id>/', views.delete_song, name='delete_song'),
 ]
