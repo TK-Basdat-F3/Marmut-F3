@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Royalty Check</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Song Title</th>
+            <th>Album Title</th>
+            <th>Total Plays</th>
+            <th>Total Downloads</th>
+            <th>Total Royalty Earned</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for royalty in royalties %}
+        <tr>
+            <td>{{ royalty.song_title }}</td>
+            <td>{{ royalty.album_title }}</td>
+            <td>{{ royalty.total_plays }}</td>
+            <td>{{ royalty.total_downloads }}</td>
+            <td>Rp {{ royalty.total_royalties }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

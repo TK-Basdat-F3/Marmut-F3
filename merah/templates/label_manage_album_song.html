@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Label Album Management</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Number of Songs</th>
+            <th>Total Duration</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for album in albums %}
+        <tr>
+            <td>{{ album.title }}</td>
+            <td>{{ album.songs.count }}</td>
+            <td>{{ album.total_duration }} minutes</td>
+            <td>
+                <a href="{% url 'label_view_songs' album.id %}">View Songs</a>
+                <a href="{% url 'label_delete_album' album.id %}">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
