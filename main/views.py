@@ -48,3 +48,11 @@ def logout_user(request):
     response = HttpResponseRedirect(reverse('main:login'))
     response.delete_cookie('last_login')
     return response
+
+@login_required
+def dashboard_user(request):
+    return render(request, "dashboard_user.html")
+
+@login_required
+def dashboard_label(request):
+    return render(request, "dashboard_label.html")
