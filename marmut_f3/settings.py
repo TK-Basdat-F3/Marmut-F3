@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'main',
     'kuning',
     'merah',
+    'biru',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

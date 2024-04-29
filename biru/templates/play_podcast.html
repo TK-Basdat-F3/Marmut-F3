@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>R PLAY PODCAST</title>
+    <style>
+        body {
+            background-color: #121212; /* Warna latar belakang hitam */
+            color: #ffffff; /* Warna teks putih */
+            font-family: Arial, sans-serif; /* Font teks */
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #1f1f1f; /* Warna latar belakang konten */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        h1, h2 {
+            text-align: center;
+            color: #00bfff; /* Warna judul */
+        }
+        .podcast-info, .episode-list {
+            margin-top: 30px;
+        }
+        .podcast-info p {
+            margin: 10px 0;
+        }
+        .episode-list {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        .episode-list th, .episode-list td {
+            padding: 15px;
+            border-bottom: 1px solid #555555; /* Warna garis pemisah */
+        }
+        .episode-list th {
+            background-color: #333333; /* Warna latar belakang header */
+            text-align: left;
+            color: #ffffff; /* Warna teks header */
+        }
+        .episode-list td {
+            background-color: #292929; /* Warna latar belakang sel */
+        }
+        a {
+            color: #00bfff; /* Warna tautan */
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        a:hover {
+            color: #cccccc; /* Warna tautan saat dihover */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>PODCAST DETAIL</h1>
+        <div class="podcast-info">
+            <p>Judul: Podcast1</p>
+            <p>Genre(s):</p>
+            <ul>
+                <li>Genre1</li>
+                <li>Genre2</li>
+            </ul>
+            <p>Podcaster: Artist1</p>
+            <p>Total Durasi: 8 jam 20 menit</p>
+            <p>Tanggal Rilis: 18/03/24</p>
+            <p>Tahun: 2024</p>
+            <p><a href="#">[Kembali]</a></p>
+        </div>
+        <h2>DAFTAR EPISODE</h2>
+        <table class="episode-list">
+            <thead>
+                <tr>
+                    <th>Judul Episode</th>
+                    <th>Deskripsi</th>
+                    <th>Durasi</th>
+                    <th>Tanggal</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>SubJudul1</td>
+                    <td>Lorem Ipsum ....</td>
+                    <td>59 menit</td>
+                    <td>18/03/2024</td>
+                </tr>
+                <tr>
+                    <td>SubJudul2</td>
+                    <td>Lorem Ipsum ....</td>
+                    <td>1 jam 2 menit</td>
+                    <td>25/03/2024</td>
+                </tr>
+                <!-- Isi dengan episode lainnya -->
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RU MELIHAT CHART</title>
+    <style>
+        body {
+            background-color: #121212; /* Warna latar belakang hitam */
+            color: #ffffff; /* Warna teks putih */
+            font-family: Arial, sans-serif; /* Font teks */
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #1f1f1f; /* Warna latar belakang konten */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        h1, h2 {
+            text-align: center;
+            color: #00bfff; /* Warna judul */
+        }
+        .chart-list, .chart-detail {
+            margin-top: 30px;
+        }
+        .chart-list table, .chart-detail table {
+            border-collapse: collapse;
+            width: auto;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .chart-list th, .chart-list td, .chart-detail th, .chart-detail td {
+            padding: 15px;
+            border-bottom: 1px solid #555555; /* Warna garis pemisah */
+            text-align: center;
+        }
+        .chart-list th, .chart-detail th {
+            background-color: #333333; /* Warna latar belakang header */
+            color: #ffffff; /* Warna teks header */
+        }
+        .chart-list td, .chart-detail td {
+            background-color: #292929; /* Warna latar belakang sel */
+        }
+        a {
+            color: #00bfff; /* Warna tautan */
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        a:hover {
+            color: #cccccc; /* Warna tautan saat dihover */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>CHART LIST</h1>
+        <table class="chart-list">
+            <thead>
+                <tr>
+                    <th>Tipe</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Daily Top 20</td>
+                    <td><a href="#">[Lihat Daftar Lagu]</a></td>
+                </tr>
+                <tr>
+                    <td>Weekly Top 20</td>
+                    <td><a href="#">[Lihat Daftar Lagu]</a></td>
+                </tr>
+                <!-- Tambahkan baris untuk chart lainnya -->
+            </tbody>
+        </table>
+        <p><a href="#">[Kembali]</a></p>
+
+        <h2>CHART DETAIL</h2>
+        <div class="chart-detail">
+            <p>Tipe: Daily Top 20</p>
+            <p><a href="#">[Kembali]</a></p>
+        </div>
+
+        <h2>DAFTAR LAGU</h2>
+        <table class="chart-detail">
+            <thead>
+                <tr>
+                    <th>Judul Lagu</th>
+                    <th>Oleh</th>
+                    <th>Tanggal Rilis</th>
+                    <th>Total Plays</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Song1</td>
+                    <td>Artist1</td>
+                    <td>09/03/2024</td>
+                    <td>21000</td>
+                    <td><a href="#">[Lihat]</a></td>
+                </tr>
+                <tr>
+                    <td>Song2</td>
+                    <td>Artist2</td>
+                    <td>02/03/2024</td>
+                    <td>19000</td>
+                    <td><a href="#">[Lihat]</a></td>
+                </tr>
+                <!-- Tambahkan lagu lainnya -->
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD KELOLA PODCAST</title>
+    <style>
+        body {
+            background-color: #121212; /* Warna latar belakang hitam */
+            color: #ffffff; /* Warna teks putih */
+            font-family: Arial, sans-serif; /* Font teks */
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #1f1f1f; /* Warna latar belakang konten */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        h1, h2 {
+            text-align: center;
+            color: #00bfff; /* Warna judul */
+        }
+        .form-container {
+            margin-top: 30px;
+        }
+        .form-container label {
+            display: block;
+            margin-bottom: 10px;
+        }
+        .form-container input[type="text"],
+        .form-container select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid #555555;
+            background-color: #292929; /* Warna latar belakang input */
+            color: #ffffff; /* Warna teks input */
+        }
+        .form-container input[type="submit"],
+        .form-container button {
+            background-color: #333333; /* Warna tombol */
+            color: #ffffff; /* Warna teks tombol */
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-right: 10px;
+        }
+        .form-container input[type="submit"]:hover,
+        .form-container button:hover {
+            background-color: #555555; /* Warna tombol saat dihover */
+        }
+        .podcast-list, .episode-list {
+            margin-top: 30px;
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .podcast-list th, .podcast-list td,
+        .episode-list th, .episode-list td {
+            padding: 10px;
+            border-bottom: 1px solid #555555; /* Warna garis pemisah */
+            text-align: center;
+        }
+        .podcast-list th, .episode-list th {
+            background-color: #333333; /* Warna latar belakang header */
+            color: #ffffff; /* Warna teks header */
+        }
+        .podcast-list td, .episode-list td {
+            background-color: #292929; /* Warna latar belakang sel */
+        }
+        a {
+            color: #00bfff; /* Warna tautan */
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        a:hover {
+            color: #cccccc; /* Warna tautan saat dihover */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>CREATE PODCAST</h1>
+        <div class="form-container">
+            <label for="title">Judul:</label>
+            <input type="text" id="title" name="title">
+
+            <label for="genre">Genre:</label>
+            <select id="genre" name="genre" multiple>
+                <!-- Pilihan genre dari Marmut -->
+                <option value="genre1">Genre1</option>
+                <option value="genre2">Genre2</option>
+                <!-- Tambahkan pilihan genre lainnya -->
+            </select>
+
+            <label for="duration">Durasi:</label>
+            <input type="text" id="duration" name="duration">
+
+            <button type="submit">SUBMIT</button>
+        </div>
+
+        <h2>LIST PODCAST</h2>
+        <table class="podcast-list">
+            <thead>
+                <tr>
+                    <th>Judul</th>
+                    <th>Jumlah Episode</th>
+                    <th>Total Durasi</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Podcast1</td>
+                    <td>0</td>
+                    <td>0 menit</td>
+                    <td>
+                        <a href="#"><button>Lihat Daftar Episode</button></a>
+                        <a href="#"><button>Tambah Episode</button></a>
+                        <a href="#"><button>Hapus</button></a>
+                    </td>
+                </tr>
+                <!-- Tambahkan podcast lainnya -->
+            </tbody>
+        </table>
+
+        <h1>CREATE EPISODE</h1>
+        <div class="form-container">
+            <label for="podcast">Podcast:</label>
+            <input type="text" id="podcast" name="podcast" value="Podcast1" disabled>
+
+            <label for="episode-title">Judul:</label>
+            <input type="text" id="episode-title" name="episode-title">
+
+            <label for="description">Deskripsi:</label>
+            <input type="text" id="description" name="description">
+
+            <label for="episode-duration">Durasi:</label>
+            <input type="text" id="episode-duration" name="episode-duration">
+
+            <button type="submit">SUBMIT</button>
+        </div>
+
+        <h2>DAFTAR EPISODE PADA PODCAST1</h2>
+        <table class="episode-list">
+            <thead>
+                <tr>
+                    <th>Judul Episode</th>
+                    <th>Deskripsi</th>
+                    <th>Durasi</th>
+                    <th>Tanggal</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>SubJudul1</td>
+                    <td>Lorem Ipsum ....</td>
+                    <td>59 menit</td>
+                    <td>18/03/2024</td>
+                    <td><button>Hapus</button></td>
+                </tr>
+                <tr>
+                    <td>SubJudul2</td>
+                    <td>Lorem Ipsum ....</td>
+                    <td>1 jam 2 menit</td>
+                    <td>25/03/2024</td>
+                    <td><button>Hapus</button></td>
+                </tr>
+                <!-- Tambahkan episode lainnya -->
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
