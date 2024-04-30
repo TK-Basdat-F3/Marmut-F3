@@ -117,3 +117,9 @@ from django.contrib.auth.decorators import login_required
 
 def manage_albums(request):
     return render(request, 'artist_manage_album_song.html')
+
+def cek_royalti(request):
+    return render(request, 'cek_royalti.html')
+
+def label_manage(request):
+    return render(request, 'label_manage_album_song.html')

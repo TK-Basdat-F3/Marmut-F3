@@ -7,6 +7,8 @@ app_name = 'merah'
 
 urlpatterns = [
     path('manage-albums/', views.manage_albums, name='manage_albums'),
+    path('cek-royalti/', views.cek_royalti, name='cek-royalti'),
+    path('label-manage/', views.label_manage, name='label-manage'),
     # path('manage_album_song/', views.manage_album_song, name='manage_album_song'),
     # path('create_album/', views.create_album, name='create_album'),
     # path('add_song_to_album/<uuid:album_id>/', views.add_song_to_album, name='add_song_to_album'),

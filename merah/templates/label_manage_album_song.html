@@ -1,28 +1,125 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>Label Album Management</h2>
-<table>
-    <thead>
-        <tr>
-            <th>Title</th>
-            <th>Number of Songs</th>
-            <th>Total Duration</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for album in albums %}
-        <tr>
-            <td>{{ album.title }}</td>
-            <td>{{ album.songs.count }}</td>
-            <td>{{ album.total_duration }} minutes</td>
-            <td>
-                <a href="{% url 'label_view_songs' album.id %}">View Songs</a>
-                <a href="{% url 'label_delete_album' album.id %}">Delete</a>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<style>
+    .container {
+        width: 100%; max-width: 800px; margin: auto;
+        background-color: #AA98A9; 
+        color: white; padding: 20px; border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        font-family: 'Montserrat', sans-serif;
+    }
+    .album-container, .song-container {
+        background: linear-gradient(180deg, #DBB2D1 0%, #86608E 100%);
+        border: 1px solid white; padding: 20px; border-radius: 8px;
+        margin-bottom: 20px;
+    }
+    input[type="text"], select, button {
+        width: 100%; padding: 8px; margin-top: 8px;
+        border-radius: 8px; border: 1px solid #F5F5F5;
+        box-sizing: border-box;
+    }
+    button {
+        background-color: #301934; color: white;
+        border: none; cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    button:hover {
+        background-color: #C8A2C8;
+    }
+    table {
+        width: 100%; border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+    th, td {
+        padding: 10px; text-align: left;
+        border: 1px solid white;
+    }
+    th {
+        background-color: #86608E;
+    }
+    td {
+        background-color: #AA98A9;
+    }
+    .action-button {
+        padding: 5px 5px;
+        background-color: #301934;
+        color: white;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+    }
+    .action-button:hover {
+        background-color: #C8A2C8;
+    }
+    tr:hover td{
+        background-color: #BEBFC5; 
+        transition: background-color 0.3s ease;
+    }
+</style>
+
+<div class="container">
+    <div class="album-container">
+        <h2>List of Albums</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Label</th>
+                    <th>Number of Songs</th>
+                    <th>Total Duration</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="table-row">
+                    <td>Album1</td>
+                    <td>LabelA</td>
+                    <td>0</td>
+                    <td>0 min</td>
+                    <td><button class="action-button">View Songs</button> <button class="action-button">Delete</button></td>
+                </tr>
+                <tr class="table-row">
+                    <td>Album2</td>
+                    <td>LabelB</td>
+                    <td>2</td>
+                    <td>4 min</td>
+                    <td><button class="action-button">View Songs</button> <button class="action-button">Delete</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="song-container">
+        <h2>Songs in Album1</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Duration</th>
+                    <th>Total Plays</th>
+                    <th>Total Downloads</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="table-row">
+                    <td>Lagu1</td>
+                    <td>2 min</td>
+                    <td>3</td>
+                    <td>0</td>
+                    <td><button class="action-button">View Details</button> <button class="action-button">Delete</button></td>
+                </tr>
+                <tr class="table-row">
+                    <td>Lagu2</td>
+                    <td>3 min</td>
+                    <td>2</td>
+                    <td>2</td>
+                    <td><button class="action-button">View Details</button> <button class="action-button">Delete</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
 {% endblock %}

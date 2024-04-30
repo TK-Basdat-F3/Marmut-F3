@@ -1,27 +1,76 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>Royalty Check</h2>
-<table>
-    <thead>
-        <tr>
-            <th>Song Title</th>
-            <th>Album Title</th>
-            <th>Total Plays</th>
-            <th>Total Downloads</th>
-            <th>Total Royalty Earned</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for royalty in royalties %}
-        <tr>
-            <td>{{ royalty.song_title }}</td>
-            <td>{{ royalty.album_title }}</td>
-            <td>{{ royalty.total_plays }}</td>
-            <td>{{ royalty.total_downloads }}</td>
-            <td>Rp {{ royalty.total_royalties }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<style>
+    .container {
+        width: 100%; max-width: 800px; margin: auto;
+        background-color: #AA98A9;
+        color: white; padding: 20px; border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        font-family: 'Montserrat', sans-serif;
+    }
+    
+    .royalty-table {
+        width: 100%; border-collapse: collapse; margin-top: 20px;
+        border-radius: 8px; background: #DBB2D1;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .royalty-table th, .royalty-table td {
+        padding: 8px; text-align: left; border-bottom: 1px solid #ddd;
+        color: white;
+    }
+    
+    .royalty-table th {
+        background-color: #86608E;
+    }
+    
+    .royalty-table tr:nth-child(odd) {
+        background-color: #DBB2D1;
+    }
+    
+    .royalty-table tr:hover {
+        background-color: #C8A2C8;
+    }    
+</style>
+
+<div class="container">
+    <h2>List Royalti</h2>
+    <table class="royalty-table">
+        <thead>
+            <tr>
+                <th>Judul Lagu</th>
+                <th>Judul Album</th>
+                <th>Total Play</th>
+                <th>Total Download</th>
+                <th>Total Royalti Didapat</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>intro (end of the world)</td>
+                <td>Eternal Sunshine</td>
+                <td>100</td>
+                <td>90</td>
+                <td>$ 10,000</td>
+            </tr>
+            <tr>
+                <td>Kill Bill</td>
+                <td>SOS</td>
+                <td>200</td>
+                <td>50</td>
+                <td>$ 5,000</td>
+            </tr>
+            <tr>
+                <td>The Alchemy</td>
+                <td>THE TORTURED POETS DEPARTMENT: THE ANTHOLOGY</td>
+                <td>995</td>
+                <td>300</td>
+                <td>$ 23,000</td>
+            </tr>
+            
+        </tbody>
+    </table>
+</div>
+
 {% endblock %}
