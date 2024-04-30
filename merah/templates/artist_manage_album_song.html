@@ -1,6 +1,116 @@
 {% extends "base.html" %}
 
 {% block content %}
+<style>
+    .container {
+        width: 100%; max-width: 800px; margin: auto;
+        background-color: #AA98A9;
+        color: white; padding: 20px; border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        font-family: 'Montserrat', sans-serif;
+    }
+    .form-container, .album-container, .song-container {
+        background: linear-gradient(180deg, #DBB2D1 0%, #86608E 100%);
+        border: 1px solid white; padding: 20px; border-radius: 8px;
+        margin-bottom: 20px;
+    }
+    input[type="text"], select, button {
+        width: 100%; padding: 8px; margin-top: 8px;
+        border-radius: 8px; border: 1px solid #F5F5F5;
+        box-sizing: border-box; display: block;
+    }
+    label {
+        margin-top: 20px;
+    }
+    button {
+        background-color: #301934; color: white;
+        border: none; cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    button:hover {
+        background-color: #C8A2C8;
+    }
+    .card {
+        background-color: #1c1818; display: inline-block;
+        margin: 10px; padding: 10px; border-radius: 8px;
+        transition: transform 0.3s ease;
+    }
+    .card:hover {
+        transform: translateY(-5px);
+    }
+    img {
+        width: 100%; border-radius: 8px;
+    }
+</style>
+<div class="container">
+    <h2>Manage Albums</h2>
+    <div class="form-container">
+        <form method="post">
+          {% csrf_token %}
+          <h3>Create Album</h3>
+          <label for="title">Title:</label>
+          <input type="text" id="title" name="title">
+          <label for="label">Label:</label>
+          <select id="label" name="label">
+            <option value="1">Label A</option>
+            <option value="2">Label B</option>
+            <option value="2">Label C</option>
+            <option value="2">Label D</option>
+            <option value="2">Label E</option>
+          </select>
+          <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <div class="album-container">
+      <h3>Eternal Sunshine</h3>
+      <h5>by Ariana Grande</h5>
+      <img src="https://i.pinimg.com/736x/db/9f/8e/db9f8e2e356da77dbc9971aab28265fe.jpg" alt="Album Image" style="width:100%; max-width:300px;">
+      <p>13 songs, 35 minutes</p>
+      <button>Add Song</button>
+      <button>Delete</button>
+    </div>
+
+    <div class="album-container">
+        <h3>Another Album by Label Two</h3>
+        <p>5 songs, 300 minutes</p>
+        <button>Add Song</button>
+        <button>Delete</button>
+    </div>
+
+    <h2>Add Song to Album</h2>
+    <div class="song-container">
+        <form method="post">
+          {% csrf_token %}
+          <input type="hidden" name="album_id" value="1">
+          <label for="title">Title:</label>
+          <input type="text" id="title" name="title">
+          <label for="artist">Artist:</label>
+          <select id="artist" name="artist">
+            <option value="1">Artist One</option>
+            <option value="2">Artist Two</option>
+          </select>
+          <label for="songwriters">Songwriter:</label>
+          <select id="songwriters" name="songwriters" multiple>
+            <option value="1">Songwriter One</option>
+            <option value="2">Songwriter Two</option>
+          </select>
+          <label for="genres">Genre:</label>
+          <select id="genres" name="genres" multiple>
+            <option value="1">Pop</option>
+            <option value="2">Rock</option>
+          </select>
+          <label for="duration">Duration:</label>
+          <input type="text" id="duration" name="duration">
+          <button type="submit">Create Song</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% comment %} {% extends "base.html" %}
+
+{% block content %}
 <h2>Manage Albums</h2>
 <form method="post" action="{% url 'create_album' %}">
   {% csrf_token %}
@@ -72,4 +182,4 @@
     <a href="{% url 'delete_song' song.id %}">Delete</a>
   </div>
 {% endfor %}
-{% endblock %}
+{% endblock %} {% endcomment %}
