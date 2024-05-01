@@ -9,3 +9,6 @@ def subscribe_form(request):
 
 def subscribe_history(request):
     return render(request, "subscribe_history.html")
+
+def downloaded_songs(request):
+    return render(request, "downloaded_songs.html")

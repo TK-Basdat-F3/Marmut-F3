@@ -23,41 +23,15 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                {% for i in "x"|ljust:10 %}
                                 <tr>
-                                    <th style="text-align: left;">1 Bulan</th>
-                                    <th>8 April 2024, 23:00</th>
-                                    <th>8 Mei 2024, 23:00</th>
-                                    <th>E-Wallet</th>
-                                    <th>Rp49.000</th>
+                                    <td style="text-align: left;">1 Bulan</td>
+                                    <td>8 April 2024, 23:00</td>
+                                    <td>8 Mei 2024, 23:00</td>
+                                    <td>E-Wallet</td>
+                                    <td>Rp49.000</td>
                                 </tr>
-                                <tr>
-                                    <th style="text-align: left;">1 Bulan</th>
-                                    <th>8 April 2024, 23:00</th>
-                                    <th>8 Mei 2024, 23:00</th>
-                                    <th>E-Wallet</th>
-                                    <th>Rp49.000</th>
-                                </tr>
-                                <tr>
-                                    <th style="text-align: left;">1 Bulan</th>
-                                    <th>8 April 2024, 23:00</th>
-                                    <th>8 Mei 2024, 23:00</th>
-                                    <th>E-Wallet</th>
-                                    <th><strong>Rp49.000</strong></th>
-                                </tr>
-                                <tr>
-                                    <th style="text-align: left;">1 Bulan</th>
-                                    <th>8 April 2024, 23:00</th>
-                                    <th>8 Mei 2024, 23:00</th>
-                                    <th>E-Wallet</th>
-                                    <th>Rp49.000</th>
-                                </tr>
-                                <tr>
-                                    <th style="text-align: left;">1 Bulan</th>
-                                    <th>8 April 2024, 23:00</th>
-                                    <th>8 Mei 2024, 23:00</th>
-                                    <th>E-Wallet</th>
-                                    <th>Rp49.000</th>
-                                </tr>
+                                {% endfor %}
                             </tbody>
                         </table>
                     </section>
@@ -98,17 +72,17 @@ th, td {
 
 thead th {
     font-size: 12px;
+    font-weight: 600;
     color: #D9D9D9;
 }
 
-tbody tr th{
+tbody tr td{
     font-weight: 600;
     color: white;
 }
 
 tbody tr:hover {
-    background-color: #109CFC;
+    background-color: rgb(40, 35, 35);
     box-sizing: border-box;
-    box-shadow: 0 0 8px rgba(0, 0, 0, 1);
 }
 </style>
