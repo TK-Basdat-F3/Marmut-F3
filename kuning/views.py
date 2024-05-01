@@ -12,3 +12,9 @@ def subscribe_history(request):
 
 def downloaded_songs(request):
     return render(request, "downloaded_songs.html")
+
+def search_content(request):
+    return render(request, "search_content.html")
+
+def search_found(request):
+    return render(request, "search_found.html")
