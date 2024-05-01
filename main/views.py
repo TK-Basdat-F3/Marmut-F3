@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 import datetime
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from .forms import SignupFormPengguna
 
 @login_required(login_url='/login')
 def show_main(request):
@@ -17,10 +18,10 @@ def show_main(request):
     return render(request, "main.html", context)
 
 def register(request):
-    form = UserCreationForm()
+    form = SignupFormPengguna()
 
     if request.method == "POST":
-        form = UserCreationForm(request.POST)
+        form = SignupFormPengguna(request.POST)
         if form.is_valid():
             form.save()
             messages.success(request, 'Your account has been successfully created!')

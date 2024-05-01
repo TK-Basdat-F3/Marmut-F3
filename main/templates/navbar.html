@@ -1,0 +1,50 @@
+
+{% block content %}
+<style>
+    .navbar {
+        background-color: black; /* Warna latar belakang */
+        color: black;
+        width: 100%; /* Memenuhi seluruh lebar layar */
+        height: 100%;
+    }
+
+    .navbar-nav {
+        display: flex;
+        list-style-type: none; /* Menghilangkan bullet points dari daftar */
+        padding: 0; /* Menghapus padding bawaan */
+    }
+
+    .nav-item {
+        margin-left: 10px; /* Jarak antara setiap item navbar */
+    }
+
+    .nav-link {
+        text-decoration: none;
+        color: white; /* Warna teks putih */
+        padding: 10px; /* Padding untuk tombol */
+        border: 1px solid white; /* Membuat border tombol */
+        border-radius: 5px; /* Membuat sudut tombol menjadi melengkung */
+        transition: background-color 0.3s; /* Efek transisi saat hover */
+    }
+
+    .nav-link:hover {
+        background-color: lightgray; /* Warna latar belakang saat tombol dihover */
+    }
+
+    .navbar-nav {
+        text-align: right; /* Teks memanjang ke kanan */
+    }
+</style>
+
+<nav class="navbar">
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a href="/login" class="nav-link">Login</a>
+        </li>
+        <li class="nav-item">
+            <a href="/register" class="nav-link">Registrasi</a>
+        </li>
+    </ul>
+</nav>
+
+{% endblock content %}
