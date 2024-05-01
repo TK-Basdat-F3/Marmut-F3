@@ -2,14 +2,14 @@
 
 {% block meta %}
 
-{% include 'navbar.html' %}
+{% include 'navbar_guest.html' %}
     <title>Login</title>
 {% endblock meta %}
 {% block content %}
 <style>
     section {
         background-image: url(https://img.freepik.com/free-photo/3d-music-related-scene_23-2151125037.jpg?t=st=1714553240~exp=1714556840~hmac=2fcc35d9c23ad9ef261f2f5756e2d57f42a8dc2de495458fa7ed754475c7d015&w=826);
-        background-color: black;
+        background-color: var(--body-color);
         background-size: cover; /* Untuk mengisi seluruh area section */
         background-position: center center; /* Untuk posisi tengah secara horizontal dan vertikal */
         background-repeat: no-repeat; /* Agar gambar latar belakang tidak diulang */
@@ -19,12 +19,12 @@
     .card {
         font-family: Inter, sans-serif; font-weight: regular;
         width: 400px; /* Lebar form login */
-        background-color: #0f0f0f;
+        background-color: var(--nav-color);
         margin: 0 auto; /* Mengatur margin otomatis pada sisi kiri dan kanan, membuat form berada di tengah */
         padding: 20px; /* Ruang dalam form login */
         text-align: center; /* Teks berada di tengah form login */
         border-radius: 3%;
-        color: white; /* Mengatur warna teks menjadi putih */
+        color: var(--text-color); /* Mengatur warna teks menjadi putih */
         position: absolute;
         transform: translate(-50%,-50%);
         top: 50%;
@@ -39,8 +39,64 @@
         font-family: Inter, sans-serif; font-weight: regular;
     }
     a{
-        color: wheat;
+        color: var(--text-color);
     }
+
+    .button {
+        align-items: center;
+        appearance: none;
+        background-image: radial-gradient(100% 100% at 100% 0, #8a3ffc 0, #5520a5 100%); /* Ubah nilai warna di sini */
+        border: 0;
+        border-radius: 6px;
+        box-shadow: rgba(45, 35, 66, .4) 0 2px 4px, rgba(45, 35, 66, .3) 0 7px 13px -3px, rgba(58, 65, 111, .5) 0 -3px 0 inset;
+        box-sizing: border-box;
+        color: #fff;
+        cursor: pointer;
+        display: inline-flex;
+        font-family: "JetBrains Mono", monospace;
+        height: 40px;
+        justify-content: center;
+        line-height: 1;
+        list-style: none;
+        overflow: hidden;
+        padding-left: 16px;
+        padding-right: 16px;
+        position: relative;
+        text-align: left;
+        text-decoration: none;
+        transition: box-shadow .15s, transform .15s;
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+        white-space: nowrap;
+        will-change: box-shadow, transform;
+        font-size: 18px;
+    }
+
+    .button:focus {
+        box-shadow: #3c4fe0 0 0 0 1.5px inset, rgba(45, 35, 66, .4) 0 2px 4px, rgba(45, 35, 66, .3) 0 7px 13px -3px, #3c4fe0 0 -3px 0 inset;
+    }
+
+    .button:hover {
+        box-shadow: rgba(45, 35, 66, .4) 0 4px 8px, rgba(45, 35, 66, .3) 0 7px 13px -3px, #3c4fe0 0 -3px 0 inset;
+        transform: translateY(-2px);
+    }
+
+    .button:active {
+        box-shadow: #3c4fe0 0 3px 7px inset;
+        transform: translateY(2px);
+    }
+
+    input{
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+    }
+
+    input:focus {
+        background-color: rgb(197, 153, 233);
+    }
+
 </style>
 
 
@@ -51,7 +107,6 @@
                 <div class="card-content">
                 <div class="login">
                     <ts style="font-size: x-large;">Login</ts><br>
-                    <tp style="font-size: x-large; color: #0f0f0f;"> .</tp>
                     <form method="POST" action="">
                     {% csrf_token %}
                     <div class="field">
@@ -65,7 +120,8 @@
                         </div>
                     </div>
                     <br />
-                    <button class="button is-block is-fullwidth is-primary is-medium is-rounded" type="submit" value="Login">
+                    
+                    <button class="button" type="submit" value="Login">
                         Login
                     </button>
                     </form>
@@ -77,13 +133,11 @@
                     </ul>
                     {% endif %}     
                     <br>
-                    <nav class="level">
-                    <div class="level-item has-text-centered">
+                    <div class="has-text-centered">
                         <div>
                             Don't have an account yet? <a href="{% url 'main:register' %}">Register Now</a>
                         </div>
-                    </div>
-                    </nav>
+                    </div>  
                 </div>
                 </div>
             </div>
