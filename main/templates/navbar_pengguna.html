@@ -30,7 +30,6 @@
                 </div>
 
                 <ul class="nav-links">
-                    <li><a href="{% url 'main:dashboard_user' %}">Dashboard</a></li>
                     <li><a href="#">Chart</a></li>
                     <li><a href="#">Kelola Paylist</a></li>
                     <li><a href="{% url 'kuning:subscribe_menu' %}">Langganan Paket</a></li>
@@ -90,12 +89,13 @@ const body = document.querySelector("body"),
         searchToggle.addEventListener("click" , () =>{
         searchToggle.classList.toggle("active");
       });
-
+    
     // js code to redirect search btn
     const searchBtn = document.getElementById("searchBtn");
     searchBtn.addEventListener("click", () => {
         window.location.href = "{% url 'kuning:search_content' %}";
     });
+ 
       
 //   js code to toggle sidebar
 sidebarOpen.addEventListener("click" , () =>{

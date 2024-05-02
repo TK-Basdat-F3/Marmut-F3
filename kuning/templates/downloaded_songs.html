@@ -1,87 +1,98 @@
 {% extends 'base.html' %}
 
 {% block meta %}
-
 {% include 'navbar_pengguna.html' %}
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Marmut</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">    
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">  
 {% endblock meta %}
+
 {% block content %}
-<body style="background-color: #181414; min-height: 100vh; display: flex; justify-content: center; align-items: center;">
-    <div class="col" id="blur" style="text-align: center;">
-        <main class="table">
-            <section class="table_header">
-                <h1 style="text-align: center; color: white; font-size: 32px;">Downloaded Songs</h1>
-            </section>
-            <div class="container" style="width: 100%; height: 60%; padding-top: 16px; padding-bottom: 16px; background: #181414; border-radius: 8px; padding-left: 8%; padding-right: 8%; box-sizing: border-box; box-shadow: 0 0 30px rgba(0, 0, 0, 1); overflow-y: auto;">
-                <section class="table_body">
-                    <table>
-                        <thead style="border-bottom: 1px solid #9B9B9B;">
-                            <tr>
-                                <th style="text-align: left; width: 324px;">Judul</th>
-                                <th style="width: 324px;">Oleh</th>
-                                <th>Tanggal Download</th>
-                                <th style="width: 132px;">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for i in "x"|ljust:10 %}
-                            <tr>
-                                <td style="text-align: left; width: 324px;">Cinta satu malam</td>
-                                <td style="width: 324px;">Sus Rini</td>
-                                <td>20/02/2024</td>
-                                <td style="width: 132px;">
-                                    <div style="width: 132px; height: 24px; display: flex; gap: 10px;">
-                                        <a href="#" style="text-decoration: none; color: inherit;"></a>
-                                            <button class="detail-btn">Lihat</button>
-                                        </a>
-                                        <div class="container">
-                                            <button type="submit" class="delete-btn" onclick="openPopup()"><i class="fa-solid fa-trash"></i></button>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Marmut</title>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    </head>
+    <body style="background-color: #181414; height: fit-content; display: flex; justify-content: center; align-items: center; padding-top: 120px;">
+        <div id="blur" style="text-align: center;">
+            <main class="kuning-table">
+                <section class="kuning-table_header">
+                    <h1 style="text-align: center; color: white; font-size: 32px;">Downloaded Songs</h1>
                 </section>
-            </div>
-        </main>
-        <a href="#" onclick="goBack()" style="text-decoration: none; color: inherit;">
-            <button style="margin-top: 60px; width: 324px; height: 48px; border-radius: 25px; border: none; color: white; background-color: #4070F4; font-size: 16px; font-weight: 600;">Kembali</button>
-        </a>
-    </div>
-
-    <div class="popup" id="popup">
-        <!-- <img src="deleted.png"> -->
-        <h2>Deleted</h2>
-        <p style="width: 100%; margin-bottom: 40px; font-weight: 400;">Berhasil menghapus lagu dengan judul '<strong>Song1</strong>' dari daftar unduhan!</p>
-        <button type="button" onclick="closePopup()">Kembali</button>
-    </div>
-
-    <script>
-        function goBack() {
-            window.history.back();
-        }
-
-        let popup = document.getElementById("popup");
-        function openPopup(){
-            popup.classList.add("open-popup");
-            document.getElementById("blur").body.classList.add("popup-active");
-        }
-        function closePopup(){
-            popup.classList.remove("open-popup");
-            document.getElementById("blur").body.classList.remove("popup-active");
-        }
-    </script>
-</body>
+                <div style="width: 100%; height: 450px; overflow-y: auto; padding-top: 16px; padding-bottom: 16px; background: #181414; border-radius: 8px; padding-left: 8%; padding-right: 8%; box-sizing: border-box; box-shadow: 0 0 30px rgba(0, 0, 0, 1); overflow-y: auto;">
+                    <section class="kuning-table_body">
+                        <table>
+                            <thead style="border-bottom: 1px solid #9B9B9B;">
+                                <tr>
+                                    <th style="text-align: left; width: 324px;">Judul</th>
+                                    <th style="width: 324px;">Oleh</th>
+                                    <th>Tanggal Download</th>
+                                    <th style="width: 132px;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for i in "x"|ljust:10 %}
+                                <tr>
+                                    <td style="text-align: left; width: 324px;">Cinta satu malam</td>
+                                    <td style="width: 324px;">Sus Rini</td>
+                                    <td>20/02/2024</td>
+                                    <td style="width: 132px;">
+                                        <div style="width: 132px; height: 24px; display: flex; gap: 10px;">
+                                            <a href="#" style="text-decoration: none; color: inherit;"></a>
+                                                <button class="kuning-detail-btn">Lihat</button>
+                                            </a>
+                                            <div class="container">
+                                                <button type="submit" class="kuning-delete-btn" onclick="openPopup()"><i class="fa-solid fa-trash"></i></button>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </section>
+                </div>
+            </main>
+            <a href="#" onclick="goBack()" style="text-decoration: none; color: inherit;">
+                <button style="margin-top: 45px; width: 324px; height: 48px; border-radius: 25px; border: none; color: white; background-color: #4070F4; font-size: 16px; font-weight: 600;">Kembali</button>
+            </a>
+        </div>
+    
+        <div class="kuning-blur-layer">
+            <div class="kuning-popup" id="popup">
+                <h2 style="padding-top: 20px;">Deleted</h2>
+                <p style="width: 100%; margin-bottom: 40px; font-weight: 400;">Berhasil menghapus lagu dengan judul '<strong>Cinta satu malam</strong>' dari daftar unduhan!</p>
+                <button type="button" onclick="closePopup()">Kembali</button>
+            </div>        
+        </div>
+    
+        <script>
+            function goBack() {
+                window.history.back();
+            }
+    
+            function openPopup(){
+                popup.classList.add("kuning-open-popup");
+                document.getElementById("blur").classList.add("popup-active");
+                document.querySelector(".kuning-blur-layer").style.display = "block";
+            }
+            function closePopup(){
+                popup.classList.remove("kuning-open-popup");
+                document.getElementById("blur").classList.remove("popup-active");
+                document.querySelector(".kuning-blur-layer").style.display = "none";
+            }
+    
+            document.addEventListener("DOMContentLoaded", function() {
+                let popup = document.getElementById("popup");
+            });
+        </script>
+    </body>
+</html>
 
 <style>
 body {
     background-color: #181414;
-    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -89,8 +100,8 @@ body {
     font-family: 'Montserrat', sans-serif;
 }
 
-.table_header{
-    margin-bottom: 60px;
+.kuning-table_header{
+    margin-bottom: 45px;
 }
 
 table {
@@ -120,8 +131,8 @@ tbody tr:hover {
     box-sizing: border-box;
 }
 
-.detail-btn {
-    width: 98px;
+.kuning-detail-btn {
+    width: 150px;
     height: 24px;
     border-radius: 25px;
     border: 1px solid #4070F4;
@@ -131,11 +142,11 @@ tbody tr:hover {
     background-color: transparent;
     transition: background-color 0.3s ease;
 }
-.detail-btn:hover {
+.kuning-detail-btn:hover {
     color: black;
     background-color: #4070F4;
 }
-.delete-btn {
+.kuning-delete-btn {
     width: 22px;
     height: 22px;
     padding: 2px 2px;
@@ -146,11 +157,11 @@ tbody tr:hover {
     background-color: transparent;
     transition: background-color 0.3s ease;
 }
-.delete-btn:hover {
+.kuning-delete-btn:hover {
     color: #f80000;
 }
 
-.popup {
+.kuning-popup {
     width: 364px;
     color: white;
     background: #282424;
@@ -160,31 +171,42 @@ tbody tr:hover {
     left: 50%;
     transform: translate(-50%, -50%) scale(0.1);
     text-align: center;
-    padding: 40px 30px;
+    padding: 0 40px 30px;
     visibility: hidden;
     transition: transform 0.4s, top 0.4s;
 }
 
-.open-popup {
+.kuning-open-popup {
     visibility: visible;
     top: 50%;
     transform: translate(-50%, -50%) scale(1);
 }
 
-.col#blur .popup-active {
-    filter: blur(5px);
-    pointer-events: none;
-    user-select: none;
+.kuning-blur-layer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    z-index: 99;
+    display: none;
 }
 
-.popup img {
+.col#blur.popup-active .kuning-blur-layer {
+    display: block;
+}
+
+.kuning-popup img {
     width: 100px;
     margin-top: -50px;
     border: 50%;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-.popup button {
+.kuning-popup button {
     width: 100%;
     height: 45px;
     border-radius: 25px;
