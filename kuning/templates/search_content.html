@@ -1,0 +1,122 @@
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Marmut</title>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">    
+    </head>
+    <body style="font-family: 'Montserrat', sans-serif;">
+        <div class="kuning-banner">
+            <div class="overlay">
+                <div class="kuning-content">
+
+                    <h1>Search Music, Playlists, and Podcasts on <span style="color: #4070F4;">Marmut</span></h1>
+                    <p>Discover your favorite songs, perfect playlists, or intriguing podcasts on Marmut with our search feature.</p>
+                    
+                    <form action="{% url 'kuning:search_found' %}" method="GET">
+                        <div class="kuning-search-container">
+                            <div class="kuning-search-bar">
+                                <i class="fas fa-search" style="color: #4070F4;"></i>
+                                <input type="text" class="kuning-search-input" placeholder="What do you want to play?">
+                                <button type="submit" class="kuning-search-btn">Search</button>
+                            </div>
+                        </div>                        
+                    </form>
+                    
+                </div>
+            </div>
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const searchInput = document.querySelector('.kuning-search-input');
+                const searchBtn = document.querySelector('.kuning-search-btn');
+    
+                searchBtn.disabled = true;
+    
+                function checkInput() {
+                    if (searchInput.value.trim() !== '') {
+                        searchBtn.disabled = false;
+                    } else {
+                        searchBtn.disabled = true;
+                    }
+                }
+    
+                searchInput.addEventListener('input', checkInput);
+            });
+        </script>
+    </body>
+</html>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+    .kuning-banner {
+        height: 100vh;
+        background-image: url('https://i.pinimg.com/originals/c9/a9/fc/c9a9fc5ac14a050211c7d400418a0126.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+    .kuning-banner .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.75); 
+    }
+    .kuning-content {
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        text-align: center;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column; 
+        color: white;
+    }
+    .kuning-content p {
+        width: 550px;
+        margin-top: 16px;
+        margin-bottom: 32px;
+        line-height: 25px;
+    }
+    .kuning-search-container {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        justify-content: center;
+    }
+    .kuning-search-bar {
+        width: 400px;
+        display: flex;
+        align-items: center;
+        border: 1px solid #4070F4;
+        border-radius: 25px;
+        padding: 5px 10px;
+        background-color: transparent;
+    }
+    .kuning-search-input {
+        border: none;
+        background-color: transparent;
+        color: white;
+        outline: none;
+        width: 100%;
+        margin-left: 10px;
+    }
+    .kuning-search-btn {
+        font-weight: 600;
+        border: none;
+        background-color: #4070F4;
+        color: white;
+        cursor: pointer;
+        padding: 6px 16px;
+        border-radius: 25px;
+    }
+    .kuning-search-btn:hover {
+        background-color: rgba(0, 0, 0, 0.25);
+        color: #4070F4;
+    }
+</style>

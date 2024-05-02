@@ -1,34 +1,73 @@
-{% extends 'base.html' %}
-
 {% block meta %}
     <title>Register</title>
 {% endblock meta %}
 
 {% block content %}  
-<body style="background-color: #181414; font-family: 'Montserrat', sans-serif; color: white;"></body>
-<div class = "login">
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    section {
+        background-image: url(https://img.freepik.com/free-photo/3d-music-related-scene_23-2151125037.jpg?t=st=1714553240~exp=1714556840~hmac=2fcc35d9c23ad9ef261f2f5756e2d57f42a8dc2de495458fa7ed754475c7d015&w=826);
+        background-size: cover; /* Untuk mengisi seluruh area section */
+        background-position: center center; /* Untuk posisi tengah secara horizontal dan vertikal */
+        background-repeat: no-repeat; /* Agar gambar latar belakang tidak diulang */
+        height: 100vh; /* Mengatur tinggi section sejajar dengan tinggi tampilan (viewport height) */
+    }
+
+    .register {
+        font-family: Inter, sans-serif; font-weight: regular;
+        width: 600px; /* Lebar form login */
+        background-color: #0f0f0f;
+        margin: 0 auto; /* Mengatur margin otomatis pada sisi kiri dan kanan, membuat form berada di tengah */
+        padding: 20px; /* Ruang dalam form login */
+        text-align: center; /* Teks berada di tengah form login */
+        border-radius: 3%;
+        color: white; /* Mengatur warna teks menjadi putih */
+        position: absolute;
+        transform: translate(-50%,-50%);
+        top: 50%;
+        left: 50%;
+    }
+
+    table{
+        color: white;
+    }
+
+    input{
+        font-family: Inter, sans-serif; font-weight: regular;
+    }
+    a{
+        color: wheat;
+    }
     
-    <h1>Register</h1>  
+</style>
+<section>
 
-        <form method="POST" >  
-            {% csrf_token %}  
-            <table>  
-                {{ form.as_table }}  
-                <tr>  
-                    <td></td>
-                    <td><input type="submit" name="submit" value="Daftar"/></td>  
-                </tr>  
-            </table>  
-        </form>
+    <div class = "register">
+        <ts style="font-size: x-large;">Register</ts><br>
+        <tp style="font-size: x-large; color: #0f0f0f;"> .</tp>
+            <form method="POST" >  
+                {% csrf_token %}  
+                <table>  
+                    {{ form.as_table }}  
+                    <tr>  
+                        <td></td>
+                        <td><input type="submit" name="submit" value="Daftar"/></td>  
+                    </tr>  
+                </table>  
+            </form>
 
-    {% if messages %}  
-        <ul>   
-            {% for message in messages %}  
-                <li>{{ message }}</li>  
-                {% endfor %}  
-        </ul>   
-    {% endif %}
+        {% if messages %}  
+            <ul>   
+                {% for message in messages %}  
+                    <li>{{ message }}</li>  
+                    {% endfor %}  
+            </ul>   
+        {% endif %}
 
-</div>  
-
+    </div>  
+</section>
 {% endblock content %}

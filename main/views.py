@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 import datetime
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from .forms import SignupFormPengguna, SignupFormLabel
 
 @login_required(login_url='/login')
 def show_main(request):
@@ -17,10 +18,11 @@ def show_main(request):
     return render(request, "main.html", context)
 
 def register(request):
-    form = UserCreationForm()
+    form = SignupFormPengguna()
+    form2 = SignupFormLabel()
 
     if request.method == "POST":
-        form = UserCreationForm(request.POST)
+        form = SignupFormPengguna(request.POST)
         if form.is_valid():
             form.save()
             messages.success(request, 'Your account has been successfully created!')
@@ -49,10 +51,10 @@ def logout_user(request):
     response.delete_cookie('last_login')
     return response
 
-@login_required
+# @login_required
 def dashboard_user(request):
     return render(request, "dashboard_user.html")
 
-@login_required
+# @login_required
 def dashboard_label(request):
     return render(request, "dashboard_label.html")
