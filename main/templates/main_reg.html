@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block meta %}
-{% include 'navbar_pengguna.html' %}
+{% include 'navbar_guest.html' %}
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">  
 {% endblock meta %}
@@ -11,7 +11,7 @@
     <a href="#" onclick="window.history.back();" class="kuning-back-btn"><i class="fas fa-arrow-left"></i> Back</a>
     <div class="container" style="width: 600px; height: 520px; background: #181414; border-radius: 8px; box-sizing: border-box; box-shadow: 0 0 30px rgba(0, 0, 0, 1); display: flex; justify-content: center; align-items: center;">        
         <div class="col" style="width: 324px; flex-basis: 50%; color: white; display: flex; flex-direction: column; align-items: center;">
-            <h1 style="width: 324px; font-size: 28px; text-align: center; padding-bottom: 5%; margin-bottom: 24px">Register</h1>
+            <h1 style="width: 324px; font-size: 28px; text-align: center; padding-bottom: 5%; margin-bottom: 50px">Register</h1>
             <div class="col" style="width: 324px; flex-basis: 50%; color: white; display: flex; flex-direction: column; text-align: left;">
                 <div class="col" style="flex-basis: 50%; color: white; margin-bottom: 24px;">
                     <a href="{% url 'main:register' %}" style="text-decoration: none; color: #4070F4;">
@@ -23,7 +23,7 @@
                         <button class="kuning-btn">Label</button>
                     </a> 
                 </div>
-                <div style="flex-direction: row; display: flex; align-items: center; justify-content: center;">
+                <div style="flex-direction: row; display: flex; align-items: center; justify-content: center; margin-top: 24px;">
                     <p style="margin-right: 12px;">Sudah punya akun?</p>
                     <a href="{% url 'main:login' %}" style="text-decoration: none; color: #4070F4;">
                         <p><strong>Log in</strong></p>
