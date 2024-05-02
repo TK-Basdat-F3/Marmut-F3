@@ -1,0 +1,258 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+
+{% include 'navbar_pengguna.html' %}
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marmut</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+    rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+{% endblock meta %}
+{% block content %}
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Lagu</title>
+    <style>
+        html,
+        body {
+            height: 100%;
+            background: linear-gradient(180deg, #6C95B2 0%, #181414 100%);
+            font-family: 'Montserrat', sans-serif;
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
+
+
+
+        .container {
+            margin: 0 auto;
+            padding: 5%;
+
+            display: flex;
+            flex-direction: column;
+            align-content: space-between;
+            align-items: center;
+            justify-content: center;
+        }
+
+
+
+        h2 {
+            text-align: center;
+        }
+
+
+        .song-actions button {
+            width: 200px;
+            height: 50px;
+            cursor: pointer;
+            background-color: black;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 8px 16px;
+            margin-top: 30px;
+            margin-right: 10px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .song-actions button:hover {
+            background-color: #6C95B2;
+            color: black;
+        }
+
+        .detail-song {
+            width: 80%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            align-content: center;
+            justify-content: center;
+        }
+
+        .popup {
+
+            display: none;
+            position: fixed;
+            width: 50%;
+            height: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: black;
+            padding: 20px;
+            border: #6C95B2;
+            border-radius: 5px;
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            align-content: center;
+        }
+
+        .popup-content {
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            align-content: center;
+            justify-content: center;
+            width: 80%;
+            height: 80%;
+        }
+
+        .playlist-dropdown {
+            height: 50px;
+            width: 50%;
+            border-radius: 30px;
+        }
+
+        .form-btn {
+            cursor: pointer;
+            background-color: #6C95B2;
+            color: black;
+            border: none;
+            border-radius: 30px;
+            padding: 8px 16px;
+            transition: background-color 0.3s, color 0.3s;
+            width: 200px;
+            height: 50px;
+            margin-top: 5%;
+
+
+        }
+
+        .form-btn:hover {
+            background-color: white;
+            color: black;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h2>Detail Lagu</h2>
+
+        <div class="detail-song">
+            <div style="margin-right: 5%;">
+                <img src="https://i.ibb.co/rxdjLzN/cover.png" alt="Gambar Playlist" class="song-img">
+            </div>
+            <div style="display: flex; flex-direction: row;">
+                <div style="margin-right: 20px;">
+                    <p><strong>Judul:</strong> Song1</p>
+                    <p><strong>Genre(s):</strong></p>
+                    <ul>
+                        <li>
+                            <p>Genre1</p>
+                        </li>
+                        <li>
+                            <p>Genre2</p>
+                        </li>
+                    </ul>
+                    <p><strong>Artist:</strong></p>
+                    <ul>
+                        <li>
+                            <p>Artist1</p>
+                        </li>
+                        <li>
+                            <p>Artist2</p>
+                        </li>
+                    </ul>
+                    <p><strong>Songwriter(s):</strong> </p>
+                    <ul>
+                        <li>
+                            <p>Songwriter1</p>
+                        </li>
+                        <li>
+                            <p>Songwriter2</p>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <p><strong>Durasi:</strong> 3 menit</p>
+                    <p><strong>Tanggal Rilis:</strong> 18/03/24</p>
+                    <p><strong>Tahun:</strong> 2024</p>
+                    <p><strong>Total Play:</strong> 0</p>
+                    <p><strong>Total Downloads:</strong> 0</p>
+                    <p><strong>Album:</strong> Album</p>
+                </div>
+
+
+            </div>
+
+
+
+        </div>
+
+        <div class="play-progress" style="width: 100%;">
+            <progress id="play-progress-bar" value="0" max="100" style="width: 100%;"></progress>
+        </div>
+        <div class="song-actions" class="song-actions" class="song-actions"> <button onclick="playSong()">Play</button>
+            <button onclick="showPopUp()">Tambah ke Playlist</button>
+            <button onclick="downloadSong()">Download</button>
+            <button onclick="history.back()">Kembali</button>
+
+        </div>
+    </div>
+
+    <div id="popup" class="popup">
+        <div class="popup-content">
+            <h1 style="display:flex;justify-content: center; margin-bottom: 100px;">Tambah
+                Lagu ke Playlist</h1>
+
+
+
+            <select id="playlist-dropdown" class="playlist-dropdown">
+                <option value="lagu1">Playlist 1</option>
+                <option value="lagu2">Playlist 2</option>
+                <option value="lagu3">Playlist 3</option>
+            </select>
+            <button class="form-btn" onclick="hidePopup()">Cancel</button>
+            <button type="submit" class="form-btn" id="submit-btn">Submit</button>
+
+        </div>
+
+
+
+    </div>
+
+    <div class="overlay" onclick="hidePopup()"></div>
+
+    <script>
+        function showPopUp() {
+            // Menampilkan popup window dan overlay
+            document.getElementById("popup").style.display = "flex";
+            document.querySelector(".overlay").style.display = "block";
+        }
+
+        function hidePopup() {
+            // Menyembunyikan popup window dan overlay
+            document.getElementById("popup").style.display = "none";
+            document.querySelector(".overlay").style.display = "none";
+        }
+        function playSong() {
+            // Kode untuk memulai pemutaran lagu
+            alert("Memulai pemutaran lagu...");
+        }
+
+        function addToPlaylist() {
+            // Kode untuk menambah lagu ke dalam playlist
+            alert("Menambahkan lagu ke dalam playlist...");
+        }
+
+        function downloadSong() {
+            // Kode untuk mengunduh lagu
+            alert("Mengunduh lagu...");
+        }
+    </script>
+
+</body>
+
+</html>
+
+{% endblock content %}
