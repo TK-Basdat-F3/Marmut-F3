@@ -57,3 +57,5 @@ def dashboard_user(request):
 # @login_required
 def dashboard_label(request):
     return render(request, "dashboard_label.html")
+def main_reg(request):
+    return render(request, "main_reg.html")
