@@ -11,7 +11,7 @@
                 <div class="content">
 
                     <h1>Search Music, Playlists, and Podcasts on <span style="color: #109CFC;">Marmut</span></h1>
-                    <p>Discover your favorite songs, perfect playlists, or intriguing podcasts<br>on Marmut with our search feature.</p>
+                    <p>Discover your favorite songs, perfect playlists, or intriguing podcasts on Marmut with our search feature.</p>
                     
                     <form action="{% url 'kuning:search_found' %}" method="GET">
                         <div class="search-container">
@@ -69,13 +69,16 @@
     }
     .content {
         width: 100%;
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
+        height: 100vh;
+        display: flex;
         text-align: center;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column; 
         color: white;
     }
     .content p {
+        width: 550px;
         margin-top: 16px;
         margin-bottom: 32px;
         line-height: 25px;
