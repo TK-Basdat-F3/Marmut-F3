@@ -10,7 +10,6 @@
 {% endblock meta %}
 {% block content %}
 <body style="background-color: #181414; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding-top: 64px;">
-    <a href="#" onclick="window.history.back();" class="back-btn"><i class="fas fa-arrow-left"></i> Back</a>
     <div class="col" style="text-align: center;">
         <main class="table">
             <section class="table_header">
@@ -89,14 +88,6 @@ tbody tr td{
 tbody tr:hover {
     background-color: rgb(40, 35, 35);
     box-sizing: border-box;
-}
-.back-btn {
-    position: absolute;
-    top: 110px;
-    left: 8vw;
-    text-decoration: none;
-    color: white;
-    z-index: 999;
 }
 </style>
 {% endblock content %}
