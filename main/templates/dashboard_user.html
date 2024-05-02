@@ -1,151 +1,155 @@
-{% extends 'base.html' %}
-
-{% block meta %}
-{% include 'navbar_pengguna.html' %}
-{% endblock meta %}
-
-{% block content %}
-<body style="background-color: #181414; font-family: 'Montserrat', sans-serif; color: white; padding-top: 70px;">
-    <div class="container" style="width: 100%; height: fit-content; top: 0; left: 0; padding-left: 4%; padding-right: 4%; padding-top: 2%; padding-bottom: 2%; box-sizing: border-box; background: linear-gradient(180deg, #6C95B2 0%, #181414 100%);">
-        <div class="container" style="width: 100%; height: fit-content; padding-left: 8%; padding-right: 8%; padding-top: 1%; padding-bottom: 1%; box-sizing: border-box; background: transparent; border-radius: 8px; border: 1px solid white;">
-            <div style="align-content: center;">
-                <div class="col" style="color: white; text-align: left;">
-                    <h1 style="margin-bottom: 32px;">Profile</h1>
-                    <div class="row">
-                        <div class="col" style="width: 324px; height: 124px; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 32px; margin-bottom: 32px; display: inline-flex">
-                            <div class="col" style="height: 46px; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 8px; display: flex">
-                                <div style="color: #D9D9D9; font-size: 16px; font-weight: 500; word-wrap: break-word">Nama</div>
-                                <div style="color: white; font-size: 16px; font-weight: 700; word-wrap: break-word">Shafira Ramadhina Adifa</div>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Marmut - Dashboard</title>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    </head>
+    <body style="background-color: #181414; font-family: 'Montserrat', sans-serif; color: white; padding-top: 70px;">
+        <div class="container" style="width: 100%; height: fit-content; top: 0; left: 0; padding-left: 4%; padding-right: 4%; padding-top: 2%; padding-bottom: 2%; box-sizing: border-box; background: linear-gradient(180deg, #6C95B2 0%, #181414 100%);">
+            <div class="container" style="width: 100%; height: fit-content; padding-left: 8%; padding-right: 8%; padding-top: 1%; padding-bottom: 1%; box-sizing: border-box; background: transparent; border-radius: 8px; border: 1px solid white;">
+                <div style="align-content: center;">
+                    <div class="col" style="color: white; text-align: left;">
+                        <h1 style="margin-bottom: 32px;">Profile</h1>
+                        <div class="row">
+                            <div class="col" style="width: 324px; height: 124px; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 32px; margin-bottom: 32px; display: inline-flex">
+                                <div class="col" style="height: 46px; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 8px; display: flex">
+                                    <div style="color: #D9D9D9; font-size: 16px; font-weight: 500; word-wrap: break-word">Nama</div>
+                                    <div style="color: white; font-size: 16px; font-weight: 700; word-wrap: break-word">Shafira Ramadhina Adifa</div>
+                                </div>
+                                <div class="col" style="height: 46px; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 8px; display: flex">
+                                    <div style="color: #D9D9D9; font-size: 16px; font-weight: 500; word-wrap: break-word">Email</div>
+                                    <div style="color: white; font-size: 16px; font-weight: 700; word-wrap: break-word">shafira.ramadhina@ui.ac.id</div>
+                                </div>
                             </div>
-                            <div class="col" style="height: 46px; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 8px; display: flex">
-                                <div style="color: #D9D9D9; font-size: 16px; font-weight: 500; word-wrap: break-word">Email</div>
-                                <div style="color: white; font-size: 16px; font-weight: 700; word-wrap: break-word">shafira.ramadhina@ui.ac.id</div>
+                            <div class="col" style="width: 324px; height: 124px; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 32px; margin-bottom: 32px; display: inline-flex">
+                                <div class="col" style="height: 46px; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 8px; display: flex">
+                                    <div style="color: #D9D9D9; font-size: 16px; font-weight: 500; word-wrap: break-word">Kota Asal</div>
+                                    <div style="color: white; font-size: 16px; font-weight: 700; word-wrap: break-word">Jakarta</div>
+                                </div>
+                                <div class="col" style="height: 46px; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 8px; display: flex">
+                                    <div style="color: #D9D9D9; font-size: 16px; font-weight: 500; word-wrap: break-word">Gender</div>
+                                    <div style="color: white; font-size: 16px; font-weight: 700; word-wrap: break-word">Perempuan</div>
+                                </div>
+                            </div>
+                            <div class="col" style="width: 324px; height: 124px; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 32px; margin-bottom: 32px; display: inline-flex">
+                                <div class="col" style="height: 46px; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 8px; display: flex">
+                                    <div style="color: #D9D9D9; font-size: 16px; font-weight: 500; word-wrap: break-word">Tempat Lahir</div>
+                                    <div style="color: white; font-size: 16px; font-weight: 700; word-wrap: break-word">Bandung</div>
+                                </div>
+                                <div class="col" style="height: 46px; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 8px; display: flex">
+                                    <div style="color: #D9D9D9; font-size: 16px; font-weight: 500; word-wrap: break-word">Tanggal Lahir</div>
+                                    <div style="color: white; font-size: 16px; font-weight: 700; word-wrap: break-word">02/12/03</div>
+                                </div>
                             </div>
                         </div>
-                        <div class="col" style="width: 324px; height: 124px; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 32px; margin-bottom: 32px; display: inline-flex">
-                            <div class="col" style="height: 46px; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 8px; display: flex">
-                                <div style="color: #D9D9D9; font-size: 16px; font-weight: 500; word-wrap: break-word">Kota Asal</div>
-                                <div style="color: white; font-size: 16px; font-weight: 700; word-wrap: break-word">Jakarta</div>
-                            </div>
-                            <div class="col" style="height: 46px; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 8px; display: flex">
-                                <div style="color: #D9D9D9; font-size: 16px; font-weight: 500; word-wrap: break-word">Gender</div>
-                                <div style="color: white; font-size: 16px; font-weight: 700; word-wrap: break-word">Perempuan</div>
-                            </div>
+                        <div class="col" style="height: 46px; margin-top: 32px; margin-bottom: 32px; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 8px; display: flex">
+                            <div style="color: #D9D9D9; font-size: 16px; font-weight: 500; word-wrap: break-word">Role</div>
+                            <div style="color: white; font-size: 16px; font-weight: 700; word-wrap: break-word">Artist, Songwriter, Podcaster</div>
                         </div>
-                        <div class="col" style="width: 324px; height: 124px; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 32px; margin-bottom: 32px; display: inline-flex">
-                            <div class="col" style="height: 46px; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 8px; display: flex">
-                                <div style="color: #D9D9D9; font-size: 16px; font-weight: 500; word-wrap: break-word">Tempat Lahir</div>
-                                <div style="color: white; font-size: 16px; font-weight: 700; word-wrap: break-word">Bandung</div>
-                            </div>
-                            <div class="col" style="height: 46px; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 8px; display: flex">
-                                <div style="color: #D9D9D9; font-size: 16px; font-weight: 500; word-wrap: break-word">Tanggal Lahir</div>
-                                <div style="color: white; font-size: 16px; font-weight: 700; word-wrap: break-word">02/12/03</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col" style="height: 46px; margin-top: 32px; margin-bottom: 32px; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 8px; display: flex">
-                        <div style="color: #D9D9D9; font-size: 16px; font-weight: 500; word-wrap: break-word">Role</div>
-                        <div style="color: white; font-size: 16px; font-weight: 700; word-wrap: break-word">Artist, Songwriter, Podcaster</div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div style="padding-left: 4%; padding-right: 4%;">
-        <div class="col" style="flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 60px; display: inline-flex">
-            <div class="user-content">
-                <div class="marmut-playlists">
-                    <h2>Playlists</h2>
-                    <!-- <h3 style="color: #9B9B9B;">Belum Memiliki Playlist :(</h3> -->
-                    <div class="col" style="flex-basis: 50%; color: white;">
-                        {% for i in "x"|ljust:6 %}
-                        <a href="#" style="text-decoration: none; color: inherit;">
-                            <div class="card" style="width: 316px; height: 75px; display: inline-block; border-radius: px; padding: 6px 10px; margin-right: 8px; margin-bottom: 16px; box-sizing: border-box;">
-                                <div style="display: flex; align-items: center;">
-                                    <div style="width: 63px; height: 63px; background-color: #5EA6D8; border-radius: 8px;">
-                                        <img src="https://i.pinimg.com/736x/db/9f/8e/db9f8e2e356da77dbc9971aab28265fe.jpg" style="width: 63px; height: 63px;"/>
-                                    </div>
-                                    <div style="flex-grow: 1; margin-left: 10px;">
-                                        <h4 style="color: white; font-size: 16px; font-weight: 600; width: 100%; height: 20px; display: flex; align-items: center; margin: 0;">Bruno Mars - Tour Setlist 2024</h4>
-                                    </div>
-                                </div>
-                            </div>   
-                        </a>
-                        {% endfor %}
-                    </div>
-                </div>
-
-                <div class="marmut-songs">
-                    <h2>Songs</h2>
-                    <!-- <h3 style="color: #9B9B9B;">Belum Memiliki Lagu :(</h3> -->
-                    <div class="col" style="flex-basis: 50%; color: white;">
-                        {% for i in "x"|ljust:3 %}
-                        <a href="#" style="text-decoration: none; color: inherit;">
-                            <div class="card" style="width: 100%; height: 90px; display: inline-block; border-radius: 8px; padding: 6px 10px; margin-right: 8px; box-sizing: border-box; ">
-                                <div style="justify-content: flex-start; align-items: center; row-gap: 10px; display: flex">
-                                    <div style="width: 65px; height: 65px; background-color: #B66FED; border-radius: 8px;">
-                                        <img src="https://i.pinimg.com/736x/db/9f/8e/db9f8e2e356da77dbc9971aab28265fe.jpg" />
-                                    </div>
-                                    <div class="col" style="width: 85%; margin-left: 20px;">
-                                        <p style="color: white; font-size: 16px; font-weight: 400; height: 20px; margin-bottom: 12px;">Judul lagunya apa yaaaaaa</p>
-                                        <p style="color: #9B9B9B; font-size: 14px; font-weight: 400; height: 15px;">Ini penyanyinya</p>    
-                                    </div>
-                                    <p>3:00</p>
-                                </div>
-                            </div>
-                        </a>
-                        {% endfor %}
-                    </div>
-                </div>
-
-                <div class="marmut-podcast">
-                    <h2 style="margin-bottom: 0px;">Podcast</h2>
-                    <!-- <h3 style="color: #9B9B9B;">Belum Memiliki Podcast :(</h3> -->
-                    <div class="col" style="flex-basis: 50%; color: white;">
-                        {% for i in "x"|ljust:10 %}
-                        <a href="#" style="text-decoration: none; color: inherit;">
-                            <div class="card" onmouseenter="startScroll(this)" onmouseleave="stopScroll(this)" style="width: 195px; height: 255px; display: inline-block; border-radius: 8px; padding: 12px 13px; margin: 16px 0px; margin-right: 8px; box-sizing: border-box;  overflow: hidden;">
-                                <div class="container" style="width: 170px; height: 225px; ">
-                                    <div class="col" style="flex-direction: column; justify-content: flex-start; align-items: flex-start; display: inline-flex;">
-                                        <div style="width: 170px; height: 165px; background-color: #DD633D; border-radius: 8px">
-                                            <img src="https://i.pinimg.com/736x/db/9f/8e/db9f8e2e356da77dbc9971aab28265fe.jpg" />
+        <div style="padding-left: 4%; padding-right: 4%;">
+            <div class="col" style="flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 60px; display: inline-flex">
+                <div class="user-content">
+                    <div class="marmut-playlists">
+                        <h2>Playlists</h2>
+                        <!-- <h3 style="color: #9B9B9B;">Belum Memiliki Playlist :(</h3> -->
+                        <div class="col" style="flex-basis: 50%; color: white;">
+                            {% for i in "x"|ljust:6 %}
+                            <a href="#" style="text-decoration: none; color: inherit;">
+                                <div class="card" style="width: 316px; height: 75px; display: inline-block; border-radius: px; padding: 6px 10px; margin-right: 8px; margin-bottom: 16px; box-sizing: border-box;">
+                                    <div style="display: flex; align-items: center;">
+                                        <div style="width: 63px; height: 63px; background-color: #5EA6D8; border-radius: 8px;">
+                                            <img src="https://i.pinimg.com/736x/db/9f/8e/db9f8e2e356da77dbc9971aab28265fe.jpg" style="width: 63px; height: 63px;"/>
                                         </div>
-                                        <h4 class="podcast-title" style="width: 170px; height: 20px; font-size: 16px; font-weight: 400; margin-top: 12px; margin-bottom: 12px;">
-                                            Judul Podcast Haha Hihi
-                                        </h4>
-                                        <div class="row" style="height: 15px; flex-direction: row; justify-content: flex-start; align-items: flex-start; display: inline-flex;">
-                                            <p style="color: #9B9B9B; font-size: 14px; font-weight: 400; margin-right: 10px;">13 lagu</p>
-                                            <p style="color: #9B9B9B; font-size: 14px; font-weight: 400; margin-left: 10px; margin-right: 10px;">|</p>
-                                            <p style="color: #9B9B9B; font-size: 14px; font-weight: 400; margin-left: 10px;">67 min</p>    
+                                        <div style="flex-grow: 1; margin-left: 10px;">
+                                            <h4 style="color: white; font-size: 16px; font-weight: 600; width: 100%; height: 20px; display: flex; align-items: center; margin: 0;">Bruno Mars - Tour Setlist 2024</h4>
                                         </div>
                                     </div>
+                                </div>   
+                            </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="marmut-songs">
+                        <h2>Songs</h2>
+                        <!-- <h3 style="color: #9B9B9B;">Belum Memiliki Lagu :(</h3> -->
+                        <div class="col" style="flex-basis: 50%; color: white;">
+                            {% for i in "x"|ljust:3 %}
+                            <a href="#" style="text-decoration: none; color: inherit;">
+                                <div class="card" style="width: 100%; height: 90px; display: flex; border-radius: 8px; padding: 6px 10px; margin-right: 8px; box-sizing: border-box; flex-direction: column; align-items: center; justify-content: center;">
+                                    <div style="width: 100%; justify-content: flex-start; align-items: center; row-gap: 10px; display: flex">
+                                        <div style="width: 65px; height: 65px; background-color: #B66FED; border-radius: 8px;">
+                                            <img src="https://i.pinimg.com/736x/db/9f/8e/db9f8e2e356da77dbc9971aab28265fe.jpg" style="width: 65px; height: 65px;" />
+                                        </div>
+                                        <div class="col" style="width: calc(100% - 120px); margin-left: 20px; margin-right: 16px;">
+                                            <p style="color: white; font-size: 16px; font-weight: 400; height: 20px; margin-bottom: 12px;">Judul lagunya apa yaaaaaa</p>
+                                            <p style="color: #9B9B9B; font-size: 14px; font-weight: 400; height: 15px;">Ini penyanyinya</p>    
+                                        </div>
+                                        <p style="width: 120px;">3:00</p>
+                                    </div>
                                 </div>
-                            </div>
-                        </a>
-                        {% endfor %}
+                            </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="marmut-podcast">
+                        <h2 style="margin-bottom: 0px;">Podcast</h2>
+                        <!-- <h3 style="color: #9B9B9B;">Belum Memiliki Podcast :(</h3> -->
+                        <div class="col" style="flex-basis: 50%; color: white;">
+                            {% for i in "x"|ljust:10 %}
+                            <a href="#" style="text-decoration: none; color: inherit;">
+                                <div class="card" onmouseenter="startScroll(this)" onmouseleave="stopScroll(this)" style="width: 195px; height: 255px; display: inline-block; border-radius: 8px; padding: 12px 13px; margin: 16px 0px; margin-right: 8px; box-sizing: border-box;  overflow: hidden;">
+                                    <div class="container" style="width: 170px; height: 225px; ">
+                                        <div class="col" style="flex-direction: column; justify-content: flex-start; align-items: flex-start; display: inline-flex;">
+                                            <div style="width: 170px; height: 165px; background-color: #DD633D; border-radius: 8px">
+                                                <img src="https://i.pinimg.com/736x/db/9f/8e/db9f8e2e356da77dbc9971aab28265fe.jpg" />
+                                            </div>
+                                            <h4 class="podcast-title" style="width: 170px; height: 20px; font-size: 16px; font-weight: 400; margin-top: 12px; margin-bottom: 12px;">
+                                                Judul Podcast Haha Hihi
+                                            </h4>
+                                            <div class="row" style="height: 15px; flex-direction: row; justify-content: flex-start; align-items: flex-start; display: inline-flex;">
+                                                <p style="color: #9B9B9B; font-size: 14px; font-weight: 400; margin-right: 10px;">13 lagu</p>
+                                                <p style="color: #9B9B9B; font-size: 14px; font-weight: 400; margin-left: 10px; margin-right: 10px;">|</p>
+                                                <p style="color: #9B9B9B; font-size: 14px; font-weight: 400; margin-left: 10px;">67 min</p>    
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <script>
-        function startScroll(card) {
-            card.querySelector('.podcast-title').classList.add('scrolling');
-            card.querySelector('.podcast-title').textContent = 'Judul Podcast Haha Hihi';
-            card.querySelector('.podcast-title').style.width = 'fit-content';
-            card.querySelector('.podcast-title').style.textOverflow = 'clip';
-        }
-
-        function stopScroll(card) {
-            card.querySelector('.podcast-title').classList.remove('scrolling');
-            card.querySelector('.podcast-title').textContent = 'Judul Podcast Haha Hihi';
-            card.querySelector('.podcast-title').style.width = '170px';
-            card.querySelector('.podcast-title').style.textOverflow = 'ellipsis';
-        }
-    </script>
-</body>
+        <script>
+            function startScroll(card) {
+                card.querySelector('.podcast-title').classList.add('scrolling');
+                card.querySelector('.podcast-title').textContent = 'Judul Podcast Haha Hihi';
+                card.querySelector('.podcast-title').style.width = 'fit-content';
+                card.querySelector('.podcast-title').style.textOverflow = 'clip';
+            }
+    
+            function stopScroll(card) {
+                card.querySelector('.podcast-title').classList.remove('scrolling');
+                card.querySelector('.podcast-title').textContent = 'Judul Podcast Haha Hihi';
+                card.querySelector('.podcast-title').style.width = '170px';
+                card.querySelector('.podcast-title').style.textOverflow = 'ellipsis';
+            }
+        </script>
+    </body>
+</html>
 
 <style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
     .card{
         background-color: #1c1818;
     }
@@ -227,4 +231,3 @@
         }
     }
 </style>
-{% endblock content %}
