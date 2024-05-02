@@ -1,5 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
+
+{% block meta %}
+
+{% include 'navbar_pengguna.html' %}
+<title>Marmut</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+    rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+{% endblock meta %}
+{% block content %}
 
 <head>
     <meta charset="UTF-8">
@@ -11,12 +20,12 @@
         }
 
         body {
+            padding: 5%;
             height: 100%;
             background: linear-gradient(180deg, #6C95B2 0%, #181414 100%);
             font-family: 'Montserrat', sans-serif;
             color: white;
-            margin: 0;
-            padding: 0;
+
         }
 
 
@@ -32,7 +41,7 @@
         }
 
         .playlist-info {
-            width: 60%;
+            width: 100%;
             display: flex;
             flex-direction: row;
             align-content: space-between;
@@ -44,6 +53,7 @@
         }
 
         .playlist-actions button {
+            margin-bottom: 5%;
             width: 200px;
             height: 50px;
             cursor: pointer;
@@ -173,6 +183,7 @@
     </style>
 </head>
 
+
 <body>
 
     <div class="container">
@@ -268,3 +279,4 @@
 </body>
 
 </html>
+{% endblock %}
