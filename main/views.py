@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 import datetime
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from .forms import SignupFormPengguna
+from .forms import SignupFormPengguna, SignupFormLabel
 
 @login_required(login_url='/login')
 def show_main(request):
@@ -19,6 +19,7 @@ def show_main(request):
 
 def register(request):
     form = SignupFormPengguna()
+    form2 = SignupFormLabel()
 
     if request.method == "POST":
         form = SignupFormPengguna(request.POST)

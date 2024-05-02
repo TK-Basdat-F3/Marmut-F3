@@ -1,55 +1,72 @@
-<html>
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Marmut</title>
-        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    </head>
-    <body style="background-color: #181414; display: flex; justify-content: center; align-items: center; font-family: 'Montserrat', sans-serif;">
-        <div class="container" style="width: 600px; height: 520px; background: #181414; border-radius: 8px; padding-left: 8%; padding-right: 8%; box-sizing: border-box; box-shadow: 0 0 30px rgba(0, 0, 0, 1);">
-            <div class="col" style="flex-basis: 50%; color: white; display: flex; flex-direction: column; align-items: center;">
+{% extends 'base.html' %}
+
+{% block meta %}
+
+{% include 'navbar_pengguna.html' %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marmut</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">    
+{% endblock meta %}
+{% block content %}
+<body style="background-color: #181414; display: flex; justify-content: center; align-items: center; font-family: 'Montserrat', sans-serif; padding-top: 70px;">
+    <div class="container" style="width: 600px; height: 520px; background: #181414; border-radius: 8px; padding-left: 8%; padding-right: 8%; box-sizing: border-box; box-shadow: 0 0 30px rgba(0, 0, 0, 1);">
+        <a href="#" onclick="window.history.back();" class="back-btn"><i class="fas fa-arrow-left"></i> Back</a>
+        <div class="col" style="flex-basis: 50%; color: white; display: flex; flex-direction: column; align-items: center;">
+            <div class="col" style="flex-basis: 50%; color: white;">
+                <h1 style="font-size: 28px; text-align: center; padding-top: 10%; padding-bottom: 5%;">Pembayaran Paket</h1>
+                <div class="col" style="flex-basis: 50%; color: white; margin-bottom: 16px;">
+                    <h5 style="margin-bottom: 8px; font-size: 16px;">Jenis</h5>
+                    <h3 style="color: #4070F4; margin-top: 8px; font-size: 20px;">1 Bulan</h3>
+                </div>
                 <div class="col" style="flex-basis: 50%; color: white;">
-                    <h1 style="font-size: 28px; text-align: center; padding-top: 10%; padding-bottom: 5%;">Pembayaran Paket</h1>
-                    <div class="col" style="flex-basis: 50%; color: white;">
-                        <h5 style="margin-bottom: 8px; font-size: 16px;">Jenis</h5>
-                        <h3 style="color: #109CFC; margin-top: 8px; font-size: 20px;">1 Bulan</h3>
-                    </div>
-                    <div class="col" style="flex-basis: 50%; color: white;">
-                        <h5 style="margin-bottom: 8px; font-size: 16px;">Harga</h5>
-                        <h3 style="color: #109CFC; margin-top: 8px; font-size: 20px;">Rp49.000</h3>
-                    </div>
-                    <div class="col" style="flex-basis: 50%; color: white; margin-top: 32px;">
-                        <form id="paymentForm" action="{% url 'kuning:subscribe_history' %}" onsubmit="return validateForm()">
-                            <label for="metode-pembayaaran" style="margin-bottom: 8px; font-size: 16px; font-weight: 600;">Metode Pembayaran</label><br>
-                            <select id="metode-pembayaaran" name="payment_method" style="margin-top: 8px; margin-bottom: 24px; width: 324px; height: 48px; border-radius: 8px; padding-left: 4%; color: white; background-color: transparent;" required>
-                                <option value="" disabled selected>Pilih Metode Pembayaran</option>
-                                <option value="transfer-bank">Transfer Bank</option>
-                                <option value="kartu-kredit">Kartu Kredit</option>
-                                <option value="e-wallet">E-Wallet</option>
-                            </select>
-                            <input type="submit" id="submitButton" value="Submit" style="margin-top: 24px; width: 324px; height: 48px; border-radius: 25px; border: none; color: white; background-color: #109CFC; font-size: 16px; font-weight: 600;" disabled>
-                        </form>
-                    </div>
+                    <h5 style="margin-bottom: 8px; font-size: 16px;">Harga</h5>
+                    <h3 style="color: #4070F4; margin-top: 8px; font-size: 20px;">Rp49.000</h3>
+                </div>
+                <div class="col" style="flex-basis: 50%; color: white; margin-top: 32px;">
+                    <form id="paymentForm" action="{% url 'kuning:subscribe_history' %}" onsubmit="return validateForm()">
+                        <label for="metode-pembayaaran" style="margin-bottom: 8px; font-size: 16px; font-weight: 600;">Metode Pembayaran</label><br>
+                        <select id="metode-pembayaaran" name="payment_method" style="margin-top: 8px; margin-bottom: 24px; width: 324px; height: 48px; border-radius: 8px; padding-left: 4%; color: white; background-color: transparent;" required>
+                            <option value="" disabled selected>Pilih Metode Pembayaran</option>
+                            <option value="transfer-bank">Transfer Bank</option>
+                            <option value="kartu-kredit">Kartu Kredit</option>
+                            <option value="e-wallet">E-Wallet</option>
+                        </select>
+                        <input type="submit" id="submitButton" value="Submit" style="margin-top: 24px; width: 324px; height: 48px; border-radius: 25px; border: none; color: white; background-color: #4070F4; font-size: 16px; font-weight: 600;" disabled>
+                    </form>
                 </div>
             </div>
         </div>
-            <script>
-        function validateForm() {
-            var paymentMethod = document.getElementById('metode-pembayaaran').value;
-            if (paymentMethod === '') {
-                alert('Pilih metode pembayaran terlebih dahulu.');
-                return false;
-            }
-            return true;
+    </div>
+        <script>
+    function validateForm() {
+        var paymentMethod = document.getElementById('metode-pembayaaran').value;
+        if (paymentMethod === '') {
+            alert('Pilih metode pembayaran terlebih dahulu.');
+            return false;
         }
+        return true;
+    }
 
-        document.getElementById('metode-pembayaaran').addEventListener('change', function() {
-            var submitButton = document.getElementById('submitButton');
-            if (this.value !== '') {
-                submitButton.disabled = false;
-            } else {
-                submitButton.disabled = true;
-            }
-        });
-    </script>
-    </body>
-</html>
+    document.getElementById('metode-pembayaaran').addEventListener('change', function() {
+        var submitButton = document.getElementById('submitButton');
+        if (this.value !== '') {
+            submitButton.disabled = false;
+        } else {
+            submitButton.disabled = true;
+        }
+    });
+</script>
+</body>
+
+<style>
+    .back-btn {
+        position: absolute;
+        top: 110px;
+        left: 8vw;
+        text-decoration: none;
+        color: white;
+        z-index: 999;
+    }
+</style>
+{% endblock content %}

@@ -1,5 +1,5 @@
 from django import forms
-from .models import CustomUser
+from .models import CustomUser, CustomLabel
 
 class SignupFormPengguna(forms.ModelForm):
     ROLE_CHOICES = [
@@ -21,3 +21,12 @@ class SignupFormPengguna(forms.ModelForm):
         model = CustomUser
         fields = ('email', 'password', 'nama', 'gender', 'tempat_lahir', 'tanggal_lahir', 'kota_asal', 'role')
 
+class SignupFormLabel(forms.ModelForm):
+    email = forms.EmailField(label='Email')
+    password = forms.CharField(label='Password', widget=forms.PasswordInput)
+    nama = forms.CharField(label='Nama')
+    kontak = forms.CharField(label='Kontak')
+
+    class Meta:
+        model = CustomLabel
+        fields = ('email', 'password', 'nama', 'kontak')

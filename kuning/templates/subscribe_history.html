@@ -1,48 +1,53 @@
-<html>
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Marmut</title>
-        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    </head>
-    <body style="background-color: #181414; min-height: 100vh; display: flex; justify-content: center; align-items: center;">
-        <div class="col" style="text-align: center;">
-            <main class="table">
-                <section class="table_header">
-                    <h1 style="text-align: center; color: white; font-size: 32px;">Riwayat Transaksi Paket</h1>
+{% extends 'base.html' %}
+
+{% block meta %}
+
+{% include 'navbar_pengguna.html' %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marmut</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">    
+{% endblock meta %}
+{% block content %}
+<body style="background-color: #181414; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding-top: 64px;">
+    <a href="#" onclick="window.history.back();" class="back-btn"><i class="fas fa-arrow-left"></i> Back</a>
+    <div class="col" style="text-align: center;">
+        <main class="table">
+            <section class="table_header">
+                <h1 style="text-align: center; color: white; font-size: 32px;">Riwayat Transaksi Paket</h1>
+            </section>
+            <div class="container" style="height: 450px; overflow-y: auto; padding-top: 20px; padding-bottom: 20px; background: #181414; border-radius: 8px; padding-left: 8%; padding-right: 8%; box-sizing: border-box; box-shadow: 0 0 30px rgba(0, 0, 0, 1);">
+                <section class="table_body">
+                    <table>
+                        <thead style="border-bottom: 1px solid #9B9B9B;">
+                            <tr>
+                                <th style="text-align: left;">Jenis</th>
+                                <th>Tanggal Dimulai</th>
+                                <th>Tanggal Berakhir</th>
+                                <th>Metode Pembayaran</th>
+                                <th>Nominal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for i in "x"|ljust:10 %}
+                            <tr>
+                                <td style="text-align: left;">1 Bulan</td>
+                                <td>8 April 2024, 23:00</td>
+                                <td>8 Mei 2024, 23:00</td>
+                                <td>E-Wallet</td>
+                                <td>Rp49.000</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </section>
-                <div class="container" style="width: 100%; height: 60%; padding-top: 16px; padding-bottom: 16px; background: #181414; border-radius: 8px; padding-left: 8%; padding-right: 8%; box-sizing: border-box; box-shadow: 0 0 30px rgba(0, 0, 0, 1); overflow-y: auto;">
-                    <section class="table_body">
-                        <table>
-                            <thead style="border-bottom: 1px solid #9B9B9B;">
-                                <tr>
-                                    <th style="text-align: left;">Jenis</th>
-                                    <th>Tanggal Dimulai</th>
-                                    <th>Tanggal Berakhir</th>
-                                    <th>Metode Pembayaran</th>
-                                    <th>Nominal</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for i in "x"|ljust:10 %}
-                                <tr>
-                                    <td style="text-align: left;">1 Bulan</td>
-                                    <td>8 April 2024, 23:00</td>
-                                    <td>8 Mei 2024, 23:00</td>
-                                    <td>E-Wallet</td>
-                                    <td>Rp49.000</td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </section>
-                </div>
-            </main>
-            <a href="{% url 'kuning:subscribe_menu' %}" style="text-decoration: none; color: inherit;">
-                <button style="margin-top: 60px; width: 324px; height: 48px; border-radius: 25px; border: none; color: white; background-color: #109CFC; font-size: 16px; font-weight: 600;">Kembali</button>
-            </a>
-        </div>
-    </body>
-</html>
+            </div>
+        </main>
+        <a href="{% url 'kuning:subscribe_menu' %}" style="text-decoration: none; color: inherit;">
+            <button style="margin-top: 40px; width: 324px; height: 48px; border-radius: 25px; border: none; color: white; background-color: #4070F4; font-size: 16px; font-weight: 600;">Kembali</button>
+        </a>
+    </div>
+</body>
 
 <style>
 body {
@@ -56,7 +61,7 @@ body {
 }
 
 .table_header{
-    margin-bottom: 60px;
+    margin-bottom: 40px;
 }
 
 table {
@@ -85,4 +90,13 @@ tbody tr:hover {
     background-color: rgb(40, 35, 35);
     box-sizing: border-box;
 }
+.back-btn {
+    position: absolute;
+    top: 110px;
+    left: 8vw;
+    text-decoration: none;
+    color: white;
+    z-index: 999;
+}
 </style>
+{% endblock content %}

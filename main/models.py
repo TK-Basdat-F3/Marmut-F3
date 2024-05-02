@@ -27,6 +27,12 @@ class CustomUser(AbstractUser):
     groups = models.ManyToManyField(Group, related_name='custom_user_groups')
     user_permissions = models.ManyToManyField(Permission, related_name='custom_user_permissions')
 
+class CustomLabel(AbstractUser):
+    nama = models.CharField(max_length=150, verbose_name='Nama')
+    kontak = models.CharField(max_length=50, verbose_name='Kontak')
+    groups = models.ManyToManyField(Group, related_name='custom_label_groups')
+    user_permissions = models.ManyToManyField(Permission, related_name='custom_label_permissions')
+
 class Role(models.TextChoices):
     PODCASTER = 'PODCASTER', 'Podcaster'
     ARTIST = 'ARTIST', 'Artist'
