@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Playlist</title>
+    <style>
+        html {
+            color: black;
+        }
+
+        body {
+            height: 100%;
+            background: linear-gradient(180deg, #6C95B2 0%, #181414 100%);
+            font-family: 'Montserrat', sans-serif;
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
+
+
+
+        .container {
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-content: space-between;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .playlist-info {
+            width: 60%;
+            display: flex;
+            flex-direction: row;
+            align-content: space-between;
+            align-items: start;
+            justify-content: center;
+
+
+            margin-bottom: 20px;
+        }
+
+        .playlist-actions button {
+            width: 200px;
+            height: 50px;
+            cursor: pointer;
+            background-color: black;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 8px 16px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .playlist-actions button:hover {
+            background-color: #6C95B2;
+            color: black;
+        }
+
+        .playlist-img {
+            margin-right: 5%;
+            width: 20%;
+            height: 20%;
+            border-radius: 30px;
+        }
+
+        .song-card {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            margin-bottom: 30px;
+            padding: 15px;
+            width: 100%;
+            border-radius: 30px;
+            transition: opacity 0.3s ease;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            flex: 1;
+            justify-content: space-between;
+
+
+        }
+
+        .song-card:hover {
+            opacity: 0.7;
+        }
+
+        .song-actions button {
+            width: 100px;
+            height: 50px;
+            cursor: pointer;
+            background-color: black;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 8px 16px;
+            justify-content: center;
+            align-items: center;
+            align-content: center;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .song-actions button:hover {
+            background-color: #6C95B2;
+            color: black;
+        }
+
+        .song-img {
+            margin-right: 5%;
+            width: 30%;
+            height: 30%;
+            border-radius: 30px;
+        }
+
+        .popup {
+
+            display: none;
+            position: fixed;
+            width: 50%;
+            height: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: black;
+            padding: 20px;
+            border: #6C95B2;
+            border-radius: 5px;
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            align-content: center;
+        }
+
+        .popup-content {
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            align-content: center;
+            justify-content: center;
+            width: 80%;
+            height: 80%;
+        }
+
+        .song-dropdown {
+            height: 50px;
+            width: 50%;
+            border-radius: 30px;
+        }
+
+        .form-btn {
+            cursor: pointer;
+            background-color: #6C95B2;
+            color: black;
+            border: none;
+            border-radius: 30px;
+            padding: 8px 16px;
+            transition: background-color 0.3s, color 0.3s;
+            width: 200px;
+            height: 50px;
+            margin-top: 5%;
+
+
+        }
+
+        .form-btn:hover {
+            background-color: white;
+            color: black;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="playlist-info">
+
+            <img src="https://i.ibb.co/rxdjLzN/cover.png" alt="Gambar Playlist" class="playlist-img">
+
+
+            <div style=" width: 30%;">
+                <h1>Playlist 1</h1>
+                <p><strong>Pembuat Playlist:</strong> John Doe</p>
+                <p><strong>Jumlah Lagu:</strong> 10</p>
+                <p><strong>Total Durasi:</strong> 45:30</p>
+                <p><strong>Tanggal Dibuat:</strong> 2024-04-30</p>
+                <p><strong>Deskripsi:</strong> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis quos
+                    odio amet unde, officia eius ullam laudantium, praesentium, nihil iusto laboriosam nesciunt tempore
+                    pariatur vero impedit recusandae incidunt esse rerum!</p>
+            </div>
+
+        </div>
+        <div class="playlist-actions">
+            <button onclick="shufflePlay()">Shuffle Play</button>
+            <button onclick="showPopUp()">Tambah Lagu</button>
+        </div>
+
+        <ul id="song">
+            {% for i in "x"|ljust:10 %} <li class="song-card">
+                <div style="flex-direction: row; display: flex; align-items: center;"><img
+                        src="https://i.ibb.co/rxdjLzN/cover.png" alt="Gambar Playlist" class="song-img">
+
+                    <div class="song-info">
+                        <h3>Song 1</h3>
+                        <p>Writer 1</p>
+                        <p>03.00</p>
+                    </div>
+                </div>
+                <div class="song-actions">
+                    <a href="{% url 'hijau:detail-song' %}"><button>Lihat</button></a>
+                    <button>Play</button>
+                    <button onclick="deletePlaylist('Playlist 1')">Hapus</button>
+                </div>
+
+            </li> {% endfor %}
+
+
+
+        </ul>
+    </div>
+
+    <div id="popup" class="popup">
+        <div class="popup-content">
+            <h1 style="display:flex;justify-content: center; margin-bottom: 100px;">Tambah
+                Lagu</h1>
+
+
+
+            <select id="song-dropdown" class="song-dropdown">
+                <option value="lagu1">Lagu 1</option>
+                <option value="lagu2">Lagu 2</option>
+                <option value="lagu3">Lagu 3</option>
+            </select>
+            <button class="form-btn" onclick="hidePopup()">Cancel</button>
+        </div>
+
+
+
+    </div>
+
+    <div class="overlay" onclick="hidePopup()"></div>
+
+    <script>
+
+        function showPopUp() {
+            // Menampilkan popup window dan overlay
+            document.getElementById("popup").style.display = "flex";
+            document.querySelector(".overlay").style.display = "block";
+        }
+
+        function hidePopup() {
+            // Menyembunyikan popup window dan overlay
+            document.getElementById("popup").style.display = "none";
+            document.querySelector(".overlay").style.display = "none";
+        }
+        function shufflePlay() {
+            // Fungsi untuk shuffle playlist
+        }
+
+        function addSong() {
+            // Fungsi untuk menambah lagu ke playlist
+        }
+    </script>
+
+</body>
+
+</html>
