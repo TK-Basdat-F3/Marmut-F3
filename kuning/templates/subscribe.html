@@ -1,20 +1,16 @@
 {% extends 'base.html' %}
 
 {% block meta %}
-
 {% include 'navbar_pengguna.html' %}
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Marmut</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">    
 {% endblock meta %}
+
 {% block content %}
 <body style="background-color: #181414; font-family: 'Montserrat', sans-serif; padding-top: 70px;">
     <div class="container" style="height: calc(100vh - 70px); padding-left: 8%; padding-right: 8%; box-sizing: border-box; flex-direction: column; display: flex; align-items: center;">
         <div class="row" style="display: flex; height: 95%; align-items: center;">
-            <div class="col" style="flex-basis: 50%; color: white;">
-                <h1 style="font-size: xx-large; padding-bottom: 24px;">Paket Langganan</h1>
-                <h5 style="font-weight: 400; padding-bottom: 36px;">Dapatkan akses tak terbatas ke jutaan lagu, podcast, dan playlist eksklusif dengan langganan Marmut Premium. Nikmati streaming musik tanpa iklan yang mengganggu, putar lagu favorit Anda secara offline, dan dengarkan musik dengan kualitas audio yang superior.</h5>
+            <div class="col" style="flex-basis: 50%; color: white; margin-right: 100px;">
+                <h1 style="width: 600px; font-size: xx-large; padding-bottom: 24px;">Paket Langganan</h1>
+                <h5 style="width: 600px; font-weight: 400; padding-bottom: 36px;">Dapatkan akses tak terbatas ke jutaan lagu, podcast, dan playlist eksklusif dengan langganan Marmut Premium. Nikmati streaming musik tanpa iklan yang mengganggu, putar lagu favorit Anda secara offline, dan dengarkan musik dengan kualitas audio yang superior.</h5>
                 <a href="{% url 'kuning:subscribe_history' %}" style="text-decoration: none; color: #109CFC;">
                     <button class="btn">Lihat Riwayat Transaksi</button>
                 </a>                
@@ -57,16 +53,16 @@
         width: 180px;
         height: 30px;
         border-radius: 25px;
-        border: 2px solid #109CFC;
+        border: 2px solid #4070F4;
         font-size: 12px;
         font-weight: 600;
-        color: #109CFC;
+        color: #4070F4;
         background-color: transparent;
         transition: background-color 0.3s ease;
     }
     .btn:hover {
         color: black;
-        background-color: #109CFC;
+        background-color: #4070F4;
     }
 </style>
 {% endblock content %}

@@ -1,21 +1,17 @@
 {% extends 'base.html' %}
 
 {% block meta %}
-
 {% include 'navbar_pengguna.html' %}
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Marmut</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">    
 {% endblock meta %}
+
 {% block content %}
-<body style="background-color: #181414; font-family: 'Montserrat', sans-serif;">
+<body style="background-color: #181414; font-family: 'Montserrat', sans-serif; padding-top: 70px;">
     <div class="content">
         
         <form action="{% url 'kuning:search_found' %}" method="GET">
             <div class="search-container">
                 <div class="search-bar">
-                    <i class="fas fa-search" style="color: #109CFC;"></i>
+                    <i class="fas fa-search" style="color: #4070F4;"></i>
                     <input type="text" class="search-input" placeholder="What do you want to play?">
                     <button type="submit" class="search-btn">Search</button>
                 </div>
@@ -23,9 +19,9 @@
         </form>
         
         <div class="result-content" style="margin-top: 60px;">
-            <h2 style="margin-bottom: 24px;">Hasil Pencarian "love"</h2>
+            <h2 style="margin-bottom: 24px; margin-left: 16px;">Hasil Pencarian "love"</h2>
 
-            <!-- <p>Maaf, pencarian untuk “love” tidak ditemukan :(</p> -->
+            <!-- <p style="margin-left: 16px;">Maaf, pencarian untuk “love” tidak ditemukan :(</p> -->
             
             <div class="col" style="flex-basis: 50%; color: white;">
                 <a href="#" style="text-decoration: none; color: inherit;">
@@ -98,7 +94,7 @@
         width: 400px;
         display: flex;
         align-items: center;
-        border: 1px solid #109CFC;
+        border: 1px solid #4070F4;
         border-radius: 25px;
         padding: 5px 10px;
         background-color: transparent;
@@ -114,7 +110,7 @@
     .search-btn {
         font-weight: 600;
         border: none;
-        background-color: #109CFC;
+        background-color: #4070F4;
         color: white;
         cursor: pointer;
         padding: 6px 16px;
@@ -122,7 +118,7 @@
     }
     .search-btn:hover {
         background-color: rgba(0, 0, 0, 0.25);
-        color: #109CFC;
+        color: #4070F4;
     }
     .result-content {
         padding-left: 60px;
@@ -136,16 +132,16 @@
         width: 180px;
         height: 30px;
         border-radius: 25px;
-        border: 2px solid #109CFC;
+        border: 2px solid #4070F4;
         font-size: 12px;
         font-weight: 600;
-        color: #109CFC;
+        color: #4070F4;
         background-color: transparent;
         transition: background-color 0.3s ease;
     }
     .btn:hover {
         color: black;
-        background-color: #109CFC;
+        background-color: #4070F4;
     }
     .card h2 {
         height: 110px;

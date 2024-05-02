@@ -1,26 +1,22 @@
 {% extends 'base.html' %}
 
 {% block meta %}
-
 {% include 'navbar_pengguna.html' %}
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Marmut</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">    
 {% endblock meta %}
+
 {% block content %}
-    <body style="font-family: 'Montserrat', sans-serif;">
+    <body style="font-family: 'Montserrat', sans-serif; padding-top: 70px;">
         <div class="banner">
             <div class="overlay">
                 <div class="content">
 
-                    <h1>Search Music, Playlists, and Podcasts on <span style="color: #109CFC;">Marmut</span></h1>
+                    <h1>Search Music, Playlists, and Podcasts on <span style="color: #4070F4;">Marmut</span></h1>
                     <p>Discover your favorite songs, perfect playlists, or intriguing podcasts on Marmut with our search feature.</p>
                     
                     <form action="{% url 'kuning:search_found' %}" method="GET">
                         <div class="search-container">
                             <div class="search-bar">
-                                <i class="fas fa-search" style="color: #109CFC;"></i>
+                                <i class="fas fa-search" style="color: #4070F4;"></i>
                                 <input type="text" class="search-input" placeholder="What do you want to play?">
                                 <button type="submit" class="search-btn">Search</button>
                             </div>
