@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+
+{% include 'navbar_podcaster.html' %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Episode Podcast1</title>
+    <style>
+        /* Gaya CSS */
+        body {
+            background-color: #121212; /* Warna latar belakang hitam */
+            color: #ffffff; /* Warna teks putih */
+            font-family: Arial, sans-serif; /* Font teks */
+            margin: 0;
+            padding: 0;
+        }
+      
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            padding: 12px;
+            padding-top: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            padding-top: 10px;
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #f2f2f2;
+        }
+
+        h2{
+            color: white;
+            text-align: center;
+        }
+        .action-button {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 5px;
+            background-color: #dc3545;
+            color: white;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        .action-button:hover {
+            background-color: #c82333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 100px auto;
+            padding: 10px;
+            background-color: #1f1f1f; /* Warna latar belakang konten */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .episode-list{
+            width: 100%;
+            margin-bottom: 30px;
+            margin-top: 30px;
+        }
+
+        .episode-list th, .episode-list td {
+            padding: 15px;
+            border-bottom: 1px solid #555555; /* Warna garis pemisah */
+            text-align: center;
+        }
+        .episode-list th {
+            background-color: #333333; /* Warna latar belakang header */
+            color: #ffffff; /* Warna teks header */
+        }
+        .episode-list td{
+            background-color: #292929; /* Warna latar belakang sel */
+            color: #ffffff;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Daftar Episode pada Podcast 1</h2>
+
+    <table class="episode-list">
+        <thead>
+            <tr>
+                <th>Judul Episode</th>
+                <th>Deskripsi</th>
+                <th>Durasi</th>
+                <th>Tanggal</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>SubJudul1</td>
+                <td>Lorem Ipsum ...</td>
+                <td>59 menit</td>
+                <td>18/03/2024</td>
+                <td><button class="action-button">Hapus</button></td>
+            </tr>
+            <tr>
+                <td>SubJudul2</td>
+                <td>Lorem Ipsum ...</td>
+                <td>1 jam 2 menit</td>
+                <td>25/03/2024</td>
+                <td><button class="action-button">Hapus</button></td>
+            </tr>
+            <!-- Tambahkan baris baru sesuai dengan jumlah episode -->
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

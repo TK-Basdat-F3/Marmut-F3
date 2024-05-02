@@ -1,42 +1,41 @@
 <!DOCTYPE html>
 
-{% include 'navbar_guest.html' %}
+{% include 'navbar_pengguna.html' %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RU MELIHAT CHART</title>
+    <title>CREATE EPISODE</title>
     <style>
         body {
             background-color: #121212; /* Warna latar belakang hitam */
             color: #ffffff; /* Warna teks putih */
-            font-family: Inter, sans-serif; font-weight: regular;
+            font-family: Arial, sans-serif; /* Font teks */
             margin: 0;
             padding: 0;
         }
         .container {
             max-width: 800px;
-            margin: 150px auto; /* Mengatur margin atas dan bawah ke 70px, dan margin kiri dan kanan otomatis (auto) */
+            margin: 150px auto;
             padding: 20px;
             background-color: #1f1f1f; /* Warna latar belakang konten */
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            display: block; /* Menjadikan elemen sebagai blok */
         }
-
         h1, h2 {
             text-align: center;
             color: #ffffff; /* Warna judul */
         }
-        .chart-list, .chart-detail {
+        .chart-detail {
             margin-top: 30px;
-        }
-
-        .chart-list{
             width: 100%;
-            margin-bottom: 30px;
         }
-
+        .chart-detail table {
+            border-collapse: collapse;
+            width: auto;
+            margin-left: auto;
+            margin-right: auto;
+        }
         .chart-list th, .chart-list td, .chart-detail th, .chart-detail td {
             padding: 15px;
             border-bottom: 1px solid #555555; /* Warna garis pemisah */
@@ -58,7 +57,11 @@
             color: #cccccc; /* Warna tautan saat dihover */
         }
 
-        .action-button {
+        input, textarea {
+            width: 100%;
+        }
+
+        .action-button, .kembali-button {
             padding: 6px 12px;
             border: none;
             border-radius: 5px;
@@ -67,22 +70,36 @@
             cursor: pointer;
             text-decoration: none;
             transition: background-color 0.3s;
-            margin: 5px;
-            justify-content: center;
-            align-self: center;
         }
-        .action-button:hover {
+        .action-button:hover, .kembali-button:hover{
             background-color: #c82333;
         }
 
-       
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Marmut F3</h1>
-        <td><button class="action-button">Login</button></td><br>
-        <td><button class="action-button">Register</button></td>
+
+        <h2>Create Episode</h2>
+        <div class="chart-detail">
+            <p>Podcast: Podcast 1</p>
+        </div>
+        <form action="#" method="POST">
+            <div class="form-group">
+                <label for="judul">Judul:</label><br>
+                <input type="text" id="judul" name="judul" required>
+            </div>
+            <div class="form-group">
+                <label for="deskripsi">Deskripsi:</label><br>
+                <textarea id="deskripsi" name="deskripsi" rows="5" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="durasi">Durasi:</label><br>
+                <input type="text" id="durasi" name="durasi" required>
+            </div><br>
+            <input class="kembali-button" type="submit" value="Submit">
+        </form>
+
     </div>
 </body>
 </html>

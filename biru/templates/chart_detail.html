@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+
+{% include 'navbar_pengguna.html' %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -14,7 +16,7 @@
         }
         .container {
             max-width: 800px;
-            margin: 50px auto;
+            margin: 150px auto;
             padding: 20px;
             background-color: #1f1f1f; /* Warna latar belakang konten */
             border-radius: 10px;
@@ -22,12 +24,13 @@
         }
         h1, h2 {
             text-align: center;
-            color: #00bfff; /* Warna judul */
+            color: #ffffff; /* Warna judul */
         }
-        .chart-list, .chart-detail {
+        .chart-detail {
             margin-top: 30px;
+            width: 100%;
         }
-        .chart-list table, .chart-detail table {
+        .chart-detail table {
             border-collapse: collapse;
             width: auto;
             margin-left: auto;
@@ -53,39 +56,33 @@
         a:hover {
             color: #cccccc; /* Warna tautan saat dihover */
         }
+
+        .action-button, .kembali-button {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 5px;
+            background-color: var(--nav-color);
+            color: white;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        .action-button:hover, .kembali-button:hover{
+            background-color: #c82333;
+        }
+
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>CHART LIST</h1>
-        <table class="chart-list">
-            <thead>
-                <tr>
-                    <th>Tipe</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Daily Top 20</td>
-                    <td><a href="#">[Lihat Daftar Lagu]</a></td>
-                </tr>
-                <tr>
-                    <td>Weekly Top 20</td>
-                    <td><a href="#">[Lihat Daftar Lagu]</a></td>
-                </tr>
-                <!-- Tambahkan baris untuk chart lainnya -->
-            </tbody>
-        </table>
-        <p><a href="#">[Kembali]</a></p>
 
-        <h2>CHART DETAIL</h2>
+        <h2>Chart Detail</h2>
         <div class="chart-detail">
             <p>Tipe: Daily Top 20</p>
-            <p><a href="#">[Kembali]</a></p>
+            <td><button class="kembali-button">Kembali</button></td>
         </div>
 
-        <h2>DAFTAR LAGU</h2>
+        <h2>Daftar Lagu</h2>
         <table class="chart-detail">
             <thead>
                 <tr>
@@ -102,14 +99,14 @@
                     <td>Artist1</td>
                     <td>09/03/2024</td>
                     <td>21000</td>
-                    <td><a href="#">[Lihat]</a></td>
+                    <td><button class="action-button">Lihat Daftar Lagu</button></td>
                 </tr>
                 <tr>
                     <td>Song2</td>
                     <td>Artist2</td>
                     <td>02/03/2024</td>
                     <td>19000</td>
-                    <td><a href="#">[Lihat]</a></td>
+                    <td><button class="action-button">Lihat Daftar Lagu</button></td>
                 </tr>
                 <!-- Tambahkan lagu lainnya -->
             </tbody>

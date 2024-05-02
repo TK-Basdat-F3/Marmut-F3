@@ -8,11 +8,10 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from .forms import SignupFormPengguna, SignupFormLabel
 
-@login_required(login_url='/login')
+
 def show_main(request):
     context = {
         'class': 'basdat f',
-        'last_login': request.COOKIES['last_login'],
     }
 
     return render(request, "main.html", context)
@@ -27,7 +26,7 @@ def register(request):
             form.save()
             messages.success(request, 'Your account has been successfully created!')
             return redirect('main:login')
-    context = {'form':form}
+    context = {'form':form, 'form2':form2}
     return render(request, 'register.html', context)
 
 def login_user(request):

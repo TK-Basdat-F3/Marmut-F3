@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-{% include 'navbar_guest.html' %}
+{% include 'navbar_pengguna.html' %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -67,22 +67,39 @@
             cursor: pointer;
             text-decoration: none;
             transition: background-color 0.3s;
-            margin: 5px;
-            justify-content: center;
-            align-self: center;
         }
         .action-button:hover {
             background-color: #c82333;
         }
-
-       
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Marmut F3</h1>
-        <td><button class="action-button">Login</button></td><br>
-        <td><button class="action-button">Register</button></td>
+        <h1>Chart List</h1>
+        <table class="chart-list">
+            <thead>
+                <tr>
+                    <th>Tipe</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Daily Top 20</td>
+                    <td><button class="action-button">Lihat Daftar Lagu</button></td>
+                </tr>
+                <tr>
+                    <td>Weekly Top 20</td>
+                    <td><button class="action-button">Lihat Daftar Lagu</button></td>
+                </tr>
+                <!-- Tambahkan baris untuk chart lainnya -->
+            </tbody>
+        </table>
+        <td><button class="action-button">Kembali</button></td>
+
+       
+            </tbody>
+        </table>
     </div>
 </body>
 </html>

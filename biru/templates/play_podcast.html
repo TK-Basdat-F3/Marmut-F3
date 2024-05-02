@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+
+{% include 'navbar_podcaster.html' %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -14,21 +16,41 @@
         }
         .container {
             max-width: 800px;
-            margin: 50px auto;
-            padding: 20px;
+            margin: 100px auto;
+            padding: 10px;
             background-color: #1f1f1f; /* Warna latar belakang konten */
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
         h1, h2 {
             text-align: center;
-            color: #00bfff; /* Warna judul */
+            color: #ffffff; /* Warna judul */
         }
         .podcast-info, .episode-list {
-            margin-top: 30px;
+            margin-top: 10px;
         }
         .podcast-info p {
             margin: 10px 0;
+        }
+
+        .podcast-info {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .area-container {
+            flex: 1;
+        }
+
+        .area {
+            padding: 10px;
+            border-radius: 5px;
+            margin-right: 10px; /* Jarak antara area */
+        }
+
+        .podcast-info area {
+            display: flex;
+            flex-wrap: wrap;
         }
         .episode-list {
             border-collapse: collapse;
@@ -54,25 +76,48 @@
         a:hover {
             color: #cccccc; /* Warna tautan saat dihover */
         }
+
+        .kembali-button {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 5px;
+            background-color: var(--nav-color);
+            color: white;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        .kembali-button:hover{
+            background-color: #c82333;
+        }
+
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>PODCAST DETAIL</h1>
+        <h1>Podcast Detail</h1>
         <div class="podcast-info">
-            <p>Judul: Podcast1</p>
-            <p>Genre(s):</p>
-            <ul>
-                <li>Genre1</li>
-                <li>Genre2</li>
-            </ul>
-            <p>Podcaster: Artist1</p>
-            <p>Total Durasi: 8 jam 20 menit</p>
-            <p>Tanggal Rilis: 18/03/24</p>
-            <p>Tahun: 2024</p>
-            <p><a href="#">[Kembali]</a></p>
+            <div class="area-container">
+                <div class="area">
+                    <p>Judul: Podcast1</p>
+                    <p>Genre(s):</p>
+                    <ul>
+                        <li>Genre1</li>
+                        <li>Genre2</li>
+                    </ul>
+                    <td><button class="kembali-button">Kembali</button></td>
+                </div>
+            </div>
+            <div class="area-container">
+                <div class="area">
+                    <p>Podcaster: Artist1</p>
+                    <p>Total Durasi: 8 jam 20 menit</p>
+                    <p>Tanggal Rilis: 18/03/24</p>
+                    <p>Tahun: 2024</p>
+                </div>
+            </div>
         </div>
-        <h2>DAFTAR EPISODE</h2>
+        <h2>Daftar Episode</h2>
         <table class="episode-list">
             <thead>
                 <tr>

@@ -23,5 +23,6 @@ urlpatterns = [
     path('', include('main.urls')),
     path('kuning/', include('kuning.urls')),
     path('merah/', include('merah.urls')),
+    path('biru/', include('biru.urls')),
 ]
 
