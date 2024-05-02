@@ -1,3 +1,12 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+{% include 'navbar_pengguna.html' %}
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">  
+{% endblock meta %}
+
+{% block content %}
 <html>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -29,21 +38,21 @@
                         <div class="kuning-card" style="width: 220px; height: 220px; display: inline-block; border-radius: 8px; padding: 15px 25px; box-sizing: border-box; cursor: pointer; margin: 10px 15px; background: #9064ac; transition: transform 0.5s;">
                             <div class="kuning-type">Song</div>
                             <h2 style="margin-bottom: 10px;">Love is in The Air</h2>
-                            <h5 style="height: 140px; color: #f1f1f1; font-weight: 400;">By <strong>Inul Daratinggi</strong></h5>
+                            <p style="height: 140px; color: #f1f1f1; font-size: 14px; font-weight: 400;">By <strong>Inul Daratinggi</strong></p>
                         </div>
                         {% endfor %}
                         {% for i in "x"|ljust:3 %}
                         <div class="kuning-card" style="width: 220px; height: 220px; display: inline-block; border-radius: 8px; padding: 15px 25px; box-sizing: border-box; cursor: pointer; margin: 10px 15px; background: #086454; transition: transform 0.5s;">
                             <div class="kuning-type">Playlist</div>
                             <h2 style="margin-bottom: 10px;">90s Love Songs</h2>
-                            <h5 style="height: 140px; color: #f1f1f1; font-weight: 400;">By <strong>User 1</strong></h5>
+                            <p style="height: 140px; color: #f1f1f1; font-size: 14px; font-weight: 400;">By <strong>User 1</strong></p>
                         </div>
                         {% endfor %}
-                        {% for i in "x"|ljust:3 %}
+                        {% for i in "x"|ljust:13 %}
                         <div class="kuning-card" style="width: 220px; height: 220px; display: inline-block; border-radius: 8px; padding: 15px 25px; box-sizing: border-box; cursor: pointer; margin: 10px 15px; background: #c05c0c; transition: transform 0.5s;">
                             <div class="kuning-type">Podcast</div>
                             <h2 style="margin-bottom: 10px;">DPD Im in Love</h2>
-                            <h5 style="height: 140px; color: #f1f1f1; font-weight: 400;">By <strong>Komeng</strong></h5>
+                            <p style="height: 140px; color: #f1f1f1; font-size: 14px; font-weight: 400;">By <strong>Komeng</strong></p>
                         </div>
                         {% endfor %}
                     </a>
@@ -157,3 +166,4 @@
         margin-bottom: 6px;
     }
 </style>
+{% endblock content %}

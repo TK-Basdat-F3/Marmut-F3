@@ -1,3 +1,12 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+{% include 'navbar_pengguna.html' %}
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">  
+{% endblock meta %}
+
+{% block content %}
 <html>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -5,14 +14,14 @@
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     </head>
-    <body style="background-color: #181414; height: fit-content; display: flex; justify-content: center; align-items: center; padding-top: 70px;">
-        <div class="col" id="blur" style="text-align: center;">
-            <main class="table">
+    <body style="background-color: #181414; height: fit-content; display: flex; justify-content: center; align-items: center; padding-top: 120px;">
+        <div id="blur" style="text-align: center;">
+            <main class="kuning-table">
                 <section class="kuning-table_header">
                     <h1 style="text-align: center; color: white; font-size: 32px;">Downloaded Songs</h1>
                 </section>
-                <div class="container" style="width: 100%; height: 450px; overflow-y: auto; padding-top: 16px; padding-bottom: 16px; background: #181414; border-radius: 8px; padding-left: 8%; padding-right: 8%; box-sizing: border-box; box-shadow: 0 0 30px rgba(0, 0, 0, 1); overflow-y: auto;">
-                    <section class="table_body">
+                <div style="width: 100%; height: 420px; overflow-y: auto; padding-top: 16px; padding-bottom: 16px; background: #181414; border-radius: 8px; padding-left: 8%; padding-right: 8%; box-sizing: border-box; box-shadow: 0 0 30px rgba(0, 0, 0, 1); overflow-y: auto;">
+                    <section class="kuning-table_body">
                         <table>
                             <thead style="border-bottom: 1px solid #9B9B9B;">
                                 <tr>
@@ -52,7 +61,7 @@
     
         <div class="kuning-blur-layer">
             <div class="kuning-popup" id="popup">
-                <h2>Deleted</h2>
+                <h2 style="padding-top: 20px;">Deleted</h2>
                 <p style="width: 100%; margin-bottom: 40px; font-weight: 400;">Berhasil menghapus lagu dengan judul '<strong>Cinta satu malam</strong>' dari daftar unduhan!</p>
                 <button type="button" onclick="closePopup()">Kembali</button>
             </div>        
@@ -123,7 +132,7 @@ tbody tr:hover {
 }
 
 .kuning-detail-btn {
-    width: 98px;
+    width: 150px;
     height: 24px;
     border-radius: 25px;
     border: 1px solid #4070F4;
@@ -210,3 +219,4 @@ tbody tr:hover {
     box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
 }
 </style>
+{% endblock content %}

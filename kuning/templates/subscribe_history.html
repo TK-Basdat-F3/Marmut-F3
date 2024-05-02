@@ -1,16 +1,25 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+{% include 'navbar_pengguna.html' %}
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">  
+{% endblock meta %}
+
+{% block content %}
 <html>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Marmut</title>
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     </head>
-    <body style="background-color: #181414; height: fit-content; display: flex; justify-content: center; align-items: center; padding-top: 70px;">
-        <div class="col" style="text-align: center;">
-            <main class="table">
+    <body style="background-color: #181414; height: fit-content; display: flex; justify-content: center; align-items: center; padding-top: 120px;">
+        <div style="text-align: center;">
+            <main class="kuning-table">
                 <section class="kuning-table_header">
                     <h1 style="text-align: center; color: white; font-size: 32px;">Riwayat Transaksi Paket</h1>
                 </section>
-                <div class="container" style="height: 450px; overflow-y: auto; padding-top: 16px; padding-bottom: 16px; background: #181414; border-radius: 8px; padding-left: 8%; padding-right: 8%; box-sizing: border-box; box-shadow: 0 0 30px rgba(0, 0, 0, 1);">
+                <div style="height: 420px; overflow-y: auto; padding-top: 16px; padding-bottom: 16px; background: #181414; border-radius: 8px; padding-left: 8%; padding-right: 8%; box-sizing: border-box; box-shadow: 0 0 30px rgba(0, 0, 0, 1);">
                     <section class="table_body">
                         <table>
                             <thead style="border-bottom: 1px solid #9B9B9B;">
@@ -85,3 +94,4 @@ tbody tr:hover {
     box-sizing: border-box;
 }
 </style>
+{% endblock content %}
