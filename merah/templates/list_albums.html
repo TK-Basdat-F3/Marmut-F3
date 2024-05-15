@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+<table>
+    <thead>
+      <tr>
+        <th>Judul</th>
+        <th>Label</th>
+        <th>Jumlah Lagu</th>
+        <th>Total Durasi</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for album in albums %}
+        <tr>
+          <td>{{ album.judul }}</td>
+          <td>{{ album.id_label }}</td>
+          <td>{{ album.jumlah_lagu }}</td>
+          <td>{{ album.total_durasi }}</td>
+          <td>
+            <a href="{% url 'album_detail' album.id %}">Lihat Daftar Lagu</a>
+            <a href="{% url 'add_song' album.id %}">Tambah Lagu</a>
+            <a href="{% url 'delete_album' album.id %}">Hapus</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  

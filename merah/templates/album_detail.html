@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+<h1>{{ album[0].judul }}</h1>
+<p>Label: {{ album[0].id_label }}</p>
+<p>Jumlah Lagu: {{ album[0].jumlah_lagu }}</p>
+<p>Total Durasi: {{ album[0].total_durasi }}</p>
+<h2>Daftar Lagu</h2>
+<ul>
+  {% for song in songs %}
+    <li>{{ song.judul }}</li>
+  {% endfor %}
+</ul>
