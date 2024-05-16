@@ -107,7 +107,7 @@
                 <div class="card-content">
                 <div class="login">
                     <ts style="font-size: x-large;">Login</ts><br>
-                    <form method="POST" action="">
+                    <form method="POST" action="{% url 'main:login' %}">
                     {% csrf_token %}
                     <div class="field">
                         <div class="control">
@@ -135,7 +135,7 @@
                     <br>
                     <div class="has-text-centered">
                         <div>
-                            Don't have an account yet? <a href="{% url 'main:register' %}">Register Now</a>
+                            Don't have an account yet? <a href="{% url 'main:main_reg' %}">Register Now</a>
                         </div>
                     </div>  
                 </div>
