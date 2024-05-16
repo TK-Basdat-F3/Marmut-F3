@@ -1,4 +1,8 @@
+from django.db import connection
+from django.http import HttpResponseNotFound
 from django.shortcuts import render
+from psycopg2 import OperationalError, ProgrammingError
+from uuid import UUID
 
 # Create your views here.
 def subscribe_menu(request):
