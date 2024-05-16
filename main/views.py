@@ -64,28 +64,21 @@ def login_user(request):
             request.session['roles'] = roles
 
             if 'Label' in roles:
-                request.session['name'] = user[1]
+                request.session['nama'] = user[1]
                 request.session['email'] = user[2]
-                request.session['contact'] = user[4]
+                request.session['kontak'] = str(user[4])
                 return redirect('main:dashboard_label')
             elif 'Akun' in roles:
-                # Mengonversi user ke dalam dictionary
-                user_data = {
-                    'email': user.email,
-                    'password': user.password,
-                    'nama': user.nama,
-                    'tempat_lahir': user.tempat_lahir,
-                    'tanggal_lahir': user.tanggal_lahir,
-                    'is_verified': user.is_verified,
-                    'kota_asal': user.kota_asal,
-                    'gender': "Perempuan" if user.gender == 0 else "Laki-laki",
-                }
+                request.session['email'] = user.email
+                request.session['password'] = user.password
+                request.session['nama'] = user.nama
+                request.session['tanggal_lahir'] = user.tempat_lahir
+                tanggal_lahir_str = user.tanggal_lahir
+                request.session['tanggal_lahir'] = tanggal_lahir_str.strftime('%d-%m-%Y')
+                request.session['is_verified'] = user.is_verified
+                request.session['kota_asal'] = user.kota_asal
+                request.session['gender'] = "Perempuan" if user.gender == 0 else "Laki-laki"
 
-                # Mengonversi data ke dalam JSON
-                user_json = json.dumps(user_data, cls=DjangoJSONEncoder)
-
-                # Menyimpan data ke dalam sesi
-                request.session['user_data'] = user_json
                 if 'Artist' in roles:
                     request.session['songs'] = get_songs_by_artist(username)
                 elif 'Songwriter' in roles:
