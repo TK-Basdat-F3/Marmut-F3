@@ -140,7 +140,7 @@ def authenticate_akun(username, password):
         premium_status = query(f'SELECT * FROM "MARMUT"."premium" WHERE email = \'{username}\'')
         
         if premium_status:
-            premium_id = premium_status[0]
+            premium_id = premium_status[0][0]
             expired_premium = query(f'SELECT * FROM "MARMUT"."transaction" WHERE email = \'{username}\' AND timestamp_berakhir < CURRENT_DATE')
             if expired_premium:
                 query(f'DELETE FROM "MARMUT"."downloaded_song" WHERE email_downloader = \'{premium_id}\'')
@@ -152,7 +152,7 @@ def authenticate_akun(username, password):
             roles += get_roles_by_email(username)
         else:
             roles.append('Label')
-
+        print("is_premium: ",premium_status[0][0])
         return user, premium_status, roles
     else:
         return None, False, []
