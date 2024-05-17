@@ -55,6 +55,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+
 ROOT_URLCONF = 'marmut_f3.urls'
 
 TEMPLATES = [
@@ -81,8 +82,12 @@ WSGI_APPLICATION = 'marmut_f3.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'HOST': 'aws-0-ap-southeast-1.pooler.supabase.com',
+        'NAME': 'postgres',
+        'USER': 'postgres.ibfqonevwbcwcluqqrkx',
+        'PORT': '5432',
+        'PASSWORD': 'TugasBasdat',
     }
 }
 
@@ -121,7 +126,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
@@ -131,3 +136,12 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+SUPABASE_URL = os.getenv('postgres://postgres.ibfqonevwbcwcluqqrkx:[TugasBasdat]@aws-0-ap-southeast-1.pooler.supabase.com:5432/postgres')
+SUPABASE_KEY = os.getenv('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImliZnFvbmV2d2Jjd2NsdXFxcmt4Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcxMzgwMTgxMSwiZXhwIjoyMDI5Mzc3ODExfQ.Gq8gdn_uOCgJ1er-3w6ddm5mdKoGZ-pLlZo6CKmivG8')
+AUTHENTICATION_BACKENDS = [
+    'main.backends.CustomAuthBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+LOGIN_URL = '/login/'

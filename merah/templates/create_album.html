@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% block meta %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Album</title>
+</head>
+<body>
+    <h1>Create Album</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <label for="judul_album">Judul Album:</label>
+        <input type="text" name="judul_album" required>
+        
+        <label for="label">Label:</label>
+        {% if error %}
+            <p>Error fetching labels: {{ error }}</p>
+        {% else %}
+            <select name="label" required>
+                {% for label in labels %}
+                    <option value="{{ label.id }}">{{ label.nama }}</option>
+                {% endfor %}
+            </select>
+        {% endif %}
+        
+        <button type="submit">Create Album</button>
+    </form>
+</body>
+</html>
+
+{% endblock %}

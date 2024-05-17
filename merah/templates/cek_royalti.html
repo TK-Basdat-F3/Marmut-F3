@@ -63,28 +63,15 @@
             </tr>
         </thead>
         <tbody>
+            {% for royalty in royalties %}
             <tr>
-                <td>intro (end of the world)</td>
-                <td>Eternal Sunshine</td>
-                <td>100</td>
-                <td>90</td>
-                <td>$ 10,000</td>
+                <td>{{ royalty.judul_lagu }}</td>
+                <td>{{ royalty.judul_album }}</td>
+                <td>{{ royalty.total_play }}</td>
+                <td>{{ royalty.total_download }}</td>
+                <td>Rp {{ royalty.total_royalti }}</td>
             </tr>
-            <tr>
-                <td>Kill Bill</td>
-                <td>SOS</td>
-                <td>200</td>
-                <td>50</td>
-                <td>$ 5,000</td>
-            </tr>
-            <tr>
-                <td>The Alchemy</td>
-                <td>THE TORTURED POETS DEPARTMENT: THE ANTHOLOGY</td>
-                <td>995</td>
-                <td>300</td>
-                <td>$ 23,000</td>
-            </tr>
-            
+            {% endfor %}
         </tbody>
     </table>
 </div>

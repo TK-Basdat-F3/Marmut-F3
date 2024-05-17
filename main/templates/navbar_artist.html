@@ -32,10 +32,9 @@
                 </div>
 
                 <ul class="nav-links">
-                    <li><a href="#">Dashboard</a></li>
-                    <li><a href="{% url 'merah:manage_albums' %}">Kelola Album & Song</a></li>
-                    <li><a href="{% url 'merah:cek-royalti' %}">Cek Royalti</a></li>
-                    <li><a href="#">Log Out</a></li>
+                    <li><a href="{% url 'merah:create_album' %}">Kelola Album & Song</a></li>
+                    {% comment %} <li><a href="{% url 'merah:cek-royalti' %}">Cek Royalti</a></li> {% endcomment %}
+                    <li><a href="{% url 'main:logout' %}">Logout</a></li>
                 </ul>
             </div>
 

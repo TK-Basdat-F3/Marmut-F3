@@ -21,42 +21,45 @@
                 <div class="kuning-search-container">
                     <div class="kuning-search-bar">
                         <i class="fas fa-search" style="color: #4070F4;"></i>
-                        <input type="text" class="kuning-search-input" placeholder="What do you want to play?">
+                        <input type="text" class="kuning-search-input" name="q" placeholder="What do you want to play?">
                         <button type="submit" class="kuning-search-btn">Search</button>
                     </div>
                 </div>                        
             </form>
             
             <div class="kuning-result-content" style="margin-top: 60px;">
-                <h2 style="margin-bottom: 24px; margin-left: 16px;">Hasil Pencarian "love"</h2>
-    
-                <!-- <p style="margin-left: 16px;">Maaf, pencarian untuk “love” tidak ditemukan :(</p> -->
+                <h2 style="margin-bottom: 24px; margin-left: 16px;">Hasil Pencarian "{{ query }}"</h2>
                 
+                {% if results.0|length == 0 and results.1|length == 0 and results.2|length == 0 %}
+                <p style="margin-left: 16px;">Maaf, pencarian untuk "{{ query }}" tidak ditemukan :(</p>
+
+                {% else %}
                 <div class="col" style="flex-basis: 50%; color: white;">
                     <a href="#" style="text-decoration: none; color: inherit;">
-                        {% for i in "x"|ljust:3 %}
+                        {% for result in results.0 %}
                         <div class="kuning-card" style="width: 220px; height: 220px; display: inline-block; border-radius: 8px; padding: 15px 25px; box-sizing: border-box; cursor: pointer; margin: 10px 15px; background: #9064ac; transition: transform 0.5s;">
                             <div class="kuning-type">Song</div>
-                            <h2 style="margin-bottom: 10px;">Love is in The Air</h2>
-                            <p style="height: 140px; color: #f1f1f1; font-size: 14px; font-weight: 400;">By <strong>Inul Daratinggi</strong></p>
+                            <h2 style="margin-bottom: 10px;">{{ result.0 }}</h2>
+                            <p style="height: 140px; color: #f1f1f1; font-size: 14px; font-weight: 400;">By <strong>{{ result.1 }}</strong></p>
                         </div>
                         {% endfor %}
-                        {% for i in "x"|ljust:3 %}
+                        {% for result in results.1 %}
                         <div class="kuning-card" style="width: 220px; height: 220px; display: inline-block; border-radius: 8px; padding: 15px 25px; box-sizing: border-box; cursor: pointer; margin: 10px 15px; background: #086454; transition: transform 0.5s;">
                             <div class="kuning-type">Playlist</div>
-                            <h2 style="margin-bottom: 10px;">90s Love Songs</h2>
-                            <p style="height: 140px; color: #f1f1f1; font-size: 14px; font-weight: 400;">By <strong>User 1</strong></p>
+                            <h2 style="margin-bottom: 10px;">{{ result.0 }}</h2>
+                            <p style="height: 140px; color: #f1f1f1; font-size: 14px; font-weight: 400;">By <strong>{{ result.1 }}</strong></p>
                         </div>
                         {% endfor %}
-                        {% for i in "x"|ljust:13 %}
+                        {% for result in results.2 %}
                         <div class="kuning-card" style="width: 220px; height: 220px; display: inline-block; border-radius: 8px; padding: 15px 25px; box-sizing: border-box; cursor: pointer; margin: 10px 15px; background: #c05c0c; transition: transform 0.5s;">
                             <div class="kuning-type">Podcast</div>
-                            <h2 style="margin-bottom: 10px;">DPD Im in Love</h2>
-                            <p style="height: 140px; color: #f1f1f1; font-size: 14px; font-weight: 400;">By <strong>Komeng</strong></p>
+                            <h2 style="margin-bottom: 10px;">{{ result.0 }}</h2>
+                            <p style="height: 140px; color: #f1f1f1; font-size: 14px; font-weight: 400;">By <strong>{{ result.1 }}</strong></p>
                         </div>
                         {% endfor %}
                     </a>
                 </div>
+                {%  endif %}
             </div>
         </div>
     

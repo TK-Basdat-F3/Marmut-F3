@@ -81,8 +81,15 @@
 <body>
     <div class="container">
         <h1>Marmut F3</h1>
-        <td><button class="action-button">Login</button></td><br>
-        <td><button class="action-button">Register</button></td>
+        <td>
+            <a href="{% url 'main:login' %}">
+                <button class="action-button">Login</button>
+            </a>
+        </td><br>
+        <td>
+            <a href="{% url 'main:main_reg' %}">
+                <button class="action-button">Register</button></td>
+            </a>
     </div>
 </body>
 </html>

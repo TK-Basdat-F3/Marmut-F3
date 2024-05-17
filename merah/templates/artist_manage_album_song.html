@@ -19,7 +19,7 @@
 {% block content %}
 <style>
     .container {
-        width: 100%; max-width: 800px; margin: auto;
+        width: 100%; max-width: 800px; margin: 60px auto;
         background-color: #AA98A9;
         color: white; padding: 20px; border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0,0,0,0.1);
@@ -61,143 +61,106 @@
     }
 
     .form-group {
-      display: flex;
-      align-items: top;
-      margin-bottom: 10px;
+      display: flex; align-items: top; margin-bottom: 10px;
     }
     .form-group label {
-      flex: 0 0 20px; 
-      margin-right: 10px; 
+      flex: 0 0 20px; margin-right: 10px; 
     }
     .form-group div label {
       display: block; 
     }
 
     .album-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-      padding: 20px; 
-      margin-bottom: 20px;
-      background-color: #AA98A9; 
+      width: 100%; border-collapse: collapse;
+      margin-top: 20px; padding: 20px; 
+      margin-bottom: 20px; background-color: #AA98A9; 
     }
     .album-table th, .album-table td {
-      border: 1px solid #ddd; 
-      padding: 8px; 
-      text-align: left;
-      background-color: transparent; 
+      border: 1px solid #ddd; padding: 8px; 
+      text-align: left; background-color: transparent; 
     }
     .album-table th {
-      background-color: #856088;
-      color: white; 
+      background-color: #856088; color: white; 
     }
     
     .album-table tr:hover td{
       background-color: #BEBFC5; transition: background-color 0.3s ease;
     }
     .album-actions button {
-      margin-right: 5px;
-      padding: 5px 10px;
-      background-color: #301934;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
+      margin-right: 5px; padding: 5px 10px;
+      background-color: #301934; color: white;
+      border: none; border-radius: 5px; cursor: pointer;
     }
     .album-actions button:hover {
       background-color: #C8A2C8;
     }
-
 </style>
 
 <div class="container">
     <h2>Manage Albums</h2>
+
     <div class="form-container">
-        <form method="post">
-          {% csrf_token %}
-          <h3>Create Album</h3>
-          <label for="title">Title:</label>
-          <input type="text" id="title" name="title">
-          <label for="label">Label:</label>
-          <select id="label" name="label">
-            <option value="1">Label A</option>
-            <option value="2">Label B</option>
-            <option value="2">Label C</option>
-            <option value="2">Label D</option>
-            <option value="2">Label E</option>
-          </select>
-          <button type="submit">Submit</button>
-        </form>
+      <h3>Create Album</h3>
+      <div class="form-container">
+          <form method="POST" action="{% url 'merah:create_album' %}">
+            {% csrf_token %}
+            <label for="judul_album">Title:</label>
+            <input type="text" id="judul_album" name="judul_album" required>
+            <label for="label">Label:</label>
+            <select id="label" name="label" required>
+              {% for label in labels %}
+                <option value="{{ label.id }}">{{ label.nama }}</option>
+              {% endfor %}
+            </select>
+            <button type="submit">Submit</button>
+          </form>
+      </div>
     </div>
 
     <h2>List Album</h2>
     <table class="album-table">
-      <tr>
-        <th>Judul</th>
-        <th>Label</th>
-        <th>Jumlah Lagu</th>
-        <th>Total Durasi</th>
-        <th>Action</th>
-      </tr>
-      <!-- Repeat this block for each album -->
-      <tr>
-        <td>
-          <img src="https://i.pinimg.com/736x/db/9f/8e/db9f8e2e356da77dbc9971aab28265fe.jpg" alt="Album Image" style="width:100%; max-width:100px;display: flex; justify-content: center;">
-          <br>Eternal Sunshine
-        </td>
-        <td>Label A</td>
-        <td>13</td>
-        <td>35 menit</td>
-        <td class="album-actions">
-          <button>Lihat Daftar Lagu</button>
-          <button>Tambah Lagu</button>
-          <button>Hapus</button>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <img src="https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/a4/86/59/a486593a-53c9-1c2a-5122-8f25339f7359/24UMGIM44778.rgb.jpg/1200x1200bb.jpg" alt="Album Image" style="width:100%; max-width:100px;display: flex; justify-content: center;">          
-          <br>
-          THE TORTURED POETS DEPARTMENT: THE ANTHOLOGY
-        </td>
-        <td>Label B</td>
-        <td>31</td>
-        <td>122 menit</td>
-        <td class="album-actions">
-          <button>Lihat Daftar Lagu</button>
-          <button>Tambah Lagu</button>
-          <button>Hapus</button>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <img src="https://media.pitchfork.com/photos/638902d2e5592afa444298b9/master/w_1600%2Cc_limit/SZA-SOS.jpg" alt="Album Image" style="width:100%; max-width:100px;display: flex; justify-content: center;">          
-          <br>
-          SOS
-        </td>
-        <td>Label C</td>
-        <td>23</td>
-        <td>67 menit</td>
-        <td class="album-actions">
-          <button>Lihat Daftar Lagu</button>
-          <button>Tambah Lagu</button>
-          <button>Hapus</button>
-        </td>
-      </tr>
-      <!-- ... Other rows ... -->
+      <thead>
+        <tr>
+          <th>Judul</th>
+          <th>Label</th>
+          <th>Jumlah Lagu</th>
+          <th>Total Durasi</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for album in albums %}
+        <tr>
+          <td>{{ album.judul }}</td>
+          <td>{{ album.label_nama }}</td>
+          <td>{{ album.jumlah_lagu }}</td>
+          <td>{{ album.total_durasi }} menit</td>
+          <td class="album-actions">
+            <a href="{% url 'merah:album_detail' album.id %}"><button>Lihat Daftar Lagu</button></a>
+            <a href="{% url 'merah:add_song' album.id %}"><button>Tambah Lagu</button></a>
+            <form method="post" action="{% url 'merah:delete_album' album.id %}" style="display:inline;">
+              {% csrf_token %}
+              <button type="submit">Hapus</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
     </table>
 
+
+    {% if album %}
     <h2>Add Song to Album</h2>
     <div class="song-container">
-      <h2>Create Song</h2>
-      <form method="post">
+      <h3>Create Song</h3>
+      <form method="POST" action="{% url 'merah:add_song' album.id %}">
           {% csrf_token %}
-          <h4>Album: Eternal Sunshine</h4> 
-          <input type="hidden" name="album_id" value="1">
+          <h4>Album: {{ album.judul }}</h4> 
+          <input type="hidden" name="album_id" value="{{ album.id }}">
   
           <div class="form-group">
-            <label for="title">Title:</label>
-            <input type="text" id="title" name="title">
+            <label for="judul_lagu">Title:</label>
+            <input type="text" id="judul_lagu" name="judul_lagu" required>
           </div>
   
           <div class="form-group">
@@ -205,10 +168,10 @@
             {% if user.role == 'Artist' %}
             <input type="text" id="artist" name="artist" value="{{ user.artist_name }}" readonly>
             {% else %}
-            <select id="artist" name="artist">
-                <option value="1">Artist A</option>
-                <option value="2">Artist B</option>
-                <option value="3">Artist C</option>
+            <select id="artist" name="artist" required>
+              {% for artist in artists %}
+                <option value="{{ artist.id }}">{{ artist.nama }}</option>
+              {% endfor %}
             </select>
             {% endif %}
           </div>
@@ -216,34 +179,34 @@
           <div class="form-group">
             <label>Songwriters:</label>
             <div>
-                <label><input type="checkbox" name="songwriters" value="1"> Songwriter A</label>
-                <label><input type="checkbox" name="songwriters" value="2"> Songwriter B</label>
-                <label><input type="checkbox" name="songwriters" value="3"> Songwriter C</label>
-                <label><input type="checkbox" name="songwriters" value="4"> Songwriter D</label>
-                <label><input type="checkbox" name="songwriters" value="5"> Songwriter E</label>
+              {% for songwriter in songwriters %}
+                <label><input type="checkbox" name="songwriters" value="{{ songwriter.id }}"> {{ songwriter.nama }}</label>
+              {% endfor %}
             </div>
           </div>
   
           <div class="form-group">
             <label>Genres:</label>
             <div>
-                <label><input type="checkbox" name="genres" value="1"> Pop</label>
-                <label><input type="checkbox" name="genres" value="2"> Rock</label>
-                <label><input type="checkbox" name="genres" value="3"> RnB</label>
+              {% for genre in genres %}
+                <label><input type="checkbox" name="genres" value="{{ genre.genre }}"> {{ genre.genre }}</label>
+              {% endfor %}
             </div>
           </div>
 
           <div class="form-group">
-            <label for="duration">Duration:</label>
-            <input type="text" id="duration" name="duration">
+            <label for="durasi">Duration:</label>
+            <input type="text" id="durasi" name="durasi" required>
           </div>
   
           <button type="submit">Submit</button>
       </form>
   </div>
+  {% endif %}
 
+  {% if album %}
   <div class="album-container">
-    <h2>Daftar Lagu pada Album Eternal Sunshine</h2>
+    <h2>Daftar Lagu pada Album {{ album.judul }}</h2>
     <table class="album-table">
         <thead>
             <tr>
@@ -255,70 +218,24 @@
             </tr>
         </thead>
         <tbody>
+            {% for song in songs %}
             <tr>
-                <td>intro (end of the world)</td>
-                <td>1:32 menit</td>
-                <td>100</td>
-                <td>90</td>
+                <td>{{ song.judul }}</td>
+                <td>{{ song.durasi }} menit</td>
+                <td>{{ song.total_play }}</td>
+                <td>{{ song.total_download }}</td>
                 <td>
-                    <button class="view-button">Lihat Detail</button>
-                    <button class="delete-button">Hapus</button>
-                </td>
-            </tr>
-            <tr>
-                <td>bye</td>
-                <td>2:45 menit</td>
-                <td>200</td>
-                <td>250</td>
-                <td>
-                    <button class="view-button">Lihat Detail</button>
-                    <button class="delete-button">Hapus</button>
-                </td>
-            </tr>
-            <tr>
-              <td>don't wanna break up again</td>
-              <td>2:54 menit</td>
-              <td>300</td>
-              <td>230</td>
-              <td>
-                  <button class="view-button">Lihat Detail</button>
-                  <button class="delete-button">Hapus</button>
-              </td>
-          </tr>
-          <tr>
-            <td>Saturn Returns Interlude</td>
-            <td>0:42 menit</td>
-            <td>10</td>
-            <td>2</td>
-            <td>
-                <button class="view-button">Lihat Detail</button>
-                <button class="delete-button">Hapus</button>
-            </td>
-          </tr>
-          <tr>
-            <td>eternal sunshine</td>
-            <td>3:30 menit</td>
-            <td>900</td>
-            <td>400</td>
-            <td>
-                <button class="view-button">Lihat Detail</button>
-                <button class="delete-button">Hapus</button>
-            </td>
-          </tr>
-          <tr>
-            <td>supernatural</td>
-            <td>2:43 menit</td>
-            <td>80</td>
-            <td>30</td>
-            <td>
-                <button class="view-button">Lihat Detail</button>
-                <button class="delete-button">Hapus</button>
-            </td>
-          </tr>
-            
-        </tbody>
-    </table>
+                    <a href="#"><button class="view-button">Lihat Detail</button></a>
+                    <form method="post" action="#" style="display:inline;">
+                      {% csrf_token %}
+                      <button type="submit" class="delete-button">Hapus</button>
+                    </form>
+                  </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% endif %}
   </div>
-  
-</div>
 {% endblock %}
