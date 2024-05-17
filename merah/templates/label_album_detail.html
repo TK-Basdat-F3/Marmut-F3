@@ -1,0 +1,199 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% block meta %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <title>Marmut</title>
+</head>
+<body>
+    {% include 'navbar_label.html' %}
+</body>
+</html>
+{% endblock meta %}
+
+{% block content %}
+<style>
+    .container {
+        width: 100%; max-width: 800px; margin: 60px auto; 
+        background-color: #AA98A9;
+        color: white; padding: 20px; border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        font-family: 'Montserrat', sans-serif;
+    }
+    .form-container, .album-container, .song-container {
+        background: linear-gradient(180deg, #DBB2D1 0%, #86608E 100%);
+        border: 1px solid white; padding: 20px; border-radius: 8px;
+        margin-bottom: 20px;
+    }
+    input[type="text"], select, button, form-group div {
+        width: 100%; padding: 8px; margin-top: 8px;
+        border-radius: 8px; border: 1px solid #F5F5F5;
+        box-sizing: border-box; display: block;
+        flex-grow: 1; 
+    }
+    label {
+        display: block; 
+        margin-top: 20px;
+    }
+    button {
+        background-color: #301934; color: white;
+        border: none; cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    button:hover {
+        background-color: #C8A2C8;
+    }
+    .card {
+        background-color: #1c1818; display: inline-block;
+        margin: 10px; padding: 10px; border-radius: 8px;
+        transition: transform 0.3s ease;
+    }
+    .card:hover {
+        transform: translateY(-5px);
+    }
+    img {
+        width: 100%; border-radius: 8px;
+    }
+
+    .form-group {
+      display: flex; align-items: top;
+      margin-bottom: 10px;
+    }
+    .form-group label {
+      flex: 0 0 20px; 
+      margin-right: 10px; 
+    }
+    .form-group div label {
+      display: block; 
+    }
+
+    .album-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;  padding: 20px; 
+      margin-bottom: 20px; background-color: #AA98A9; 
+    }
+    .album-table th, .album-table td {
+      border: 1px solid #ddd; 
+      padding: 8px; 
+      text-align: left;
+      background-color: transparent; 
+    }
+    .album-table th {
+      background-color: #856088;
+      color: white; 
+    }
+    
+    .album-table tr:hover td{
+      background-color: #BEBFC5; transition: background-color 0.3s ease;
+    }
+    .album-actions button {
+      margin-right: 5px; padding: 5px 10px;
+      background-color: #301934; color: white; border: none;
+      border-radius: 5px; cursor: pointer;
+    }
+    .album-actions button:hover {
+      background-color: #C8A2C8;
+    }
+    .modal {
+        display: none; position: fixed; 
+        z-index: 1; left: 0; top: 0; width: 100%; 
+        height: 100%; overflow: auto; background-color: rgb(0,0,0); 
+        background-color: rgba(0,0,0,0.4); padding-top: 60px; 
+    }
+    .modal-content {
+        background-color: #fefefe; margin: 5% auto; padding: 20px; border: 1px solid #888; width: 80%; 
+    }
+    .close {
+        color: #aaa; float: right; font-size: 28px; font-weight: bold;
+    }
+    .close:hover,
+    .close:focus {
+        color: black; text-decoration: none; cursor: pointer;
+    }
+</style>
+
+<div class="container">
+    <h2>List of Songs in {{ album.judul }}</h2>
+    <table class="album-table">
+        <thead>
+            <tr>
+                <th>Judul</th>
+                <th>Durasi</th>
+                <th>Total Play</th>
+                <th>Total Download</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for song in songs %}
+            <tr>
+                <td>{{ song.judul }}</td>
+                <td>{{ song.durasi }} menit</td>
+                <td>{{ song.total_play }}</td>
+                <td>{{ song.total_download }}</td>
+                <td class="album-actions">
+                  <button class="view-details-button" data-judul="{{ song.judul }}" data-durasi="{{ song.durasi }}" data-total_play="{{ song.total_play }}" data-total_download="{{ song.total_download }}">Lihat Detail</button>
+                  <form method="post" action="{% url 'merah:delete_song' song.id_konten %}" style="display:inline;">
+                      {% csrf_token %}
+                      <input type="hidden" name="id_album" value="{{ album.id }}">
+                      <button type="submit">Hapus</button>
+                  </form>
+              </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{% url 'merah:label_manage' %}"><button>Back to Manage Albums</button></a>
+</div>
+
+<!-- Modal -->
+<div id="songDetailModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Song Details</h2>
+        <p><strong>Judul:</strong> <span id="modal-judul"></span></p>
+        <p><strong>Durasi:</strong> <span id="modal-durasi"></span> menit</p>
+        <p><strong>Total Play:</strong> <span id="modal-total_play"></span></p>
+        <p><strong>Total Download:</strong> <span id="modal-total_download"></span></p>
+    </div>
+</div>
+
+<script>
+    document.querySelectorAll('.view-details-button').forEach(button => {
+        button.addEventListener('click', function() {
+            const judul = this.dataset.judul;
+            const durasi = this.dataset.durasi;
+            const total_play = this.dataset.total_play;
+            const total_download = this.dataset.total_download;
+
+            document.getElementById('modal-judul').innerText = judul;
+            document.getElementById('modal-durasi').innerText = durasi;
+            document.getElementById('modal-total_play').innerText = total_play;
+            document.getElementById('modal-total_download').innerText = total_download;
+
+            const modal = document.getElementById('songDetailModal');
+            modal.style.display = 'block';
+        });
+    });
+
+    document.querySelector('.close').addEventListener('click', function() {
+        const modal = document.getElementById('songDetailModal');
+        modal.style.display = 'none';
+    });
+
+    window.onclick = function(event) {
+        const modal = document.getElementById('songDetailModal');
+        if (event.target == modal) {
+            modal.style.display = 'none';
+        }
+    };
+</script>
+{% endblock %}

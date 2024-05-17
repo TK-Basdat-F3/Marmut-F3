@@ -1,12 +1,23 @@
 {% extends 'base.html' %}
 
 {% block meta %}
-{% include 'navbar_pengguna.html' %}
+{% if 'Artist' in request.session.roles %}
+    {% include 'navbar_artist.html' %}
+{% elif 'Label' in request.session.roles %}
+    {% include 'navbar_label.html' %}
+{% elif 'Podcaster' in request.session.roles %}
+    {% include 'navbar_podcaster.html' %}
+{% elif 'Pengguna' in request.session.roles %}
+    {% include 'navbar_pengguna.html' %}
+{% else %}
+    {% include 'navbar_guest.html' %}
+{% endif %}
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">  
 {% endblock meta %}
 
 {% block content %}
+{% load static %}
 <html>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,55 +29,72 @@
             <div class="container" style="width: 100%; height: fit-content; padding-left: 8%; padding-right: 8%; padding-top: 1%; padding-bottom: 1%; box-sizing: border-box; background: transparent; border-radius: 8px; border: 1px solid white;">
                 <div style="align-content: center;">
                     <div class="col" style="color: white; text-align: left;">
-                        <h1 style="margin-bottom: 32px;">Profile</h1>
+                        <div class="col" style="width: 100%; gap: auto; flex-direction: col; justify-content: flex-start; align-items: flex-start; display: inline-flex; margin-bottom: 32px; align-items: center;">
+                            <h1 style="width: 100%;">Profile</h1>
+                            <h5 style="border-radius: 8px; padding-top: 6px; padding-bottom: 6px; padding-left: 12px; padding-right: 12px; background: linear-gradient(263deg, #DFE18B 0%, #8F40F4 40%, #4070F4 68%, #85A0EA 100%);">{{ request.session.premium_status }}</h5>
+                        </div>
+                        
                         <div class="row">
                             <div class="col" style="width: 324px; height: 124px; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 32px; margin-bottom: 32px; display: inline-flex">
                                 <div class="col" style="height: 46px; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 8px; display: flex">
                                     <div style="color: #D9D9D9; font-size: 16px; font-weight: 500; word-wrap: break-word">Nama</div>
-                                    <div style="color: white; font-size: 16px; font-weight: 700; word-wrap: break-word">Shafira Ramadhina Adifa</div>
+                                    <div style="color: white; font-size: 16px; font-weight: 700; word-wrap: break-word">{{ request.session.nama }}</div>
                                 </div>
                                 <div class="col" style="height: 46px; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 8px; display: flex">
                                     <div style="color: #D9D9D9; font-size: 16px; font-weight: 500; word-wrap: break-word">Email</div>
-                                    <div style="color: white; font-size: 16px; font-weight: 700; word-wrap: break-word">shafira.ramadhina@ui.ac.id</div>
+                                    <div style="color: white; font-size: 16px; font-weight: 700; word-wrap: break-word">{{ request.session.email }}</div>
                                 </div>
                             </div>
                             <div class="col" style="width: 324px; height: 124px; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 32px; margin-bottom: 32px; display: inline-flex">
                                 <div class="col" style="height: 46px; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 8px; display: flex">
                                     <div style="color: #D9D9D9; font-size: 16px; font-weight: 500; word-wrap: break-word">Kota Asal</div>
-                                    <div style="color: white; font-size: 16px; font-weight: 700; word-wrap: break-word">Jakarta</div>
+                                    <div style="color: white; font-size: 16px; font-weight: 700; word-wrap: break-word">{{ request.session.kota_asal }}</div>
                                 </div>
                                 <div class="col" style="height: 46px; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 8px; display: flex">
                                     <div style="color: #D9D9D9; font-size: 16px; font-weight: 500; word-wrap: break-word">Gender</div>
-                                    <div style="color: white; font-size: 16px; font-weight: 700; word-wrap: break-word">Perempuan</div>
+                                    <div style="color: white; font-size: 16px; font-weight: 700; word-wrap: break-word">{{ request.session.gender }}</div>
                                 </div>
                             </div>
                             <div class="col" style="width: 324px; height: 124px; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 32px; margin-bottom: 32px; display: inline-flex">
                                 <div class="col" style="height: 46px; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 8px; display: flex">
                                     <div style="color: #D9D9D9; font-size: 16px; font-weight: 500; word-wrap: break-word">Tempat Lahir</div>
-                                    <div style="color: white; font-size: 16px; font-weight: 700; word-wrap: break-word">Bandung</div>
+                                    <div style="color: white; font-size: 16px; font-weight: 700; word-wrap: break-word">{{ request.session.tempat_lahir }}</div>
                                 </div>
                                 <div class="col" style="height: 46px; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 8px; display: flex">
                                     <div style="color: #D9D9D9; font-size: 16px; font-weight: 500; word-wrap: break-word">Tanggal Lahir</div>
-                                    <div style="color: white; font-size: 16px; font-weight: 700; word-wrap: break-word">02/12/03</div>
+                                    <div style="color: white; font-size: 16px; font-weight: 700; word-wrap: break-word">{{ request.session.tanggal_lahir }}</div>
                                 </div>
                             </div>
                         </div>
+                        {% if 'Artist' in request.session.roles or 'Songwriter' in request.session.roles or 'Podcaster' in request.session.roles %}
                         <div class="col" style="height: 46px; margin-top: 32px; margin-bottom: 32px; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 8px; display: flex">
                             <div style="color: #D9D9D9; font-size: 16px; font-weight: 500; word-wrap: break-word">Role</div>
-                            <div style="color: white; font-size: 16px; font-weight: 700; word-wrap: break-word">Artist, Songwriter, Podcaster</div>
+                            <div style="color: white; font-size: 16px; font-weight: 700; word-wrap: break-word">
+                                {% for role in request.session.roles %}
+                                    {% if role != 'Akun' %}
+                                        {{ role }}
+                                        {% if not forloop.last and not forloop.first %}, {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
                         </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
         </div>
         <div style="padding-left: 4%; padding-right: 4%;">
-            <div class="col" style="flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 60px; display: inline-flex">
+            <div class="col" style="flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 60px; display: inline-flex; padding-top: 32px; padding-bottom: 32px;">
                 <div class="user-content">
+
+                    {% if 'Akun' in request.session.roles %}
                     <div class="marmut-playlists">
                         <h2>Playlists</h2>
-                        <!-- <h3 style="color: #9B9B9B;">Belum Memiliki Playlist :(</h3> -->
+                        {% if request.session.playlists|length == 0 %}
+                            <p style="color: #9B9B9B;">Belum Memiliki Playlist :(</p>
+                        {% else %}
                         <div class="col" style="flex-basis: 50%; color: white;">
-                            {% for i in "x"|ljust:6 %}
+                            {% for playlist in request.session.playlists %}
                             <a href="#" style="text-decoration: none; color: inherit;">
                                 <div class="card" style="width: 316px; height: 75px; display: inline-block; border-radius: px; padding: 4px 4px; margin-right: 8px; margin-bottom: 16px; box-sizing: border-box;">
                                     <div style="display: flex; align-items: center;">
@@ -74,20 +102,25 @@
                                             <img src="https://i.pinimg.com/736x/db/9f/8e/db9f8e2e356da77dbc9971aab28265fe.jpg" style="width: 63px; height: 63px;"/>
                                         </div>
                                         <div style="flex-grow: 1; margin-left: 10px;">
-                                            <h4 style="color: white; font-size: 16px; font-weight: 600; width: 100%; height: 20px; display: flex; align-items: center; margin: 0;">Bruno Mars - Tour Setlist 2024</h4>
+                                            <h4 style="color: white; font-size: 16px; font-weight: 600; width: 100%; height: 20px; display: flex; align-items: center; margin: 0;">{{ playlist }}</h4>
                                         </div>
                                     </div>
                                 </div>   
                             </a>
                             {% endfor %}
                         </div>
+                        {% endif %}
                     </div>
+                    {% endif %}
 
+                    {% if 'Artist' in request.session.roles %}
                     <div class="marmut-songs">
                         <h2>Songs</h2>
-                        <!-- <h3 style="color: #9B9B9B;">Belum Memiliki Lagu :(</h3> -->
+                        {% if request.session.songs_by_artist|length == 0 %}
+                            <p style="color: #9B9B9B;">Belum Memiliki Lagu :(</p>
+                        {% else %}
                         <div class="col" style="flex-basis: 50%; color: white;">
-                            {% for i in "x"|ljust:3 %}
+                            {% for song in request.session.songs_by_artist %}
                             <a href="#" style="text-decoration: none; color: inherit;">
                                 <div class="card" style="width: 100%; height: 90px; display: flex; border-radius: 8px; padding: 6px 10px; margin-right: 8px; box-sizing: border-box; flex-direction: column; align-items: center; justify-content: center;">
                                     <div style="width: 100%; justify-content: flex-start; align-items: center; row-gap: 10px; display: flex">
@@ -95,22 +128,55 @@
                                             <img src="https://i.pinimg.com/736x/db/9f/8e/db9f8e2e356da77dbc9971aab28265fe.jpg" style="width: 65px; height: 65px;" />
                                         </div>
                                         <div class="col" style="width: calc(100% - 120px); margin-left: 20px; margin-right: 16px;">
-                                            <p style="color: white; font-size: 16px; font-weight: 400; height: 20px; margin-bottom: 12px;">Judul lagunya apa yaaaaaa</p>
-                                            <p style="color: #9B9B9B; font-size: 14px; font-weight: 400; height: 15px; margin-bottom: 0;">Ini penyanyinya</p>    
+                                            <p style="color: white; font-size: 16px; font-weight: 400; height: 20px; margin-bottom: 12px;">{{ song.0 }}</p>
+                                            <p style="color: #9B9B9B; font-size: 14px; font-weight: 400; height: 15px; margin-bottom: 0;">{{ song.1 }}</p>    
                                         </div>
-                                        <p style="width: 120px; color: white; margin-bottom: 0;">3:00</p>
+                                        <p style="width: 120px; color: white; margin-bottom: 0;">{{ song.2 }} min</p>
                                     </div>
                                 </div>
                             </a>
                             {% endfor %}
                         </div>
+                        {% endif %}
                     </div>
+                    {% endif %}
 
+                    {% if 'Songwriter' in request.session.roles %}
+                    <div class="marmut-songs">
+                        <h2>Songs</h2>
+                        {% if request.session.songs_by_songwriter|length == 0 %}
+                            <p style="color: #9B9B9B;">Belum Memiliki Lagu :(</p>
+                        {% else %}
+                        <div class="col" style="flex-basis: 50%; color: white;">
+                            {% for song in request.session.songs_by_songwriter %}
+                            <a href="#" style="text-decoration: none; color: inherit;">
+                                <div class="card" style="width: 100%; height: 90px; display: flex; border-radius: 8px; padding: 6px 10px; margin-right: 8px; box-sizing: border-box; flex-direction: column; align-items: center; justify-content: center;">
+                                    <div style="width: 100%; justify-content: flex-start; align-items: center; row-gap: 10px; display: flex">
+                                        <div style="width: 65px; height: 65px; background-color: #B66FED; border-radius: 8px;">
+                                            <img src="https://i.pinimg.com/736x/db/9f/8e/db9f8e2e356da77dbc9971aab28265fe.jpg" style="width: 65px; height: 65px;" />
+                                        </div>
+                                        <div class="col" style="width: calc(100% - 120px); margin-left: 20px; margin-right: 16px;">
+                                            <p style="color: white; font-size: 16px; font-weight: 400; height: 20px; margin-bottom: 12px;">{{ song.0 }}</p>
+                                            <p style="color: #9B9B9B; font-size: 14px; font-weight: 400; height: 15px; margin-bottom: 0;">{{ song.1 }}</p>    
+                                        </div>
+                                        <p style="width: 120px; color: white; margin-bottom: 0;">{{ song.2 }} min</p>
+                                    </div>
+                                </div>
+                            </a>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+
+                    {% if 'Podcaster' in request.session.roles %}
                     <div class="marmut-podcast">
                         <h2 style="margin-bottom: 0px;">Podcast</h2>
-                        <!-- <h3 style="color: #9B9B9B;">Belum Memiliki Podcast :(</h3> -->
+                        {% if request.session.podcasts|length == 0 %}
+                            <p style="color: #9B9B9B;">Belum Memiliki Podcast :(</p>
+                        {% else %}
                         <div class="col" style="flex-basis: 50%; color: white;">
-                            {% for i in "x"|ljust:10 %}
+                            {% for podcast in request.session.podcasts %}
                             <a href="#" style="text-decoration: none; color: inherit;">
                                 <div class="card" onmouseenter="startScroll(this)" onmouseleave="stopScroll(this)" style="width: 195px; height: 255px; display: inline-block; border-radius: 8px; padding: 12px 13px; margin: 16px 0px; margin-right: 8px; box-sizing: border-box;  overflow: hidden;">
                                     <div style="width: 170px; height: 225px; ">
@@ -119,12 +185,12 @@
                                                 <img src="https://i.pinimg.com/736x/db/9f/8e/db9f8e2e356da77dbc9971aab28265fe.jpg" />
                                             </div>
                                             <h4 class="podcast-title" style="width: 170px; height: 20px; font-size: 16px; font-weight: 400; margin-top: 12px; margin-bottom: 12px; color: white;">
-                                                Judul Podcast Haha Hihi
+                                                {{ podcast.0 }}
                                             </h4>
                                             <div class="col" style="height: 15px; flex-direction: col; justify-content: flex-start; align-items: flex-start; display: inline-flex;">
-                                                <p style="color: #9B9B9B; font-size: 14px; font-weight: 400; margin-right: 10px;">13 lagu</p>
+                                                <p style="color: #9B9B9B; font-size: 14px; font-weight: 400; margin-right: 10px;">{{ podcast.1 }} eps</p>
                                                 <p style="color: #9B9B9B; font-size: 14px; font-weight: 400; margin-left: 10px; margin-right: 10px;">|</p>
-                                                <p style="color: #9B9B9B; font-size: 14px; font-weight: 400; margin-left: 10px;">67 min</p>    
+                                                <p style="color: #9B9B9B; font-size: 14px; font-weight: 400; margin-left: 10px;">{{ podcast.2 }} min</p>    
                                             </div>
                                         </div>
                                     </div>
@@ -132,21 +198,21 @@
                             </a>
                             {% endfor %}
                         </div>
+                        {% endif %}
                     </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
         <script>
             function startScroll(card) {
                 card.querySelector('.podcast-title').classList.add('scrolling');
-                card.querySelector('.podcast-title').textContent = 'Judul Podcast Haha Hihi';
                 card.querySelector('.podcast-title').style.width = 'fit-content';
                 card.querySelector('.podcast-title').style.textOverflow = 'clip';
             }
     
             function stopScroll(card) {
                 card.querySelector('.podcast-title').classList.remove('scrolling');
-                card.querySelector('.podcast-title').textContent = 'Judul Podcast Haha Hihi';
                 card.querySelector('.podcast-title').style.width = '170px';
                 card.querySelector('.podcast-title').style.textOverflow = 'ellipsis';
             }
