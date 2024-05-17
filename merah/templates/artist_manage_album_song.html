@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-
 {% load static %}
 {% block meta %}
 <!DOCTYPE html>
@@ -9,11 +8,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'path/to/style.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <title>Marmut</title>
 </head>
 <body>
-    {% include 'navbar_artist.html' %}  
+    {% include 'navbar_artist.html' %}
+</body>
+</html>
 {% endblock meta %}
 
 {% block content %}
@@ -34,7 +36,7 @@
         width: 100%; padding: 8px; margin-top: 8px;
         border-radius: 8px; border: 1px solid #F5F5F5;
         box-sizing: border-box; display: block;
-        flex-grow: 1; 
+        flex-grow: 1;
     }
     label {
         display: block; 
@@ -44,6 +46,8 @@
         background-color: #301934; color: white;
         border: none; cursor: pointer;
         transition: background-color 0.3s ease;
+        padding: 10px 20px;
+        border-radius: 5px;
     }
     button:hover {
         background-color: #C8A2C8;
@@ -64,23 +68,23 @@
       display: flex; align-items: top; margin-bottom: 10px;
     }
     .form-group label {
-      flex: 0 0 20px; margin-right: 10px; 
+      flex: 0 0 20px; margin-right: 10px;
     }
     .form-group div label {
-      display: block; 
+      display: block;
     }
 
     .album-table {
       width: 100%; border-collapse: collapse;
-      margin-top: 20px; padding: 20px; 
-      margin-bottom: 20px; background-color: #AA98A9; 
+      margin-top: 20px; padding: 20px;
+      margin-bottom: 20px; background-color: #AA98A9;
     }
     .album-table th, .album-table td {
-      border: 1px solid #ddd; padding: 8px; 
-      text-align: left; background-color: transparent; 
+      border: 1px solid #ddd; padding: 8px;
+      text-align: left; background-color: transparent;
     }
     .album-table th {
-      background-color: #856088; color: white; 
+      background-color: #856088; color: white;
     }
     
     .album-table tr:hover td{
@@ -147,95 +151,5 @@
         {% endfor %}
       </tbody>
     </table>
-
-
-    {% if album %}
-    <h2>Add Song to Album</h2>
-    <div class="song-container">
-      <h3>Create Song</h3>
-      <form method="POST" action="{% url 'merah:add_song' album.id %}">
-          {% csrf_token %}
-          <h4>Album: {{ album.judul }}</h4> 
-          <input type="hidden" name="album_id" value="{{ album.id }}">
-  
-          <div class="form-group">
-            <label for="judul_lagu">Title:</label>
-            <input type="text" id="judul_lagu" name="judul_lagu" required>
-          </div>
-  
-          <div class="form-group">
-            <label for="artist">Artist:</label>
-            {% if user.role == 'Artist' %}
-            <input type="text" id="artist" name="artist" value="{{ user.artist_name }}" readonly>
-            {% else %}
-            <select id="artist" name="artist" required>
-              {% for artist in artists %}
-                <option value="{{ artist.id }}">{{ artist.nama }}</option>
-              {% endfor %}
-            </select>
-            {% endif %}
-          </div>
-  
-          <div class="form-group">
-            <label>Songwriters:</label>
-            <div>
-              {% for songwriter in songwriters %}
-                <label><input type="checkbox" name="songwriters" value="{{ songwriter.id }}"> {{ songwriter.nama }}</label>
-              {% endfor %}
-            </div>
-          </div>
-  
-          <div class="form-group">
-            <label>Genres:</label>
-            <div>
-              {% for genre in genres %}
-                <label><input type="checkbox" name="genres" value="{{ genre.genre }}"> {{ genre.genre }}</label>
-              {% endfor %}
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="durasi">Duration:</label>
-            <input type="text" id="durasi" name="durasi" required>
-          </div>
-  
-          <button type="submit">Submit</button>
-      </form>
-  </div>
-  {% endif %}
-
-  {% if album %}
-  <div class="album-container">
-    <h2>Daftar Lagu pada Album {{ album.judul }}</h2>
-    <table class="album-table">
-        <thead>
-            <tr>
-                <th>Judul</th>
-                <th>Durasi</th>
-                <th>Total Play</th>
-                <th>Total Download</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for song in songs %}
-            <tr>
-                <td>{{ song.judul }}</td>
-                <td>{{ song.durasi }} menit</td>
-                <td>{{ song.total_play }}</td>
-                <td>{{ song.total_download }}</td>
-                <td>
-                    <a href="#"><button class="view-button">Lihat Detail</button></a>
-                    <form method="post" action="#" style="display:inline;">
-                      {% csrf_token %}
-                      <button type="submit" class="delete-button">Hapus</button>
-                    </form>
-                  </td>
-              </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-    {% endif %}
-  </div>
-{% endblock %}
+</div>
+{% endblock content %}

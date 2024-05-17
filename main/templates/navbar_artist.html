@@ -16,7 +16,7 @@
     <!-- ===== Boxicons CSS ===== -->
     <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
 
-     <title>Responsive Navigation Menu Bar</title>
+     <title>Home - Label</title>
 </head>
 
 <body>
@@ -32,8 +32,9 @@
                 </div>
 
                 <ul class="nav-links">
-                    <li><a href="{% url 'merah:create_album' %}">Kelola Album & Song</a></li>
-                    {% comment %} <li><a href="{% url 'merah:cek-royalti' %}">Cek Royalti</a></li> {% endcomment %}
+                    <li><a href="{% url 'main:dashboard_user' %}">Home</a></li>
+                    <li><a href="{% url 'merah:manage_albums' %}">Manage Album & Song</a></li>
+                    <li><a href="{% url 'merah:cek_royalti' %}">Check Royalti</a></li>
                     <li><a href="{% url 'main:logout' %}">Logout</a></li>
                 </ul>
             </div>
