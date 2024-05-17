@@ -1,17 +1,24 @@
 import json
 from django.core.serializers.json import DjangoJSONEncoder
-from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages  
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+import datetime
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+import psycopg2
+from marmut_f3 import settings
 from utilities.helper import query
+from django.http.response import JsonResponse
 
+from utilities.helper import query
 from .forms import SignupFormPengguna, SignupFormLabel
 from django.shortcuts import render
 from django.db import OperationalError, ProgrammingError, connection
+from django.http import HttpResponseNotFound
+from uuid import UUID
 
 def show_main(request):
     context = {
@@ -50,24 +57,16 @@ def login_user(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
-        user = authenticate(request, username=username, password=password)
-        print(f"Authenticated User: {user}")
-        
+        user, is_premium, roles = authenticate_akun(username, password)
         if user is not None:
-            login(request, user)
-            print(f"Logged in User: {user}")
-            
-            roles = user.get_roles() if isinstance(user, CustomUser) else ['Label']
-            print(f"User Roles: {roles}")
-
-            request.session['username'] = user.username
-            request.session['premium_status'] = 'Premium' if user.is_staff else 'Free'
+            request.session['username'] = username
+            request.session['premium_status'] = 'Premium' if is_premium else 'Free'
             request.session['roles'] = roles
 
             if 'Label' in roles:
-                request.session['name'] = user[1]
+                request.session['nama'] = user[1]
                 request.session['email'] = user[2]
-                request.session['contact'] = user[4]
+                request.session['kontak'] = str(user[4])
                 return redirect('main:dashboard_label')
             elif 'Akun' in roles:
                 request.session['email'] = user.email
@@ -90,44 +89,38 @@ def login_user(request):
                 #     request.session['songs'] = get_songs_by_artist(username) + get_songs_by_songwriter(username)
                 if 'Podcaster' in roles:
                     request.session['podcasts'] = get_podcasts_by_podcaster(username)
-                print(f"Role-specific Session Data: {request.session.items()}")
                 return redirect('main:dashboard_user')
         else:
             messages.info(request, 'Sorry, incorrect username or password. Please try again.')
-            return render(request, 'login.html', {'error_message': 'Invalid username or password'})
+            error_message = 'Invalid username or password'
+            print(error_message)
+            return render(request, 'login.html', {'error_message': error_message})
     else:
         return render(request, 'login.html')
-    
+
 def logout_user(request):
     logout(request)
     response = HttpResponseRedirect(reverse('main:login'))
     response.delete_cookie('last_login')
     return response
 
-@login_required
-def dashboard_label(request):
-    return render(request, 'dashboard_label.html')
-
-@login_required
+# @login_required
 def dashboard_user(request):
     return render(request, "dashboard_user.html")
+
+# @login_required
+def dashboard_label(request):
+    return render(request, "dashboard_label.html")
 
 
 def authenticate_akun(username, password):
     result = query(f'SELECT * FROM "MARMUT"."akun" WHERE email = \'{username}\'')
     akun = result[0] if result else None
     
-    # Debugging: Print the query result for akun
-    print(f"akun query result: {result}")
-
     if not akun:
         print("User not found in 'akun', checking 'label' table")
         result = query(f'SELECT * FROM "MARMUT"."label" WHERE email = \'{username}\' AND password = \'{password}\'')
         label = result[0] if result else None
-        
-        # Debugging: Print the query result for label
-        print(f"label query result: {result}")
-
         if label:
             user = label
             role = 'Label'
@@ -135,7 +128,7 @@ def authenticate_akun(username, password):
             user = None
             role = None
     else:
-        if akun[1] == password:  # Assuming the password is at index 1
+        if akun.password == password:
             user = akun
             role = 'Akun'
         else:
@@ -145,25 +138,19 @@ def authenticate_akun(username, password):
     if user:
         premium_status = query(f'SELECT * FROM "MARMUT"."premium" WHERE email = \'{username}\'')
         
-        # Debugging: Print the premium status
-        print(f"premium_status: {premium_status}")
-
         if premium_status:
             premium_id = premium_status[0]
             expired_premium = query(f'SELECT * FROM "MARMUT"."transaction" WHERE email = \'{username}\' AND timestamp_berakhir < CURRENT_DATE')
             if expired_premium:
                 query(f'DELETE FROM "MARMUT"."downloaded_song" WHERE email_downloader = \'{premium_id}\'')
                 query(f'DELETE FROM "MARMUT"."premium" WHERE email = \'{premium_id}\'')
-
+        
         roles = []
         if role == 'Akun':
             roles.append('Akun')
             roles += get_roles_by_email(username)
         else:
             roles.append('Label')
-
-        # Debugging: Print the final user, premium status, and roles
-        print(f"Authenticated User: {user}, Premium Status: {premium_status}, Roles: {roles}")
 
         return user, premium_status, roles
     else:
