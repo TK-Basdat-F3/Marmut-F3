@@ -72,20 +72,22 @@ def login_user(request):
                 request.session['email'] = user.email
                 request.session['password'] = user.password
                 request.session['nama'] = user.nama
-                request.session['tanggal_lahir'] = user.tempat_lahir
+                request.session['tempat_lahir'] = user.tempat_lahir
                 tanggal_lahir_str = user.tanggal_lahir
                 request.session['tanggal_lahir'] = tanggal_lahir_str.strftime('%d-%m-%Y')
                 request.session['is_verified'] = user.is_verified
                 request.session['kota_asal'] = user.kota_asal
                 request.session['gender'] = "Perempuan" if user.gender == 0 else "Laki-laki"
 
+                request.session['playlists'] = get_user_playlists_by_user(username)
+
                 if 'Artist' in roles:
-                    request.session['songs'] = get_songs_by_artist(username)
-                elif 'Songwriter' in roles:
-                    request.session['songs'] = get_songs_by_songwriter(username)
-                elif 'Artist' and 'Songwriter' in roles:
-                    request.session['songs'] = get_songs_by_artist(username) + get_songs_by_songwriter(username)
-                elif 'Podcaster' in roles:
+                    request.session['songs_by_artist'] = get_songs_by_artist(username)
+                if 'Songwriter' in roles:
+                    request.session['songs_by_songwriter'] = get_songs_by_songwriter(username)
+                # elif 'Artist' and 'Songwriter' in roles:
+                #     request.session['songs'] = get_songs_by_artist(username) + get_songs_by_songwriter(username)
+                if 'Podcaster' in roles:
                     request.session['podcasts'] = get_podcasts_by_podcaster(username)
                 return redirect('main:dashboard_user')
         else:
@@ -170,35 +172,65 @@ def get_roles_by_email(username):
     
     return roles
 
+def get_user_playlists_by_user(username):
+    playlists = query(f'''
+                      SELECT up.judul 
+                      FROM "MARMUT"."playlist" p
+                      INNER JOIN "MARMUT"."user_playlist" up ON p.id = up.id_playlist
+                      WHERE up.email_pembuat = \'{username}\'
+                      ''')
+    if len(playlists) == 0:
+        return playlists
+    return playlists[0]
+
 def get_songs_by_artist(username):
-    artist_id = query(f'SELECT id FROM "MARMUT"."artist" WHERE email_akun = \'{username}\'')[0]
+    artist_id = query(f'SELECT id FROM "MARMUT"."artist" WHERE email_akun = \'{username}\'')[0][0]
+    print("artist_id: ", artist_id)
     songs = query(f'''
-        SELECT k.judul
-        FROM "MARMUT"."song" s
-        INNER JOIN "MARMUT"."konten" k ON s.id_konten = k.id
-        WHERE s.id_artist = \'{artist_id}
-    ''')
-    return [song.judul for song in songs]
+                    SELECT k.judul, a.nama, k.durasi
+                    FROM "MARMUT"."konten" k
+                    INNER JOIN "MARMUT"."song" s ON s.id_konten = k.id
+                    JOIN "MARMUT"."artist" art ON s.id_artist = art.id
+                    JOIN "MARMUT"."akun" a ON art.email_akun = a.email
+                    WHERE s.id_artist = \'{artist_id}\'
+                ''')
+    print("songs: ", songs)
+    return songs
 
 def get_songs_by_songwriter(username):
-    songwriter_id = query(f'SELECT id FROM "MARMUT"."songwriter" WHERE email_akun = \'{username}\'')[0]
+    songwriter_id = query(f'SELECT id FROM "MARMUT"."songwriter" WHERE email_akun = \'{username}\'')[0][0]
     song_ids = query(f'SELECT id_song FROM "MARMUT"."songwriter_write_song" WHERE id_songwriter = \'{songwriter_id}\'')
-    song_titles = []
+    songs = []
     for song_id in song_ids:
-        song_title = query(f'''
-            SELECT k.judul
+        song_list = []
+        song = query(f'''
+            SELECT k.judul, a.nama, k.durasi
             FROM "MARMUT"."song" s
             INNER JOIN "MARMUT"."konten" k ON s.id_konten = k.id
-            WHERE s.id_konten = \'{song_id}\'
+            JOIN "MARMUT"."artist" art ON s.id_artist = art.id
+            JOIN "MARMUT"."akun" a ON art.email_akun = a.email
+            WHERE s.id_konten = \'{song_id[0]}\'
         ''')[0]
-        song_titles.append(song_title.judul)
-    return song_titles
+        song_list.append(song.judul)
+        song_list.append(song.nama)
+        song_list.append(song.durasi)
+        songs.append(song_list)
+    print("songs by songwriter: ",songs)
+    return songs
 
 def get_podcasts_by_podcaster(username):
-    podcaster_id = query(f'SELECT email FROM "MARMUT"."podcaster" WHERE email = \'{username}\'')[0]
+    podcaster_id = query(f'SELECT email FROM "MARMUT"."podcaster" WHERE email = \'{username}\'')[0][0]
     id_konten_list = query(f'SELECT id_konten FROM "MARMUT"."podcast" WHERE email_podcaster = \'{podcaster_id}\'')
-    podcast_titles = []
+    podcasts = []
     for id_konten in id_konten_list:
-        title = query(f'SELECT judul FROM "MARMUT"."konten" WHERE id = \'{id_konten}\'')[0]
-        podcast_titles.append(title.judul)
-    return podcast_titles
+        print("id_konten: ",id_konten[0])
+        podcast_list = []
+        title = query(f'SELECT judul FROM "MARMUT"."konten" WHERE id = \'{id_konten[0]}\'')[0][0]
+        total_episodes = query(f'SELECT COUNT(*) as total_episodes FROM "MARMUT"."episode" WHERE id_konten_podcast = \'{id_konten[0]}\'')[0][0]
+        total_durasi = query(f'SELECT SUM(durasi) as total_durasi FROM "MARMUT"."episode" WHERE id_konten_podcast = \'{id_konten[0]}\'')[0][0]
+        podcast_list.append(title)
+        podcast_list.append(total_episodes)
+        podcast_list.append(total_durasi)
+        podcasts.append(podcast_list)
+    print("podcasts: ", podcasts)
+    return podcasts
