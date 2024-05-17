@@ -31,10 +31,10 @@
 
                 <ul class="nav-links">
                     <li><a href="{% url 'main:dashboard_user' %}">Dashboard</a></li>
-                    <li><a href="#">Chart</a></li>
+                    <li><a href="{% url 'biru:chart_list' %}">Chart</a></li>
                     <li><a href="#">Kelola Playlist</a></li>
                     <li><a href="{% url 'kuning:subscribe_menu' %}">Langganan Paket</a></li>
-                    <li><a href="#">Kelola Podcast</a></li>
+                    <li><a href="{% url 'biru:kelola_podcast' %}">Kelola Podcast</a></li>
                     <li><a href="{% url 'main:login' %}">Log Out</a></li>
                 </ul>
             </div>

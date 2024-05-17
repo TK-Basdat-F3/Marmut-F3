@@ -84,20 +84,19 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>Daily Top 20</td>
-                    <td><button class="action-button">Lihat Daftar Lagu</button></td>
-                </tr>
-                <tr>
-                    <td>Weekly Top 20</td>
-                    <td><button class="action-button">Lihat Daftar Lagu</button></td>
-                </tr>
-                <!-- Tambahkan baris untuk chart lainnya -->
+                {% for chart in charts %}
+                    <tr>
+                        <td>{{ chart.tipe }}</td>
+                        <td>
+                            <button onclick="window.location.href='{% url 'biru:chart_detail' chart.id_playlist chart.tipe%}';" class="action-button">
+                                Lihat Daftar Lagu
+                            </button>
+                        </td>                                                                    
+                    </tr>
+                {% endfor %}
             </tbody>
         </table>
         <td><button class="action-button">Kembali</button></td>
-
-       
             </tbody>
         </table>
     </div>

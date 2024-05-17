@@ -99,21 +99,20 @@
         <div class="podcast-info">
             <div class="area-container">
                 <div class="area">
-                    <p>Judul: Podcast1</p>
+                    <p>Judul: {{ detail.judul }}</p>
                     <p>Genre(s):</p>
                     <ul>
-                        <li>Genre1</li>
-                        <li>Genre2</li>
+                        <li>{{ detail.genre }}</li>
                     </ul>
                     <td><button class="kembali-button">Kembali</button></td>
                 </div>
             </div>
             <div class="area-container">
                 <div class="area">
-                    <p>Podcaster: Artist1</p>
-                    <p>Total Durasi: 8 jam 20 menit</p>
-                    <p>Tanggal Rilis: 18/03/24</p>
-                    <p>Tahun: 2024</p>
+                    <p>Podcaster: {{ detail.nama }}</p>
+                    <p>Total Durasi: {{ detail.durasi }}</p>
+                    <p>Tanggal Rilis: {{ detail.tanggal_rilis }}</p>
+                    <p>Tahun: {{ detail.tahun }}</p>
                 </div>
             </div>
         </div>
@@ -128,19 +127,14 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>SubJudul1</td>
-                    <td>Lorem Ipsum ....</td>
-                    <td>59 menit</td>
-                    <td>18/03/2024</td>
-                </tr>
-                <tr>
-                    <td>SubJudul2</td>
-                    <td>Lorem Ipsum ....</td>
-                    <td>1 jam 2 menit</td>
-                    <td>25/03/2024</td>
-                </tr>
-                <!-- Isi dengan episode lainnya -->
+                {% for episode in episodes %}
+                    <tr>
+                        <td>{{ episode.judul }}</td>
+                        <td>{{ episode.deskripsi }}</td>
+                        <td>{{ episode.durasi }}</td>
+                        <td>{{ episode.tanggal }}</td>                        
+                    </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>

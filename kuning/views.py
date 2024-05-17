@@ -67,7 +67,7 @@ def search_found(request):
                            WHERE LOWER(k.judul) LIKE \'%{query_str}%\'
                         ''')
         podcasts = query(f'''
-                           SELECT k.judul, a.nama
+                           SELECT k.judul, a.nama, k.id
                            FROM "MARMUT"."konten" k
                            JOIN "MARMUT"."podcast" p ON k.id = p.id_konten
                            JOIN "MARMUT"."podcaster" pr ON p.email_podcaster = pr.email
