@@ -31,12 +31,16 @@
 
                 <ul class="nav-links">
                     <li><a href="{% url 'main:dashboard_user' %}">Dashboard</a></li>
-                    <li><a href="#">Chart</a></li>
-                    <li><a href="#">Kelola Playlist</a></li>
+                    <li><a href="{% url 'biru:chart_list' %}">Chart</a></li>
+                    <li><a href="{% url 'hijau:kelola_playlist' %}">Kelola Playlist</a></li>
                     <li><a href="{% url 'kuning:subscribe_menu' %}">Langganan Paket</a></li>
-                    <li><a href="#">Kelola Podcast</a></li>
-                    <li><a href="{% url 'main:login' %}">Log Out</a></li>
-                </ul>
+                    {% if request.session.premium_status == 'Premium' %}
+                        <li><a href="{% url 'kuning:downloaded_songs' %}">Kelola Downloaded Songs</a></li>
+                    {% endif %}
+                    <li><a href="{% url 'biru:kelola_podcast' %}">Kelola Podcast</a></li>
+                    <li><a href="{% url 'kuning:search_content' %}">Search Bar</a></li>
+                    <li><a href="{% url 'main:logout' %}">Logout</a></li>
+                </ul>                
             </div>
 
             <div class="darkLight-searchBox">

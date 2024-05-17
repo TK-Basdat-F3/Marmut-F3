@@ -319,13 +319,11 @@
                 </div>
 
                 <ul class="nav-links">
-                    {% if 'Label' in request.session.roles %}
-                        <li><a href="{% url 'main:dashboard_label' %}">Home</a></li>
-                        <li><a href="{% url 'merah:label_manage' %}">Manage Album & Song</a></li>
-                        <li><a href="{% url 'merah:cek_royalti' %}">Check Royalti</a></li>
-                    {% endif %}
+                    <li><a href="{% url 'main:dashboard_label' %}">Dashboard</a></li>
+                    <li><a href="{% url 'merah:label_manage' %}">Kelola Album</a></li>
+                    <li><a href="{% url 'merah:cek_royalti' %}">Cek Royalti</a></li>
                     <li><a href="{% url 'main:logout' %}">Logout</a></li>
-                </ul>
+                </ul>                
             </div>
 
             <div class="darkLight-searchBox">
