@@ -140,49 +140,43 @@
 
         <div class="detail-song">
             <div style="margin-right: 5%;">
-                <img src="https://i.ibb.co/rxdjLzN/cover.png" alt="Gambar Playlist" class="song-img">
+                <img src="https://i.ibb.co.com/gzbn6zD/cover.png" alt="Gambar Playlist" class="song-img">
             </div>
             <div style="display: flex; flex-direction: row;">
                 <div style="margin-right: 20px;">
-                    <p><strong>Judul:</strong> Song1</p>
+                    {% for detail in details %}
+                    <p><strong>Judul:</strong> {{detail.judul}}</p>
                     <p><strong>Genre(s):</strong></p>
                     <ul>
+                        {% for genre in genres %}
                         <li>
-                            <p>Genre1</p>
+                            <p>{{genre.genre}}</p>
                         </li>
-                        <li>
-                            <p>Genre2</p>
-                        </li>
+                        {% endfor %}
                     </ul>
-                    <p><strong>Artist:</strong></p>
-                    <ul>
-                        <li>
-                            <p>Artist1</p>
-                        </li>
-                        <li>
-                            <p>Artist2</p>
-                        </li>
-                    </ul>
+                    <p><strong>Artist: </strong> {{detail.nama}}</p>
+
                     <p><strong>Songwriter(s):</strong> </p>
                     <ul>
+                        {% for songwriter in songwriters %}
+
                         <li>
-                            <p>Songwriter1</p>
+                            <p>{{songwriter.nama}}</p>
                         </li>
-                        <li>
-                            <p>Songwriter2</p>
-                        </li>
+                        {% endfor %}
+
                     </ul>
                 </div>
                 <div>
-                    <p><strong>Durasi:</strong> 3 menit</p>
-                    <p><strong>Tanggal Rilis:</strong> 18/03/24</p>
-                    <p><strong>Tahun:</strong> 2024</p>
-                    <p><strong>Total Play:</strong> 0</p>
-                    <p><strong>Total Downloads:</strong> 0</p>
-                    <p><strong>Album:</strong> Album</p>
+                    <p><strong>Durasi:</strong> {{detail.durasi}}</p>
+                    <p><strong>Tanggal Rilis:</strong> {{detail.tanggal_rilis}}</p>
+                    <p><strong>Tahun:</strong> {{detail.tahun}}</p>
+                    <p><strong>Total Play:</strong> {{detail.total_play}}</p>
+                    <p><strong>Total Downloads:</strong> {{detail.total_download}}</p>
+                    <p><strong>Album:</strong> {{detail.album}}</p>
                 </div>
 
-
+                {% endfor %}
             </div>
 
 
@@ -194,7 +188,7 @@
         </div>
         <div class="song-actions" class="song-actions" class="song-actions"> <button onclick="playSong()">Play</button>
             <button onclick="showPopUp()">Tambah ke Playlist</button>
-            <button onclick="downloadSong()">Download</button>
+            <a href="{% url 'hijau:download_song' id_song %}"><button>Download</button></a>
             <button onclick="history.back()">Kembali</button>
 
         </div>
@@ -206,14 +200,16 @@
                 Lagu ke Playlist</h1>
 
 
-
-            <select id="playlist-dropdown" class="playlist-dropdown">
-                <option value="lagu1">Playlist 1</option>
-                <option value="lagu2">Playlist 2</option>
-                <option value="lagu3">Playlist 3</option>
-            </select>
+            <form method="POST" action="{% url 'hijau:add_song_from_detail' id_song %}">
+                <label for="playlist-dropdown">Pilih Playlist: </label><br>
+                <select id="playlist-dropdown" class="playlist-dropdown" name="playlist-dropdown">
+                    {% for playlist in playlists %}
+                    <option value="{{playlist.id_playlist}}">{{playlist.judul}}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit" class="form-btn" id="submit-btn">Submit</button>
+            </form>
             <button class="form-btn" onclick="hidePopup()">Cancel</button>
-            <button type="submit" class="form-btn" id="submit-btn">Submit</button>
 
         </div>
 
