@@ -1,20 +1,89 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block meta %}
-{% include 'navbar_pengguna.html' %}
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">  
+    {% include 'navbar_label.html' %}
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 {% endblock meta %}
 
 {% block content %}
-{% load static %}
-<html>
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Marmut - Dashboard</title>
-        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    </head>
-    <body style="background-color: #181414; font-family: 'Montserrat', sans-serif; color: white; padding-top: 70px;">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        .card{
+            background-color: #1c1818;
+            overflow-x: hidden;
+            transition: all ease 0.4s;
+        }
+        .card:hover{
+            background-color: #403b3b;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all ease 0.4s;
+        }
+        .card div div img{
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .small-img-row{
+            display: flex;
+            background: #1c1818;
+            margin: 20px 0;
+            align-items: center;
+            border-radius: 8px;
+            overflow: hidden;
+            width: 24%;
+            height: 75px;
+        }
+        .small-img-row:hover{
+            background-color: #403b3b;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all ease 0.4s;
+        }
+        .user-content {
+            display: flex;
+            flex-direction: column;
+            gap: 60px;
+        }
+        .marmut-album {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+        .marmut-album h2 {
+            color: white;
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        .album-title {
+            white-space: nowrap;
+            overflow-x: auto;
+            overflow-y: hidden;
+            text-overflow: ellipsis;
+        }
+        .scrolling {
+            animation-name: scroll;
+            animation-duration: 10s;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+        }
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(calc(-100% - 170px));
+            }
+        }
+    </style>
+
+    <div style="background-color: #181414; font-family: 'Montserrat', sans-serif; color: white; padding-top: 70px;">
         <div style="width: 100vw; height: fit-content; top: 0; left: 0; padding-top: 2%; padding-bottom: 2%; box-sizing: border-box; background: linear-gradient(180deg, #BB9376 0%, #181414 100%);">
             <div class="container" style="width: 100%; height: fit-content; padding-left: 8%; padding-right: 8%; padding-top: 2%; padding-bottom: 1%; box-sizing: border-box; background: transparent; border-radius: 8px; border: 1px solid white;">
                 <div style="align-content: center;">
@@ -42,32 +111,29 @@
                 </div>
             </div>
         </div>
+
         <div style="padding-left: 4%; padding-right: 4%;">
             <div class="col" style="flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 60px; display: inline-flex">
                 <div class="user-content">
-
-                    {% if 'Label' in request.session.roles %}
                     <div class="marmut-album">
                         <h2 style="margin-bottom: 0px;">Album</h2>
-                        {% if request.session.album|length == 0 %}
-                            <p style="color: #9B9B9B;">Belum Memiliki Album :(</p>
-                        {% else %}
+                        <!-- <h3 style="color: #9B9B9B;">Belum Memiliki Album :(</h3> -->
                         <div class="col" style="flex-basis: 50%; color: white;">
-                            {% for album in request.session.album %}
+                            {% for i in "x"|ljust:10 %}
                             <a href="#" style="text-decoration: none; color: inherit;">
                                 <div class="card" onmouseenter="startScroll(this)" onmouseleave="stopScroll(this)" style="width: 195px; height: 255px; display: inline-block; border-radius: 8px; padding: 12px 13px; margin: 16px 0px; margin-right: 8px; box-sizing: border-box;  overflow: hidden;">
-                                    <div style="width: 170px; height: 225px; ">
+                                    <div style="width: 170px; height: 225px;">
                                         <div class="col" style="flex-direction: column; justify-content: flex-start; align-items: flex-start; display: inline-flex;">
                                             <div style="width: 170px; height: 165px; background-color: #DD633D; border-radius: 8px">
                                                 <img src="https://i.pinimg.com/736x/db/9f/8e/db9f8e2e356da77dbc9971aab28265fe.jpg" />
                                             </div>
                                             <h4 class="album-title" style="width: 170px; height: 20px; font-size: 16px; font-weight: 400; margin-top: 12px; margin-bottom: 12px; color: white;">
-                                                {{ album.0 }}
+                                                Judul Album WLeo Wleo oeo
                                             </h4>
                                             <div class="col" style="height: 15px; flex-direction: col; justify-content: flex-start; align-items: flex-start; display: inline-flex;">
-                                                <p style="color: #9B9B9B; font-size: 14px; font-weight: 400; margin-right: 10px;">{{ album.1 }} lagu</p>
+                                                <p style="color: #9B9B9B; font-size: 14px; font-weight: 400; margin-right: 10px;">13 lagu</p>
                                                 <p style="color: #9B9B9B; font-size: 14px; font-weight: 400; margin-left: 10px; margin-right: 10px;">|</p>
-                                                <p style="color: #9B9B9B; font-size: 14px; font-weight: 400; margin-left: 10px;">{{ album.2 }} min</p>    
+                                                <p style="color: #9B9B9B; font-size: 14px; font-weight: 400; margin-left: 10px;">67 min</p>
                                             </div>
                                         </div>
                                     </div>
@@ -75,105 +141,25 @@
                             </a>
                             {% endfor %}
                         </div>
-                        {% endif %}
                     </div>
-                    {% endif %}
                 </div>
             </div>
         </div>
+
         <script>
             function startScroll(card) {
                 card.querySelector('.album-title').classList.add('scrolling');
+                card.querySelector('.album-title').textContent = 'Judul Album WLeo Wleo oeo';
                 card.querySelector('.album-title').style.width = 'fit-content';
                 card.querySelector('.album-title').style.textOverflow = 'clip';
             }
     
             function stopScroll(card) {
                 card.querySelector('.album-title').classList.remove('scrolling');
+                card.querySelector('.album-title').textContent = 'Judul Album WLeo Wleo oeo';
                 card.querySelector('.album-title').style.width = '170px';
                 card.querySelector('.album-title').style.textOverflow = 'ellipsis';
             }
         </script>
-    </body>
-</html>
-
-<style>
-    * {
-        margin: 0;
-        padding: 0;
-    }
-    .card{
-        background-color: #1c1818;
-        overflow-x: hidden;
-        transition: all ease 0.4s;
-    }
-    .card:hover{
-        background-color: #403b3b;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: all ease 0.4s;
-    }
-    .card div div img{
-        width: 100%;
-        border-radius: 8px;
-        margin-bottom: 10px;
-    }
-    .small-img-row{
-        display: flex;
-        background: #1c1818;
-        margin: 20px 0;
-        align-items: center;
-        border-radius: 8px;
-        overflow: hidden;
-        width: 24%;
-        height: 75px;
-    }
-    .small-img-row:hover{
-        background-color: #403b3b;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: all ease 0.4s;
-    }
-    .user-content {
-        display: flex;
-        flex-direction: column;
-        gap: 60px;
-    }
-
-    .marmut-album {
-        display: flex;
-        flex-direction: column;
-        gap: 32px;
-    }
-
-    .marmut-album h2 {
-        color: white;
-        font-size: 24px;
-        font-weight: 600;
-        margin-bottom: 16px;
-    }
-
-    .album-title {
-        white-space: nowrap;
-        overflow-x: auto;
-        overflow-y: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .scrolling {
-        animation-name: scroll;
-        animation-duration: 10s;
-        animation-timing-function: linear;
-        animation-iteration-count: infinite;
-    }
-
-    @keyframes scroll {
-        0% {
-            transform: translateX(0);
-        }
-        100% {
-            transform: translateX(calc(-100% - 170px));
-        }
-    }
-</style>
+    </div>
 {% endblock content %}

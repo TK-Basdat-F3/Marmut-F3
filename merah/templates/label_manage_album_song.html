@@ -13,7 +13,9 @@
     <title>Marmut</title>
 </head>
 <body>
-    {% include 'navbar_label.html' %}  
+    {% include 'navbar_label.html' %}
+</body>
+</html>
 {% endblock meta %}
 
 {% block content %}
@@ -88,51 +90,23 @@
                 </tr>
             </thead>
             <tbody>
+                {% for album in albums %}
                 <tr class="table-row">
-                    <td>Album1</td>
-                    <td>LabelA</td>
-                    <td>0</td>
-                    <td>0 min</td>
-                    <td><button class="action-button">View Songs</button> <button class="action-button">Delete</button></td>
+                    <td>{{ album.judul }}</td>
+                    <td>{{ album.label_nama }}</td>
+                    <td>{{ album.jumlah_lagu }}</td>
+                    <td>{{ album.total_durasi }} min</td>
+                    <td>
+                        <a href="{% url 'merah:label_album_detail' album.id %}">
+                            <button class="action-button">View Songs</button>
+                        </a> 
+                        <form method="post" action="{% url 'merah:delete_album' album.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button class="action-button">Delete</button>
+                        </form>
+                    </td>
                 </tr>
-                <tr class="table-row">
-                    <td>Album2</td>
-                    <td>LabelB</td>
-                    <td>2</td>
-                    <td>4 min</td>
-                    <td><button class="action-button">View Songs</button> <button class="action-button">Delete</button></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div class="song-container">
-        <h2>Songs in Album1</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Duration</th>
-                    <th>Total Plays</th>
-                    <th>Total Downloads</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr class="table-row">
-                    <td>Lagu1</td>
-                    <td>2 min</td>
-                    <td>3</td>
-                    <td>0</td>
-                    <td><button class="action-button">View Details</button> <button class="action-button">Delete</button></td>
-                </tr>
-                <tr class="table-row">
-                    <td>Lagu2</td>
-                    <td>3 min</td>
-                    <td>2</td>
-                    <td>2</td>
-                    <td><button class="action-button">View Details</button> <button class="action-button">Delete</button></td>
-                </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>

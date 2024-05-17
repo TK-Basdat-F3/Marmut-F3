@@ -15,7 +15,7 @@
     <!-- ===== Boxicons CSS ===== -->
     <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
 
-     <title>Responsive Navigation Menu Bar</title>
+     <title>Navbar - User</title>
 </head>
 <body>
     <nav>
@@ -33,6 +33,9 @@
                     <li><a href="{% url 'biru:chart_list' %}">Chart</a></li>
                     <li><a href="#">Kelola Playlist</a></li>
                     <li><a href="{% url 'kuning:subscribe_menu' %}">Langganan Paket</a></li>
+                    {% if request.session.premium_status == 'Premium' %}
+                        <li><a href="{% url 'kuning:downloaded_songs' %}">Downloaded Songs</a></li>
+                    {% endif %}
                     <li><a href="#">Register</a></li>
                     <li><a href="{% url 'main:logout' %}">Logout</a></li>
                 </ul>
