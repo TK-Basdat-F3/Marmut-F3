@@ -73,24 +73,26 @@ def play_podcast(request, id_podcast):
                 konten.tahun
             FROM "MARMUT"."podcast"
             JOIN "MARMUT"."konten" ON podcast.id_konten = konten.id
-            JOIN "MARMUT"."genre" ON podcast.id_konten = genre.id          
+            JOIN "MARMUT"."genre" ON podcast.id_konten = genre.id_konten          
             JOIN "MARMUT"."akun" ON podcast.email_podcaster = akun.email
             WHERE podcast.id_konten = %s
         ''', [id_podcast])
+
+        detail = detail_query[0] if detail_query else None
 
         episode_query = query('''
             SELECT 
                 episode.judul,
                 episode.deskripsi,
                 episode.durasi,
-                episode.tanggal            
+                episode.tanggal_rilis            
             FROM "MARMUT"."episode"
             WHERE episode.id_konten_podcast = %s
         ''', [id_podcast])
 
         return render(request, 'play_podcast.html',{
             'podcast': podcast,
-            'detail': detail_query,
+            'detail': detail,
             'episodes' : episode_query
         })
     except Exception as e:
@@ -122,29 +124,30 @@ def kelola_podcast(request):
 
 @csrf_exempt
 def create_podcast(request):
-    # if not has_role(request, ['Podcaster']):
-    #     return redirect('main:login')
+    if not has_role(request, ['Podcaster']):
+        return redirect('main:login')
 
-    # if request.method == 'POST':
-    #     judul_podcast = request.POST.get('judul_podcast')
-    #     genre = request.POST.get('genre')
-    #     podcaster = request.POST.get('podcaster')
-    #     id_podcast = str(uuid.uuid4())
+    if request.method == 'POST':
+        judul_podcast = request.POST.get('judul_podcast')
+        genre = request.POST.get('genre')
+        podcaster = request.POST.get('podcaster')
+        id_podcast = str(uuid.uuid4())
+        email =  request.session['email']
 
-    #     create_podcast_query = f"""
-    #     INSERT INTO "MARMUT"."podcast" (id_email, )
-    #     VALUES ('{id_album}', '{judul_album}', 0, '{label}', 0)
-    #     """
-    #     result = query(create_podcast_query)
-    #     if type(result) != int:
-    #         return JsonResponse({'success': 'false', 'message': str(result)}, status=200)
+        create_podcast_query = f"""
+        INSERT INTO "MARMUT"."podcast" (id_konten, email_podcaster )
+        VALUES ('{id_podcast}', '{email}')
+        """
+        result = query(create_podcast_query)
+        if type(result) != int:
+            return JsonResponse({'success': 'false', 'message': str(result)}, status=200)
 
-    #     return redirect('biru:create_episode', id_podcast=id_podcast)
+        return redirect('biru:create_episode', id_podcast=id_podcast)
 
-    # albums = query('SELECT * FROM "MARMUT"."podcast"')
-    # if type(podcast) != list:
-    #     podcast = []
-    return render(request, 'kelola_podcast.html', {'podcast': podcast})
+    albums = query('SELECT * FROM "MARMUT"."podcast"')
+    if type(podcast) != list:
+        podcast = []
+    return render(request, 'create_podcast.html')
 
 
 def daftarEpisode_podcast(request):

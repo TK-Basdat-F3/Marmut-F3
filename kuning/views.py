@@ -17,11 +17,35 @@ def subscribe_form(request):
     return render(request, "subscribe_form.html")
 
 def subscribe_history(request):
+    username = request.session.get('username')
+
+    if not username:
+        return HttpResponseNotFound("User not logged in.")
+    
+    email = query(f'SELECT email FROM "MARMUT"."transaction" WHERE email = \'{username}\'')
+    transaction = []
+
+    if email:
+        trans_ids = query(f'SELECT id FROM "MARMUT"."transaction" WHERE email = \'{email[0][0]}\'')
+        for trans_id in trans_ids:
+            trans_list = []
+            trans = query(f'''
+                          SELECT t.jenis_paket, t.timestamp_dimulai, t.timestamp_berakhir, t.metode_bayar, t.nominal
+                          FROM "MARMUT"."transaction" t
+                          WHERE t.id = \'{trans_id[0]}\'
+                          ''')[0]
+            print(trans)
+            trans_list.append(trans.jenis_paket)
+            trans_list.append(str(trans.timestamp_dimulai))
+            trans_list.append(str(trans.timestamp_berakhir))
+            trans_list.append(trans.metode_bayar)
+            trans_list.append(trans.nominal)
+            transaction.append(trans_list)
+    request.session['subscribe_history'] = transaction
     return render(request, "subscribe_history.html")
 
 def downloaded_songs(request):
     username = request.session.get('username')
-    print(username)
 
     if not username:
         return HttpResponseNotFound("User not logged in.")

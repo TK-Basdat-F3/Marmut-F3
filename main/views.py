@@ -66,6 +66,7 @@ def login_user(request):
                 request.session['nama'] = user.nama 
                 request.session['email'] = user.email 
                 request.session['kontak'] = user.kontak 
+                request.session['album'] = get_album_by_label(username)
                 return redirect('main:dashboard_label')
             elif 'Akun' in roles:
                 request.session['email'] = user.email
@@ -186,38 +187,88 @@ def get_roles_by_email(username):
     
     return roles
 
+def get_user_playlists_by_user(username):
+    playlists = query(f'''
+                      SELECT up.judul 
+                      FROM "MARMUT"."playlist" p
+                      INNER JOIN "MARMUT"."user_playlist" up ON p.id = up.id_playlist
+                      WHERE up.email_pembuat = \'{username}\'
+                      ''')
+    if len(playlists) == 0:
+        return playlists
+    return playlists[0]
+
 def get_songs_by_artist(username):
-    artist_id = query(f'SELECT id FROM "MARMUT"."artist" WHERE email_akun = \'{username}\'')[0]
+    artist_id = query(f'SELECT id FROM "MARMUT"."artist" WHERE email_akun = \'{username}\'')[0][0]
+    print("artist_id: ", artist_id)
     songs = query(f'''
-        SELECT k.judul
-        FROM "MARMUT"."song" s
-        INNER JOIN "MARMUT"."konten" k ON s.id_konten = k.id
-        WHERE s.id_artist = \'{artist_id}
-    ''')
-    return [song.judul for song in songs]
+                    SELECT k.judul, a.nama, k.durasi
+                    FROM "MARMUT"."konten" k
+                    INNER JOIN "MARMUT"."song" s ON s.id_konten = k.id
+                    JOIN "MARMUT"."artist" art ON s.id_artist = art.id
+                    JOIN "MARMUT"."akun" a ON art.email_akun = a.email
+                    WHERE s.id_artist = \'{artist_id}\'
+                ''')
+    print("songs: ", songs)
+    return songs
 
 def get_songs_by_songwriter(username):
-    songwriter_id = query(f'SELECT id FROM "MARMUT"."songwriter" WHERE email_akun = \'{username}\'')[0]
+    songwriter_id = query(f'SELECT id FROM "MARMUT"."songwriter" WHERE email_akun = \'{username}\'')[0][0]
     song_ids = query(f'SELECT id_song FROM "MARMUT"."songwriter_write_song" WHERE id_songwriter = \'{songwriter_id}\'')
-    song_titles = []
+    songs = []
     for song_id in song_ids:
-        song_title = query(f'''
-            SELECT k.judul
+        song_list = []
+        song = query(f'''
+            SELECT k.judul, a.nama, k.durasi
             FROM "MARMUT"."song" s
             INNER JOIN "MARMUT"."konten" k ON s.id_konten = k.id
-            WHERE s.id_konten = \'{song_id}\'
+            JOIN "MARMUT"."artist" art ON s.id_artist = art.id
+            JOIN "MARMUT"."akun" a ON art.email_akun = a.email
+            WHERE s.id_konten = \'{song_id[0]}\'
         ''')[0]
-        song_titles.append(song_title.judul)
-    return song_titles
+        song_list.append(song.judul)
+        song_list.append(song.nama)
+        song_list.append(song.durasi)
+        song_list.append(str(song_id[0]))
+        songs.append(song_list)
+    print("songs by songwriter: ",songs)
+    return songs
 
 def get_podcasts_by_podcaster(username):
-    podcaster_id = query(f'SELECT email FROM "MARMUT"."podcaster" WHERE email = \'{username}\'')[0]
-    id_konten_list = query(f'SELECT id_konten FROM "MARMUT"."podcast" WHERE email_podcaster = \'{podcaster_id}\'')
-    podcast_titles = []
+    podcaster_email = query(f'SELECT email FROM "MARMUT"."podcaster" WHERE email = \'{username}\'')[0][0]
+    id_konten_list = query(f'SELECT id_konten FROM "MARMUT"."podcast" WHERE email_podcaster = \'{podcaster_email}\'')
+    podcasts = []
     for id_konten in id_konten_list:
-        title = query(f'SELECT judul FROM "MARMUT"."konten" WHERE id = \'{id_konten}\'')[0]
-        podcast_titles.append(title.judul)
-    return podcast_titles
+        print("id_konten: ",id_konten[0])
+        podcast_list = []
+        title = query(f'SELECT judul FROM "MARMUT"."konten" WHERE id = \'{id_konten[0]}\'')[0][0]
+        total_episodes = query(f'SELECT COUNT(*) as total_episodes FROM "MARMUT"."episode" WHERE id_konten_podcast = \'{id_konten[0]}\'')[0][0]
+        total_durasi = query(f'SELECT SUM(durasi) as total_durasi FROM "MARMUT"."episode" WHERE id_konten_podcast = \'{id_konten[0]}\'')[0][0]
+        podcast_list.append(title)
+        podcast_list.append(total_episodes)
+        podcast_list.append(total_durasi)
+        podcast_list.append(str(id_konten[0]))
+        podcasts.append(podcast_list)
+    print("podcasts: ", podcasts)
+    return podcasts
+
+def get_album_by_label(username):
+    label_id = query(f'SELECT id FROM "MARMUT"."label" WHERE email = \'{username}\'')[0][0]
+    id_album_list = query(f'SELECT id FROM "MARMUT"."album" WHERE id_label = \'{label_id}\'')
+    albums = []
+    for id_album in id_album_list:
+        print("id_album: ",id_album[0])
+        album_list = []
+        title = query(f'SELECT judul FROM "MARMUT"."album" WHERE id = \'{id_album[0]}\'')[0][0]
+        total_lagu = query(f'SELECT jumlah_lagu FROM "MARMUT"."album" WHERE id = \'{id_album[0]}\'')[0][0]
+        total_durasi = query(f'SELECT total_durasi FROM "MARMUT"."album" WHERE id = \'{id_album[0]}\'')[0][0]
+        album_list.append(title)
+        album_list.append(total_lagu)
+        album_list.append(total_durasi)
+        album_list.append(str(id_album[0]))
+        albums.append(album_list)
+    print("albums: ", albums)
+    return albums
 
 def check_user_subscription_status(user_email):
     connection = None
