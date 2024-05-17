@@ -67,6 +67,7 @@ def login_user(request):
                 request.session['nama'] = user[1]
                 request.session['email'] = user[2]
                 request.session['kontak'] = str(user[3])
+                request.session['album'] = get_album_by_label(username)
                 return redirect('main:dashboard_label')
             elif 'Akun' in roles:
                 request.session['email'] = user.email
@@ -219,8 +220,8 @@ def get_songs_by_songwriter(username):
     return songs
 
 def get_podcasts_by_podcaster(username):
-    podcaster_id = query(f'SELECT email FROM "MARMUT"."podcaster" WHERE email = \'{username}\'')[0][0]
-    id_konten_list = query(f'SELECT id_konten FROM "MARMUT"."podcast" WHERE email_podcaster = \'{podcaster_id}\'')
+    podcaster_email = query(f'SELECT email FROM "MARMUT"."podcaster" WHERE email = \'{username}\'')[0][0]
+    id_konten_list = query(f'SELECT id_konten FROM "MARMUT"."podcast" WHERE email_podcaster = \'{podcaster_email}\'')
     podcasts = []
     for id_konten in id_konten_list:
         print("id_konten: ",id_konten[0])
@@ -234,3 +235,20 @@ def get_podcasts_by_podcaster(username):
         podcasts.append(podcast_list)
     print("podcasts: ", podcasts)
     return podcasts
+
+def get_album_by_label(username):
+    label_id = query(f'SELECT id FROM "MARMUT"."label" WHERE email = \'{username}\'')[0][0]
+    id_album_list = query(f'SELECT id FROM "MARMUT"."album" WHERE id_label = \'{label_id}\'')
+    albums = []
+    for id_album in id_album_list:
+        print("id_album: ",id_album[0])
+        album_list = []
+        title = query(f'SELECT judul FROM "MARMUT"."album" WHERE id = \'{id_album[0]}\'')[0][0]
+        total_lagu = query(f'SELECT jumlah_lagu FROM "MARMUT"."album" WHERE id = \'{id_album[0]}\'')[0][0]
+        total_durasi = query(f'SELECT total_durasi FROM "MARMUT"."album" WHERE id = \'{id_album[0]}\'')[0][0]
+        album_list.append(title)
+        album_list.append(total_lagu)
+        album_list.append(total_durasi)
+        albums.append(album_list)
+    print("albums: ", albums)
+    return albums

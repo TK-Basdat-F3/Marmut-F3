@@ -45,11 +45,15 @@
         <div style="padding-left: 4%; padding-right: 4%;">
             <div class="col" style="flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 60px; display: inline-flex">
                 <div class="user-content">
+
+                    {% if 'Label' in request.session.roles %}
                     <div class="marmut-album">
                         <h2 style="margin-bottom: 0px;">Album</h2>
-                        <!-- <h3 style="color: #9B9B9B;">Belum Memiliki Album :(</h3> -->
+                        {% if request.session.album|length == 0 %}
+                            <p style="color: #9B9B9B;">Belum Memiliki Album :(</p>
+                        {% else %}
                         <div class="col" style="flex-basis: 50%; color: white;">
-                            {% for i in "x"|ljust:10 %}
+                            {% for album in request.session.album %}
                             <a href="#" style="text-decoration: none; color: inherit;">
                                 <div class="card" onmouseenter="startScroll(this)" onmouseleave="stopScroll(this)" style="width: 195px; height: 255px; display: inline-block; border-radius: 8px; padding: 12px 13px; margin: 16px 0px; margin-right: 8px; box-sizing: border-box;  overflow: hidden;">
                                     <div style="width: 170px; height: 225px; ">
@@ -58,12 +62,12 @@
                                                 <img src="https://i.pinimg.com/736x/db/9f/8e/db9f8e2e356da77dbc9971aab28265fe.jpg" />
                                             </div>
                                             <h4 class="album-title" style="width: 170px; height: 20px; font-size: 16px; font-weight: 400; margin-top: 12px; margin-bottom: 12px; color: white;">
-                                                Judul Album WLeo Wleo oeo
+                                                {{ album.0 }}
                                             </h4>
                                             <div class="col" style="height: 15px; flex-direction: col; justify-content: flex-start; align-items: flex-start; display: inline-flex;">
-                                                <p style="color: #9B9B9B; font-size: 14px; font-weight: 400; margin-right: 10px;">13 lagu</p>
+                                                <p style="color: #9B9B9B; font-size: 14px; font-weight: 400; margin-right: 10px;">{{ album.1 }} lagu</p>
                                                 <p style="color: #9B9B9B; font-size: 14px; font-weight: 400; margin-left: 10px; margin-right: 10px;">|</p>
-                                                <p style="color: #9B9B9B; font-size: 14px; font-weight: 400; margin-left: 10px;">67 min</p>    
+                                                <p style="color: #9B9B9B; font-size: 14px; font-weight: 400; margin-left: 10px;">{{ album.2 }} min</p>    
                                             </div>
                                         </div>
                                     </div>
@@ -71,7 +75,9 @@
                             </a>
                             {% endfor %}
                         </div>
+                        {% endif %}
                     </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
