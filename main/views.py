@@ -1,17 +1,23 @@
 import json
 from django.core.serializers.json import DjangoJSONEncoder
-from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages  
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+import datetime
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+import psycopg2
+from marmut_f3 import settings
 from utilities.helper import query
-
+from django.http.response import JsonResponse
+from utilities.helper import query
 from .forms import SignupFormPengguna, SignupFormLabel
 from django.shortcuts import render
 from django.db import OperationalError, ProgrammingError, connection
+from django.http import HttpResponseNotFound
+from uuid import UUID
 
 def show_main(request):
     context = {
@@ -24,97 +30,89 @@ def main_reg(request):
 
 def register_user(request):
     form = SignupFormPengguna()
-
     if request.method == "POST":
         form = SignupFormPengguna(request.POST)
         if form.is_valid():
             form.save()
             messages.success(request, 'Your account has been successfully created!')
             return redirect('main:login')
-    context = {'form':form, 'form2':form}
+    context = {'form': form, 'form2': form}
     return render(request, 'register.html', context)
 
 def register_label(request):
     form2 = SignupFormLabel()
-
     if request.method == "POST":
         form = SignupFormPengguna(request.POST)
         if form.is_valid():
             form.save()
             messages.success(request, 'Your account has been successfully created!')
             return redirect('main:login')
-    context = {'form':form, 'form2':form2}
+    context = {'form': form, 'form2': form2}
     return render(request, 'register.html', context)
 
 def login_user(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
-        user = authenticate(request, username=username, password=password)
-        print(f"Authenticated User: {user}")
-        
+        user, is_premium, roles = authenticate_akun(username, password)
         if user is not None:
-            login(request, user)
-            print(f"Logged in User: {user}")
-            
-            roles = user.get_roles() if isinstance(user, CustomUser) else ['Label']
-            print(f"User Roles: {roles}")
-
-            request.session['username'] = user.username
-            request.session['premium_status'] = 'Premium' if user.is_staff else 'Free'
+            request.session['username'] = username
+            request.session['premium_status'] = 'Premium' if is_premium else 'Free'
             request.session['roles'] = roles
 
+            check_user_subscription_status(username)
+
             if 'Label' in roles:
-                request.session['name'] = user[1]
-                request.session['email'] = user[2]
-                request.session['contact'] = user[4]
+                request.session['nama'] = user.nama 
+                request.session['email'] = user.email 
+                request.session['kontak'] = user.kontak 
                 return redirect('main:dashboard_label')
             elif 'Akun' in roles:
-                # Mengonversi user ke dalam dictionary
-                user_data = {
-                    'email': user.email,
-                    'password': user.password,
-                    'nama': user.nama,
-                    'tempat_lahir': user.tempat_lahir,
-                    'tanggal_lahir': user.tanggal_lahir,
-                    'is_verified': user.is_verified,
-                    'kota_asal': user.kota_asal,
-                    'gender': "Perempuan" if user.gender == 0 else "Laki-laki",
-                }
+                request.session['email'] = user.email
+                request.session['password'] = user.password
+                request.session['nama'] = user.nama
+                request.session['tempat_lahir'] = user.tempat_lahir
+                tanggal_lahir_str = user.tanggal_lahir
+                request.session['tanggal_lahir'] = tanggal_lahir_str.strftime('%d-%m-%Y')
+                request.session['is_verified'] = user.is_verified
+                request.session['kota_asal'] = user.kota_asal
+                request.session['gender'] = "Perempuan" if user.gender == 0 else "Laki-laki"
 
-                # Mengonversi data ke dalam JSON
-                user_json = json.dumps(user_data, cls=DjangoJSONEncoder)
+                try:
+                    if 'Artist' in roles:
+                        request.session['songs'] = get_songs_by_artist(username)
+                    elif 'Songwriter' in roles:
+                        request.session['songs'] = get_songs_by_songwriter(username)
+                    elif 'Artist' and 'Songwriter' in roles:
+                        request.session['songs'] = get_songs_by_artist(username) + get_songs_by_songwriter(username)
+                    elif 'Podcaster' in roles:
+                        request.session['podcasts'] = get_podcasts_by_podcaster(username)
+                except Exception as e:
+                    print(f"Error in setting session data: {e}")
+                    messages.error(request, 'Error in setting session data. Please try again.')
 
-                # Menyimpan data ke dalam sesi
-                request.session['user_data'] = user_json
-                if 'Artist' in roles:
-                    request.session['songs'] = get_songs_by_artist(username)
-                elif 'Songwriter' in roles:
-                    request.session['songs'] = get_songs_by_songwriter(username)
-                elif 'Podcaster' in roles:
-                    request.session['podcasts'] = get_podcasts_by_podcaster(username)
-                print(f"Role-specific Session Data: {request.session.items()}")
                 return redirect('main:dashboard_user')
         else:
             messages.info(request, 'Sorry, incorrect username or password. Please try again.')
-            return render(request, 'login.html', {'error_message': 'Invalid username or password'})
+            error_message = 'Invalid username or password'
+            print(error_message)
+            return render(request, 'login.html', {'error_message': error_message})
     else:
         return render(request, 'login.html')
-    
+
 def logout_user(request):
     logout(request)
     response = HttpResponseRedirect(reverse('main:login'))
     response.delete_cookie('last_login')
     return response
 
-@login_required
-def dashboard_label(request):
-    return render(request, 'dashboard_label.html')
-
-@login_required
+# @login_required
 def dashboard_user(request):
     return render(request, "dashboard_user.html")
 
+# @login_required
+def dashboard_label(request):
+    return render(request, "dashboard_label.html")
 
 def authenticate_akun(username, password):
     result = query(f'SELECT * FROM "MARMUT"."akun" WHERE email = \'{username}\'')
@@ -189,57 +187,63 @@ def get_roles_by_email(username):
     return roles
 
 def get_songs_by_artist(username):
-    try:
-        result = query(f'SELECT id FROM "MARMUT"."artist" WHERE email_akun = \'{username}\'')
-        if not result:
-            return []
-        
-        artist_id = result[0][0]
-        songs = query(f'''
-            SELECT k.judul
-            FROM "MARMUT"."song" s
-            INNER JOIN "MARMUT"."konten" k ON s.id_konten = k.id
-            WHERE s.id_artist = '{str(artist_id)}'
-        ''')
-        if not songs:
-            return []
-        
-        return [song[0] for song in songs]
-    except ProgrammingError as e:
-        print(f"Database error occurred: {e}")
-        return []
+    artist_id = query(f'SELECT id FROM "MARMUT"."artist" WHERE email_akun = \'{username}\'')[0]
+    songs = query(f'''
+        SELECT k.judul
+        FROM "MARMUT"."song" s
+        INNER JOIN "MARMUT"."konten" k ON s.id_konten = k.id
+        WHERE s.id_artist = \'{artist_id}
+    ''')
+    return [song.judul for song in songs]
 
 def get_songs_by_songwriter(username):
     songwriter_id = query(f'SELECT id FROM "MARMUT"."songwriter" WHERE email_akun = \'{username}\'')[0]
-    song_ids = query(f'SELECT id_song FROM "MARMUT"."songwriter_write_song" WHERE id_songwriter = \'{str(songwriter_id)}\'')
+    song_ids = query(f'SELECT id_song FROM "MARMUT"."songwriter_write_song" WHERE id_songwriter = \'{songwriter_id}\'')
     song_titles = []
     for song_id in song_ids:
         song_title = query(f'''
             SELECT k.judul
             FROM "MARMUT"."song" s
             INNER JOIN "MARMUT"."konten" k ON s.id_konten = k.id
-            WHERE s.id_konten = '{str(song_id)}'
+            WHERE s.id_konten = \'{song_id}\'
         ''')[0]
         song_titles.append(song_title.judul)
     return song_titles
 
 def get_podcasts_by_podcaster(username):
-    try:
-        result = query(f'SELECT email FROM "MARMUT"."podcaster" WHERE email = \'{username}\'')
-        if not result:
-            return []
+    podcaster_id = query(f'SELECT email FROM "MARMUT"."podcaster" WHERE email = \'{username}\'')[0]
+    id_konten_list = query(f'SELECT id_konten FROM "MARMUT"."podcast" WHERE email_podcaster = \'{podcaster_id}\'')
+    podcast_titles = []
+    for id_konten in id_konten_list:
+        title = query(f'SELECT judul FROM "MARMUT"."konten" WHERE id = \'{id_konten}\'')[0]
+        podcast_titles.append(title.judul)
+    return podcast_titles
 
-        podcaster_id = result[0] if isinstance(result, list) else result
+def check_user_subscription_status(user_email):
+    connection = None
+    try:
+        # Connect to your PostgreSQL database
+        connection = psycopg2.connect(
+            dbname="your_dbname",
+            user="your_username",
+            password="your_password",
+            host="your_host",
+            port="your_port"
+        )
         
-        id_konten_list = query(f'SELECT id_konten FROM "MARMUT"."podcast" WHERE email_podcaster = \'{podcaster_id[0]}\'')
+        cursor = connection.cursor()
         
-        podcast_titles = []
-        for id_konten in id_konten_list:
-            title_result = query(f'SELECT judul FROM "MARMUT"."konten" WHERE id = \'{id_konten[0]}\'')
-            if title_result:
-                podcast_titles.append(title_result[0][0])
-                
-        return podcast_titles
-    except (ProgrammingError, IndexError) as e:
-        print(f"Error occurred: {e}")
-        return []
+        # Call the stored procedure
+        cursor.execute("CALL check_and_update_subscription_status(%s)", (user_email,))
+        
+        # Commit the transaction
+        connection.commit()
+        
+        print(f"Checked and updated subscription status for {user_email}")
+        
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(f"Error: {error}")
+    finally:
+        if connection is not None:
+            cursor.close()
+            connection.close()
