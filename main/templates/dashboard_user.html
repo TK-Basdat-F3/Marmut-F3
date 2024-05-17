@@ -193,14 +193,12 @@
         <script>
             function startScroll(card) {
                 card.querySelector('.podcast-title').classList.add('scrolling');
-                card.querySelector('.podcast-title').textContent = 'Judul Podcast Haha Hihi';
                 card.querySelector('.podcast-title').style.width = 'fit-content';
                 card.querySelector('.podcast-title').style.textOverflow = 'clip';
             }
     
             function stopScroll(card) {
                 card.querySelector('.podcast-title').classList.remove('scrolling');
-                card.querySelector('.podcast-title').textContent = 'Judul Podcast Haha Hihi';
                 card.querySelector('.podcast-title').style.width = '170px';
                 card.querySelector('.podcast-title').style.textOverflow = 'ellipsis';
             }
