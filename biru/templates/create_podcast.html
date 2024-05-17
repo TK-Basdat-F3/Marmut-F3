@@ -89,14 +89,17 @@
                 <label for="judul">Judul:</label><br>
                 <input type="text" id="judul_podcast" name="judul" required>
             </div>
-            <div>
-                <label for="genre">Genre:</label><br>
-                <select multiple id="genre" name="genre" required>
-                    <option value="Romantic">Romantic</option>
-                    <option value="K-Pop">K-Pop</option>
-                    <option value="Classical">Classical</option>
-                </select><br>
+            <div class="form-group" style="overflow-y: auto; max-height: 200px;">
+                <label>Genres:</label>
+                <div style="display: flex; flex-wrap: wrap;">
+                    {% for genre in genres %}
+                        <div style="flex: 1 0 25%; padding: 5px;">
+                            <label><input type="checkbox" name="genres" value="{{ genre.genre }}"> {{ genre.genre }}</label>
+                        </div>
+                    {% endfor %}
+                </div>
             </div>
+            
             <input class="kembali-button" type="submit" value="Submit">
         </form>
 

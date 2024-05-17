@@ -155,12 +155,24 @@
                     </tr>
                   </thead>
                   <tbody>
+                    {% for podcast in podcasts %}
+                        <tr>
+                            <td>{{ podcast.judul }}</td>
+                            <td>hhhhhhhh</td>
+                            <td>jjj</td>
+                            <td>{{ episode.tanggal_rilis }}</td> 
+                            <td>
+                                <a class="action-button detail-btn" href="daftarEpisode_podcast.html">Lihat Daftar Episode</a>
+                                <a class="action-button edit-btn" href="#">Tambah Episode</a>
+                                <a class="action-button delete-btn" href="#">Hapus</a>
+                            </td>                       
+                        </tr>
+                    {% endfor %}
                   </tbody>
               </table>
             </container>
 
             <button onclick="window.location.href='{% url 'biru:create_podcast' %}'"; class="action-button">Tambah Podcast</button>
-            <!-- <button class="add-podcast-button action-button">Tambah Podcast</button> -->
         </div>
     </div>
 

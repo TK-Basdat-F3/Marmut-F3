@@ -87,7 +87,7 @@
 <body>
 
 <div class="container">
-    <h2>Daftar Episode pada Podcast 1</h2>
+    <h2>Daftar Episode pada Podcast {{ detail.judul }}</h2>
 
     <table class="episode-list">
         <thead>
@@ -100,21 +100,15 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>SubJudul1</td>
-                <td>Lorem Ipsum ...</td>
-                <td>59 menit</td>
-                <td>18/03/2024</td>
-                <td><button class="action-button">Hapus</button></td>
-            </tr>
-            <tr>
-                <td>SubJudul2</td>
-                <td>Lorem Ipsum ...</td>
-                <td>1 jam 2 menit</td>
-                <td>25/03/2024</td>
-                <td><button class="action-button">Hapus</button></td>
-            </tr>
-            <!-- Tambahkan baris baru sesuai dengan jumlah episode -->
+            {% for episode in episodes %}
+                <tr>
+                    <td>{{ episode.judul }}</td>
+                    <td>{{ episode.deskripsi }}</td>
+                    <td>{{ episode.durasi }}</td>
+                    <td>{{ episode.tanggal_rilis }}</td>    
+                    <td><button class="action-button">Hapus</button></td>                    
+                </tr>
+            {% endfor %}
         </tbody>
     </table>
 </div>
