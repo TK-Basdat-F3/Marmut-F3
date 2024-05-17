@@ -152,7 +152,6 @@ def authenticate_akun(username, password):
             roles += get_roles_by_email(username)
         else:
             roles.append('Label')
-        print("is_premium: ",premium_status[0][0])
         return user, premium_status, roles
     else:
         return None, False, []
