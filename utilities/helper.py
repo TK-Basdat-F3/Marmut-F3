@@ -18,3 +18,15 @@ def query(query_str: str):
         except Exception as e:
             result = e
     return result
+
+def get_user_type(email):
+    if query(f'SELECT * FROM "MARMUT"."artist" WHERE email_akun = \'{email}\''):
+        return 'artist'
+    elif query(f'SELECT * FROM "MARMUT"."songwriter" WHERE email_akun = \'{email}\''):
+        return 'songwriter'
+    elif query(f'SELECT * FROM "MARMUT"."podcaster" WHERE email = \'{email}\''):
+        return 'podcaster'
+    elif query(f'SELECT * FROM "MARMUT"."label" WHERE email = \'{email}\''):
+        return 'label'
+    else:
+        return 'pengguna_biasa'

@@ -61,8 +61,7 @@
     }
 
     .form-group {
-      display: flex;
-      align-items: top;
+      display: flex; align-items: top;
       margin-bottom: 10px;
     }
     .form-group label {
@@ -76,10 +75,8 @@
     .album-table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 20px;
-      padding: 20px; 
-      margin-bottom: 20px;
-      background-color: #AA98A9; 
+      margin-top: 20px;  padding: 20px; 
+      margin-bottom: 20px; background-color: #AA98A9; 
     }
     .album-table th, .album-table td {
       border: 1px solid #ddd; 
@@ -96,23 +93,49 @@
       background-color: #BEBFC5; transition: background-color 0.3s ease;
     }
     .album-actions button {
-      margin-right: 5px;
-      padding: 5px 10px;
-      background-color: #301934;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
+      margin-right: 5px; padding: 5px 10px;
+      background-color: #301934; color: white; border: none;
+      border-radius: 5px; cursor: pointer;
     }
     .album-actions button:hover {
       background-color: #C8A2C8;
+    }
+    .modal {
+        display: none; position: fixed; 
+        z-index: 1; left: 0; top: 0; width: 100%; 
+        height: 100%; overflow: auto; background-color: rgb(0,0,0); 
+        background-color: rgba(0,0,0,0.4); padding-top: 60px; 
+    }
+    .modal-content {
+        background-color: #fefefe; margin: 5% auto; padding: 20px; border: 1px solid #888; width: 80%; 
+    }
+    .close {
+        color: #aaa; float: right; font-size: 28px; font-weight: bold;
+    }
+    .close:hover,
+    .close:focus {
+        color: black; text-decoration: none; cursor: pointer;
+    }
+    #backToManageButton {
+        display: none;
+        background-color: #301934;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin-top: 20px;
+    }
+    #backToManageButton:hover {
+        background-color: #C8A2C8;
     }
 </style>
 
 <div class="container">
     <h2>Create Song</h2>
     <div class="song-container">
-      <form method="POST" action="{% url 'merah:add_song' album.id %}">
+      <form method="POST" id="add-song-form">
           {% csrf_token %}
           <h4>Album: {{ album.judul }}</h4> 
           <input type="hidden" name="album_id" value="{{ album.id }}">
@@ -166,4 +189,45 @@
       </form>
   </div>
 </div>
+
+<!-- Modal -->
+<div id="successModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <p id="modal-message"></p>
+        <button id="backToManageButton" onclick="window.location.href='{% url 'merah:manage_albums' %}'">Back to Manage Albums</button>
+    </div>
+</div>
+
+<script>
+    document.getElementById("add-song-form").addEventListener("submit", function(event) {
+        event.preventDefault();
+        
+        const formData = new FormData(this);
+        fetch("{% url 'merah:add_song' album.id %}", {
+            method: "POST",
+            body: formData,
+            headers: {
+                'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success === "true") {
+                document.getElementById("modal-message").innerText = `${formData.get('judul_lagu')} successfully added to album!`;
+                const modal = document.getElementById("successModal");
+                const backToManageButton = document.getElementById("backToManageButton");
+                modal.style.display = "block";
+                backToManageButton.style.display = "block";
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
+    
+    document.querySelector(".close").addEventListener("click", function() {
+        document.getElementById("successModal").style.display = "none";
+    });
+</script>
 {% endblock %}
