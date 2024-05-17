@@ -30,15 +30,16 @@
                 </div>
 
                 <ul class="nav-links">
-                    <li><a href="#">Chart</a></li>
-                    <li><a href="#">Kelola Paylist</a></li>
+                    <li><a href="{% url 'main:dashboard_user' %}">Dashboard</a></li>
+                    <li><a href="{% url 'biru:chart_list' %}">Chart</a></li>
+                    <li><a href="{% url 'hijau:kelola_playlist' %}">Kelola Playlist</a></li>
                     <li><a href="{% url 'kuning:subscribe_menu' %}">Langganan Paket</a></li>
                     {% if request.session.premium_status == 'Premium' %}
-                        <li><a href="{% url 'kuning:downloaded_songs' %}">Downloaded Songs</a></li>
+                        <li><a href="{% url 'kuning:downloaded_songs' %}">Kelola Downloaded Songs</a></li>
                     {% endif %}
-                    <li><a href="#">Register</a></li>
+                    <li><a href="{% url 'kuning:search_content' %}">Search Bar</a></li>
                     <li><a href="{% url 'main:logout' %}">Logout</a></li>
-                </ul>
+                </ul>               
             </div>
 
             <div class="darkLight-searchBox">
