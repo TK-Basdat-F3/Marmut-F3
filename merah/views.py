@@ -5,7 +5,15 @@ from utilities.helper import query, get_user_type
 from django.http.response import JsonResponse
 import uuid
 
+def has_role(request, required_roles):
+    user_roles = request.session.get('roles', [])
+    return any(role in user_roles for role in required_roles)
+
+@login_required
 def manage_albums(request):
+    if not has_role(request, ['Artist', 'Songwriter']):
+        return redirect('main:login')
+
     labels = query('SELECT id, nama FROM "MARMUT"."label"')
     albums = query('''
         SELECT 
@@ -23,15 +31,14 @@ def manage_albums(request):
     if type(labels) != list:
         labels = []
     if type(albums) != list:
-        albums = []  
+        albums = []
     return render(request, 'artist_manage_album_song.html', {'labels': labels, 'albums': albums})
-
-from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
-from utilities.helper import query, get_user_type
 
 @login_required
 def cek_royalti(request):
+    if not has_role(request, ['Artist', 'Songwriter', 'Label']):
+        return redirect('main:login')
+
     email = request.user.email
     user_type = get_user_type(email)
 
@@ -63,11 +70,19 @@ def cek_royalti(request):
     royalties = query(query_royalti)
     return render(request, 'cek_royalti.html', {'royalties': royalties})
 
+@login_required
 def label_manage(request):
+    if not has_role(request, ['Label']):
+        return redirect('main:login')
+
     return render(request, 'label_manage_album_song.html')
 
 @csrf_exempt
+@login_required
 def create_album(request):
+    if not has_role(request, ['Artist', 'Songwriter']):
+        return redirect('main:login')
+
     if request.method == 'POST':
         judul_album = request.POST.get('judul_album')
         label = request.POST.get('label')
@@ -92,7 +107,11 @@ def create_album(request):
     return render(request, 'artist_manage_album_song.html', {'labels': labels, 'albums': albums})
 
 @csrf_exempt
+@login_required
 def add_song(request, id_album):
+    if not has_role(request, ['Artist', 'Songwriter']):
+        return redirect('main:login')
+
     if request.method == 'POST':
         judul_lagu = request.POST.get('judul_lagu')
         artist = request.POST.get('artist')
@@ -150,7 +169,7 @@ def add_song(request, id_album):
             return JsonResponse({'success': 'false', 'message': str(result)}, status=200)
 
         return JsonResponse({'success': 'true', 'message': f'{judul_lagu} successfully added to album!'})
-    
+
     artists = query('''
         SELECT artist.id, akun.nama 
         FROM "MARMUT"."artist" 
@@ -180,11 +199,19 @@ def add_song(request, id_album):
         'album': album
     })
 
+@login_required
 def list_albums(request):
+    if not has_role(request, ['Artist', 'Songwriter', 'Label']):
+        return redirect('main:login')
+
     albums = query('SELECT * FROM "MARMUT"."album"')
     return render(request, 'list_albums.html', {'albums': albums})
 
+@login_required
 def album_detail(request, id_album):
+    if not has_role(request, ['Artist', 'Songwriter', 'Label']):
+        return redirect('main:login')
+
     album_query = query(f'SELECT * FROM "MARMUT"."album" WHERE id = \'{id_album}\'')
     if not album_query:
         return JsonResponse({'success': 'false', 'message': 'Album not found'}, status=404)
@@ -208,7 +235,11 @@ def album_detail(request, id_album):
     })
 
 @csrf_exempt
+@login_required
 def delete_album(request, id_album):
+    if not has_role(request, ['Artist', 'Songwriter']):
+        return redirect('main:login')
+
     if request.method == 'POST':
         delete_album_query = f'DELETE FROM "MARMUT"."album" WHERE id = \'{id_album}\''
         result = query(delete_album_query)
@@ -221,7 +252,11 @@ def delete_album(request, id_album):
     return render(request, 'delete_album.html', {'album': album})
 
 @csrf_exempt
+@login_required
 def delete_song(request, id_song):
+    if not has_role(request, ['Artist', 'Songwriter']):
+        return redirect('main:login')
+
     if request.method == 'POST':
         album_id = request.POST.get('id_album')
 
@@ -253,4 +288,3 @@ def delete_song(request, id_song):
         return redirect('merah:album_detail', id_album=album_id)
 
     return JsonResponse({'success': 'false', 'message': 'Invalid request method'}, status=400)
-
