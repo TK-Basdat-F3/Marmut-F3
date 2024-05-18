@@ -106,6 +106,7 @@ def logout_user(request):
 
 # @login_required
 def dashboard_user(request):
+    request.session['premium_status'] = request.session.get('premium_status')
     return render(request, "dashboard_user.html")
 
 # @login_required

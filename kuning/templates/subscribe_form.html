@@ -15,20 +15,21 @@
             <div class="col" style="width: 324px; flex-basis: 50%; color: white; display: flex; flex-direction: column; text-align: left;">
                 <div class="col" style="flex-basis: 50%; color: white; margin-bottom: 24px;">
                     <h5 style="margin-bottom: 8px; font-size: 16px;">Jenis</h5>
-                    <h3 style="color: #4070F4; font-size: 20px;">1 Bulan</h3>
+                    <h3 style="color: #4070F4; font-size: 20px;">{{ request.session.paket_selected.0 }}</h3>
                 </div>
                 <div class="col" style="flex-basis: 50%; color: white; margin-bottom: 24px;">
                     <h5 style="margin-bottom: 8px; font-size: 16px;">Harga</h5>
-                    <h3 style="color: #4070F4;font-size: 20px;">Rp49.000</h3>
+                    <h3 style="color: #4070F4;font-size: 20px;">Rp{{ request.session.paket_selected.1 }}</h3>
                 </div>
                 <div class="col" style="flex-basis: 50%; color: white;">
-                    <form id="paymentForm" action="{% url 'kuning:subscribe_history' %}" onsubmit="return validateForm()">
+                    <form id="paymentForm" action="{% url 'kuning:add_transaction' %}" method="post" onsubmit="return validateForm()">
+                        {% csrf_token %}
                         <label for="metode-pembayaaran" style="margin-bottom: 8px; font-size: 16px; font-weight: 600;">Metode Pembayaran</label><br>
                         <select id="metode-pembayaaran" name="payment_method" style="margin-bottom: 24px; width: 324px; height: 48px; border-radius: 8px; padding-left: 4%; color: white; background-color: transparent;" required>
                             <option value="" disabled selected>Pilih Metode Pembayaran</option>
-                            <option value="transfer-bank">Transfer Bank</option>
-                            <option value="kartu-kredit">Kartu Kredit</option>
-                            <option value="e-wallet">E-Wallet</option>
+                            {% for metode in request.session.metode_pembayaran %}
+                            <option value="{{ metode }}">{{ metode }}</option>
+                            {% endfor %}
                         </select>
                         <input type="submit" id="submitButton" value="Submit" style="margin-top: 24px; width: 324px; height: 48px; border-radius: 25px; border: none; color: white; background-color: #4070F4; font-size: 16px; font-weight: 600;" disabled>
                     </form>
