@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 {% include 'navbar_podcaster.html' %}
 <html lang="en">
 <head>
@@ -38,6 +37,7 @@
             padding: 12px;
             border-bottom: 1px solid #ddd;
             text-align: left;
+            color: #ffffff;
         }
 
         th {
@@ -46,7 +46,7 @@
         }
 
         label {
-          color: black;
+            color: black;
         }
 
         .action-button {
@@ -70,241 +70,43 @@
             padding: 10px 20px;
             font-size: 16px;
         }
-        .popup-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 999;
-        }
-
-        .popup-container {
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            width: 80%;
-            max-width: 600px;
-        }
-
-        .popup-container h2 {
-            color: #007bff;
-            margin-bottom: 20px;
-            text-align: center;
-            font-size: 20px;
-        }
-
-        .popup-container label {
-            font-size: 16px;
-            margin-bottom: 5px; /* Jarak antara label dan input */
-        }
-
-        .popup-container input[type="text"],
-        .popup-container textarea {
-            width: calc(100% - 20px);
-            padding: 8px;
-            box-sizing: border-box;
-            font-size: 16px;
-        }
-
-        .popup-container select {
-            width: calc(100% - 20px);
-            padding: 2px;
-            margin-bottom: 10px;
-            box-sizing: border-box;
-            font-size: 16px;
-        }
-
-        .popup-container input[type="submit"] {
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            display: block;
-            margin: 0 auto;
-            font-size: 16px;
-        }
-
-        .popup-container input[type="submit"]:hover {
-            background-color: #0056b3;
-        }
     </style>
 </head>
 <body>
-
     <div style="text-align: center; padding: 20px;">
         <h2>User Podcast</h2>
+        
         <div id="podcast-info">
-            <p id="no-podcast-msg">Anda Belum Memiliki Podcast</p>
-            <container>
-              <table id="podcast-table" style="display: none;">
-                <thead>
-                  <tr>
-                      <th>Judul</th>
-                      <th>Jumlah Episode</th>
-                      <th>Total Durasi</th>
-                      <th>Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {% for podcast in podcasts %}
+            {% if podcasts %}
+                <table id="podcast-table">
+                    <thead>
                         <tr>
-                            <td>{{ podcast.judul }}</td>
-                            <td>hhhhhhhh</td>
-                            <td>jjj</td>
-                            <td>{{ episode.tanggal_rilis }}</td> 
-                            <td>
-                                <a class="action-button detail-btn" href="daftarEpisode_podcast.html">Lihat Daftar Episode</a>
-                                <a class="action-button edit-btn" href="#">Tambah Episode</a>
-                                <a class="action-button delete-btn" href="#">Hapus</a>
-                            </td>                       
+                            <th>Judul</th>
+                            <th>Jumlah Episode</th>
+                            <th>Total Durasi</th>-
+                            <th>Action</th>-
                         </tr>
-                    {% endfor %}
-                  </tbody>
-              </table>
-            </container>
-
-            <button onclick="window.location.href='{% url 'biru:create_podcast' %}'"; class="action-button">Tambah Podcast</button>
+                    </thead>
+                    <tbody>
+                        {% for podcast in podcasts %}
+                            <tr>
+                                <td>{{ podcast.judul }}</td>
+                                <td>{{ podcast.jumlah_episode }}</td>
+                                <td>{{ podcast.total_durasi }}</td>
+                                <td>
+                                    <a class="action-button detail-btn" href="{% url 'biru:daftar_episode' podcast.id_konten %}">Lihat Daftar Episode</a>
+                                    <a class="action-button edit-btn" href="#">Tambah Episode</a>
+                                    <a class="action-button delete-btn" href="#">Hapus</a>
+                                </td>                       
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p id="no-podcast-msg">Anda Belum Memiliki Podcast</p>
+            {% endif %}
+            <button onclick="window.location.href='{% url 'biru:create_episode' %}'" class="action-button">Tambah Podcast</button>
         </div>
     </div>
-
-    <div class="popup-overlay" id="popup-overlay">
-        <div class="popup-container">
-            <h2 id="popup-title">Tambah Podcast</h2>
-            <form id="popup-form" action="#" method="POST">
-                <label for="judul">Judul:</label><br>
-                <input type="text" id="judul" name="judul" required><br>
-                <label for="durasi">Durasi:</label><br>
-                <input type="text" id="durasi" name="durasi" required><br>
-                <label for="episodeGenre">Genre:</label><br>
-                <select multiple id="episodeGenre" name="episodeGenre" required>
-                    <option value="comedy">Comedy</option>
-                    <option value="thriller">Thriller</option>
-                    <option value="chit-chat">Chit Chat</option>
-                </select><br>
-                <input type="submit" id="submit-btn" value="Submit">
-            </form>
-        </div>
-    </div>
-
-      <!-- Popup untuk menambahkan episode baru -->
-      <div class="popup-overlay" id="popup-episode-overlay">
-        <div class="popup-container">
-            <h2 id="popup-episode-title">Create Episode</h2>
-            <form id="popup-episode-form" action="#" method="POST">
-                <label for="episodeTitle">Judul:</label><br>
-                <input type="text" id="episodeTitle" name="episodeTitle" required><br>
-                <label for="episodeGenre">Genre:</label><br>
-                <select multiple id="episodeGenre" name="episodeGenre" required>
-                    <option value="comedy">Comedy</option>
-                    <option value="thriller">Thriller</option>
-                    <option value="chit-chat">Chit Chat</option>
-                </select><br>                
-                <label for="episodeDuration">Durasi:</label><br>
-                <input type="text" id="episodeDuration" name="episodeDuration" required><br>
-                <input type="submit" id="submit-episode-btn" value="Submit">
-            </form>
-        </div>
-    </div>
-
-    <!-- Popup untuk menampilkan daftar episode pada podcast tertentu -->
-    <div class="popup-overlay" id="popup-list-episode-overlay">
-        <div class="popup-container">
-            <h2 id="popup-list-episode-title">Daftar Episode pada Podcast1</h2>
-            <table id="list-episode-table">
-                <!-- Isi tabel dengan daftar episode yang di-generate melalui JavaScript -->
-            </table>
-        </div>
-    </div>
-
-    <script>
-        var editMode = false;
-        var editedRowIndex = -1;
-
-        document.querySelector('.add-podcast-button').addEventListener('click', function() {
-            editMode = false;
-            document.getElementById('popup-title').textContent = 'Tambah Podcast';
-            document.getElementById('submit-btn').value = 'Submit';
-            document.getElementById('popup-overlay').style.display = 'flex';
-        });
-
-        document.getElementById('popup-form').addEventListener('submit', function(event) {
-            event.preventDefault();
-
-            var judul = document.getElementById('judul').value;
-            var durasi = document.getElementById('durasi').value;
-            var episodeGenre = document.getElementById('episodeGenre').value;
-            var selectedGenres = [];
-            var selectedOptions = document.getElementById('episodeGenre').selectedOptions;
-            for (var i = 0; i < selectedOptions.length; i++) {
-                selectedGenres.push(selectedOptions[i].value);
-            }
-
-            var podcastTable = document.getElementById('podcast-table').querySelector('tbody');
-            if (!podcastTable.querySelector('tr')) {
-                document.getElementById('no-podcast-msg').style.display = 'none';
-                document.getElementById('podcast-table').style.display = 'table';
-            }
-
-            if (editMode) {
-                var row = podcastTable.rows[editedRowIndex];
-                row.cells[0].textContent = judul;
-                row.cells[1].textContent = '0';
-                row.cells[2].textContent = '0 menit';
-            } else {
-                var podcastRow = document.createElement('tr');
-                podcastRow.innerHTML = `
-                    <td>${judul}</td>
-                    <td>0</td>
-                    <td>0 menit</td>
-                    <td>
-                        <a class="action-button detail-btn" href="daftarEpisode_podcast.html">Lihat Daftar Episode</a>
-                        <a class="action-button edit-btn" href="#">Tambah Episode</a>
-                        <a class="action-button delete-btn" href="#">Hapus</a>
-                    </td>
-                `;
-                podcastTable.appendChild(podcastRow);
-            }
-
-            document.getElementById('popup-overlay').style.display = 'none';
-            document.getElementById('judul').value = '';
-            document.getElementById('durasi').value = '';
-            document.getElementById('episodeGenre').value = '';
-        });
-
-        document.addEventListener('click', function(event) {
-            if (event.target.classList.contains('delete-btn')) {
-                var row = event.target.parentNode.parentNode;
-                var table = row.parentNode;
-                table.removeChild(row);
-
-                if (!table.querySelector('tr')) {
-                    document.getElementById('no-podcast-msg').style.display = 'block';
-                    document.getElementById('podcast-table').style.display = 'none';
-                }
-            } else if (event.target.classList.contains('edit-btn')) {
-                editMode = true;
-                var row = event.target.parentNode.parentNode;
-                editedRowIndex = row.rowIndex - 1;
-                var judul = row.cells[0].textContent;
-                var genre = '';
-                var durasi = '';
-                document.getElementById('popup-title').textContent = 'Edit Podcast';
-                document.getElementById('submit-btn').value = 'Update';
-                document.getElementById('judul').value = judul;
-                document.getElementById('episodeGenre').value = genre;
-                document.getElementById('durasi').value = durasi;
-                document.getElementById('popup-overlay').style.display = 'flex';
-            }
-        });
-    </script>
 </body>
 </html>

@@ -98,33 +98,45 @@ def play_podcast(request, id_podcast):
     except Exception as e:
         return JsonResponse({'success': 'false', 'message': str(e)}, status=500)
 
+from django.shortcuts import render
+from django.http import JsonResponse
 
 def kelola_podcast(request):
     try:
-        email =  request.session['email']
+        email = request.session.get('email')
+        if not email:
+            return JsonResponse({'success': 'false', 'message': 'User not logged in'}, status=403)
+        
         podcaster_query = query('SELECT * FROM "MARMUT"."podcaster" WHERE email = %s', [email])
         if not podcaster_query:
-            return JsonResponse({'success': 'false', 'message': 'Chart not found'}, status=404)
+            return JsonResponse({'success': 'false', 'message': 'Podcaster not found'}, status=404)
+        
         podcaster = podcaster_query[0]
 
         podcast_query = query('''
             SELECT 
                 podcast.id_konten,
                 konten.judul,  
-                konten.durasi
+                konten.durasi,
+                COUNT(episode.id_episode) as jumlah_episode,
+                SUM(episode.durasi) as total_durasi
             FROM "MARMUT"."podcast"
             JOIN "MARMUT"."konten" ON podcast.id_konten = konten.id     
-            JOIN "MARMUT"."akun" ON podcast.email_podcaster = akun.email
+            LEFT JOIN "MARMUT"."episode" ON episode.id_konten_podcast = podcast.id_konten
             WHERE podcast.email_podcaster = %s
+            GROUP BY podcast.id_konten, konten.judul, konten.durasi
         ''', [email])
-
-        podcast = podcast_query[0] if podcaster_query else None
+        
+        podcasts = podcast_query if podcast_query else []
 
         return render(request, 'kelola_podcast.html', {
-            'podcasts': podcast,
+            'podcasts': podcasts,
+            'poo': podcaster,
         })
     except Exception as e:
         return JsonResponse({'success': 'false', 'message': str(e)}, status=500)
+
+
 
 @csrf_exempt
 def create_podcast(request):
@@ -176,7 +188,7 @@ def create_podcast(request):
     return render(request, 'create_podcast.html', {'genres': genres})
 
 
-def daftarEpisode_podcast(request, id_podcast): 
+def daftar_episode(request, id_podcast): 
     try:
         podcast_query = query('SELECT * FROM "MARMUT"."podcast" WHERE id_konten = %s', [id_podcast])
         if not podcast_query:
@@ -192,7 +204,7 @@ def daftarEpisode_podcast(request, id_podcast):
             WHERE podcast.id_konten = %s
         ''', [id_podcast])
 
-        detail = e[0] if detail_query else None
+        detail = detail_query[0] if detail_query else None
 
         episode_query = query('''
             SELECT 
