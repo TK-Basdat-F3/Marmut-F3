@@ -9,11 +9,15 @@ import json
 from main.views import authenticate_akun
 # Create your views here.
 def kelola_playlist(request):
-    query_get_all_playlist = query('''
+    email = request.session.get('email')
+
+    query_get_all_playlist = query(f'''
                         SELECT judul, email_pembuat, jumlah_lagu, total_durasi, id_playlist
-                        FROM "MARMUT".USER_PLAYLIST
+                        FROM "MARMUT".USER_PLAYLIST WHERE email_pembuat = '{email}'
                                    ''')
 
+    
+    print(query_get_all_playlist)
     if type(query_get_all_playlist) != list:
         query_get_all_playlist = []
 
