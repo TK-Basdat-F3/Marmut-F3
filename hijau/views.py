@@ -4,7 +4,9 @@ from django.shortcuts import render
 from utilities.helper import query, get_user_type
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, redirect
-
+from django.http import JsonResponse
+import json
+from main.views import authenticate_akun
 # Create your views here.
 def kelola_playlist(request):
     query_get_all_playlist = query('''
@@ -52,6 +54,8 @@ def playlist_detail(request, id_playlist):
 
 def song_detail(request, id_song):
     
+    premium = request.session.get('premium_status')
+
     query_get_song_detail = query(f'''
                                 SELECT  konten.judul as judul, album.judul as album, konten.id as id, konten.tanggal_rilis as tanggal_rilis,
                                         konten.tahun as tahun, konten.durasi as durasi, song.total_play as total_play, song.total_download, 
@@ -81,22 +85,29 @@ def song_detail(request, id_song):
                                     JOIN "MARMUT".SONG ON SONGWRITER_WRITE_SONG.id_song = '{id_song}')
                                 ''')
     
+    email = request.session.get('email')
     query_get_all_user_playlist_name = query(f'''
                                 SELECT judul, id_playlist
                                 FROM "MARMUT".user_playlist 
-                                WHERE email_pembuat = 'user2@example.com';
+                                WHERE email_pembuat = '{email}';
                                 ''')
+    
     print("-----------------------")
     print(query_get_all_user_playlist_name)
 
     # check list 
-
-    return render(request, "song_detail.html", {'details': query_get_song_detail, 'genres':query_get_song_genre,'songwriters':query_get_songwriter,'playlists':query_get_all_user_playlist_name,'id_song':id_song})
+    
+    isPremium = False
+    print(f"==-=-=-=-=-=-==-=-=-= ${premium}")
+    if premium == 'Premium' :
+        isPremium = True
+    return render(request, "song_detail.html", {'details': query_get_song_detail, 'genres':query_get_song_genre,'songwriters':query_get_songwriter,'playlists':query_get_all_user_playlist_name,'id_song':id_song,'isPremium': isPremium})
 
 @csrf_exempt
 def add_song(request,id_playlist):
     if request.method == 'POST':
-        id_lagu = request.POST.get('song-dropdown')        
+        data = json.loads(request.body)
+        id_lagu = data.get('song-dropdown')      
         print(f'============== {id_playlist}')
 
     print("+++++++++++++++++++++++")
@@ -110,13 +121,25 @@ def add_song(request,id_playlist):
                            
                            ''')
     
+    
+    
     print(query_add_song)
-    return redirect('hijau:playlist_detail', id_playlist = id_playlist)
+    if query_add_song != 1:
+        return  JsonResponse({
+            'success': False,
+            'message': f'Lagu ini sudah ada didalam playlist!'
+        })
+    else:
+        return JsonResponse({
+                'success': True,
+                'message': f'Lagu berhasil ditambahkan ke playlist!'
+            })
 
 @csrf_exempt
 def add_song_from_detail(request,id_song):
     if request.method == 'POST':
-        id_playlist = request.POST.get('playlist-dropdown')        
+        data = json.loads(request.body)
+        id_playlist = data.get('playlist')        
 
     print("+++++++++++++++++++++++")
     print(id_playlist)
@@ -130,7 +153,16 @@ def add_song_from_detail(request,id_song):
                            ''')
     
     print(query_add_song)
-    return redirect('hijau:song_detail', id_song = id_song)
+    if query_add_song != 1:
+        return  JsonResponse({
+            'success': False,
+            'message': f'Lagu ini sudah ada didalam playlist!'
+        })
+    else:
+        return JsonResponse({
+                'success': True,
+                'message': f'Lagu berhasil ditambahkan ke playlist!'
+            })
 
 @csrf_exempt
 def delete_song(request, id_playlist,id_song):    
@@ -150,15 +182,25 @@ def delete_song(request, id_playlist,id_song):
 @csrf_exempt
 def download_song(request,id_song):    
    
-
+    email = request.session.get('email')
     query_download_song =query(f'''
-                           INSERT INTO "MARMUT".downloaded_song VALUES ('{id_song}', 'user3@example.com')
+                           INSERT INTO "MARMUT".downloaded_song VALUES ('{id_song}', '{email}')
                            ''')
    
-    
+    print("_+_+_+_+_++_+_+_+_+_+_+__+")
     print(query_download_song)
+    if query_download_song != 1 :
+        return JsonResponse({
+            'success': False,
+            'message': f'Lagu ini sudah diunduh oleh pengguna {email} '
+        })
+    else:
+        return JsonResponse({
+                'success': True,
+                'message': f'Lagu berhasil diunduh!'
+            })
+        
     
-    return redirect('hijau:song_detail', id_song = id_song)
 
 @csrf_exempt
 def add_playlist(request):
@@ -176,9 +218,10 @@ def add_playlist(request):
                            ''')
     
     tanggal = datetime.now().strftime("%Y-%m-%d")
+    email = request.session.get('email')
     query_add_user_playlist =query(f'''
                            INSERT INTO "MARMUT".USER_PLAYLIST VALUES (
-                               'user1@example.com',
+                               '{email}',
                                '{id_user_playlist}',
                                '{judul_playlist}',
                                '{deskripsi_playlist}',
@@ -195,19 +238,20 @@ def add_playlist(request):
     return redirect('hijau:kelola_playlist')
 
 @csrf_exempt
-def shuffle_play(request, id_user_playlist, id_playlist):
+def shuffle_play(request, id_user_playlist, id_playlist,email_pembuat):
     current_timestamp = datetime.now()
     formatted_timestamp = current_timestamp.strftime('%Y-%m-%d %H:%M:%S')
-
+    email = request.session.get('email')
     query_insert_akun_play_user_playlist =query(f'''
                                 INSERT INTO "MARMUT".akun_play_user_playlist
                                 VALUES (
-                                    'user16@example.com',
+                                    '{email}',
                                     '{id_user_playlist}',
-                                    'user1@example.com',
+                                    '{email_pembuat}',
                                     '{formatted_timestamp}'
                                 )
                            ''')
+    
     
     query_get_all_id_song_playlist = query(f'''
                                 SELECT id_song
@@ -221,17 +265,28 @@ def shuffle_play(request, id_user_playlist, id_playlist):
     print(query_get_all_id_song_playlist)
     
     for id_song in query_get_all_id_song_playlist :
+        print(id_song.id_song)
         query_insert_akun_play_song = query(f'''
               INSERT INTO "MARMUT".akun_play_song
               VALUES (
-                  'user16@example.com',
+                  '{email}',
                   '{id_song.id_song}',
                   '{formatted_timestamp}'
               )
               ''')
         print(query_insert_akun_play_song)
 
-    return redirect('hijau:playlist_detail', id_playlist = id_playlist)
+    if query_insert_akun_play_user_playlist == 1 :
+        return JsonResponse({
+            'success': True,
+            'message': f'Berhasil Shuffle Play!'
+        })
+            
+    else:
+        JsonResponse({
+            'success': False,
+            'message': f'Gagal Shuffle Play!'
+        })
 
 @csrf_exempt
 def edit_playlist(request):
@@ -265,3 +320,40 @@ def delete_playlist(request, id_playlist):
    
     print(query_delete_user_playlist)
     return redirect('hijau:kelola_playlist')
+
+csrf_exempt
+def play_song(request, id_song):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        playPct = int(data.get('percentage'))
+       
+
+        print(f'============== {id_song}')
+
+    if playPct >= 70:
+        current_timestamp = datetime.now()
+        formatted_timestamp = current_timestamp.strftime('%Y-%m-%d %H:%M:%S')
+        email = request.session.get('email')
+        query_play_song = query(f'''
+                            INSERT INTO "MARMUT".AKUN_PLAY_SONG VALUES (
+                                '{email}',
+                                '{id_song}',
+                                '{formatted_timestamp}'
+                            );
+                            ''')
+        
+        if query_play_song == 1:
+            return  JsonResponse({
+            'success': True,
+            'message': f'Data Play Lagu berhasil dimasukkan kedatabase! (> 70)'
+        })
+    
+    else: 
+        return  JsonResponse({
+            'success': False,
+            'message': f'Lagu gagal dimasukkan kedatabase! (< 70)'
+        })
+    
+    
+    
+    

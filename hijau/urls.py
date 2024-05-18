@@ -10,7 +10,9 @@ urlpatterns = [
     path('delete-playlist/<uuid:id_playlist>/',delete_playlist,name='delete_playlist'),
 
     path('playlist-detail/<uuid:id_playlist>/', playlist_detail, name='playlist_detail'),
-    path('playlist-detail/shuffle-play/<uuid:id_user_playlist>/<uuid:id_playlist>/', shuffle_play, name='shuffle_play'),
+    path('playlist-detail/shuffle-play/<uuid:id_user_playlist>/<uuid:id_playlist>/<str:email_pembuat>/', shuffle_play, name='shuffle_play'),
+
+    path('play-song/<uuid:id_song>/',play_song,name='play_song'),
 
     path('add-song/<uuid:id_playlist>/',add_song,name='add_song'),
     path('add-song-detail/<uuid:id_song>/',add_song_from_detail,name='add_song_from_detail'),

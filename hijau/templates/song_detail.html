@@ -75,7 +75,8 @@
             justify-content: center;
         }
 
-        .popup {
+        .popup,
+        .popup-play {
 
             display: none;
             position: fixed;
@@ -186,9 +187,10 @@
         <div class="play-progress" style="width: 100%;">
             <progress id="play-progress-bar" value="0" max="100" style="width: 100%;"></progress>
         </div>
-        <div class="song-actions" class="song-actions" class="song-actions"> <button onclick="playSong()">Play</button>
+        <div class="song-actions" class="song-actions" class="song-actions"> <button
+                onclick="showPopUpPlay()">Play</button>
             <button onclick="showPopUp()">Tambah ke Playlist</button>
-            <a href="{% url 'hijau:download_song' id_song %}"><button>Download</button></a>
+            {% if isPremium %}<button onclick="downloadSong('{{id_song}}')">Download</button> {% endif %}
             <button onclick="history.back()">Kembali</button>
 
         </div>
@@ -200,14 +202,15 @@
                 Lagu ke Playlist</h1>
 
 
-            <form method="POST" action="{% url 'hijau:add_song_from_detail' id_song %}">
+            <form method="POST" onsubmit="addSong(event, '{{id_song}}')">
                 <label for="playlist-dropdown">Pilih Playlist: </label><br>
                 <select id="playlist-dropdown" class="playlist-dropdown" name="playlist-dropdown">
                     {% for playlist in playlists %}
                     <option value="{{playlist.id_playlist}}">{{playlist.judul}}</option>
                     {% endfor %}
                 </select>
-                <button type="submit" class="form-btn" id="submit-btn">Submit</button>
+                <button type="submit" class="form-btn" id="submit-btn"
+                    onclick="addSong(event, '{{id_song}}')">Submit</button>
             </form>
             <button class="form-btn" onclick="hidePopup()">Cancel</button>
 
@@ -216,7 +219,25 @@
 
 
     </div>
+    <div id="popup-play" class="popup-play">
+        <div class="popup-content">
+            <h1 style="display:flex;justify-content: center; margin-bottom: 100px;">Play Song</h1>
 
+
+            <form method="POST" onsubmit="playSong(event,'{{id_song}}')">
+                {% csrf_token %}
+
+                <label for="playPct" class="form__label">Play Percentage:</label><br>
+                <input type="input" class="form__field" placeholder="Percentage (int)" name="playPct" id='playPct'
+                    required /><br><br>
+                <button class="form-btn" type="submit" onclick="playSong(event,'{{id_song}}')">Add</button>
+            </form>
+
+
+            <button class="form-btn" onclick="hidePopup()">Cancel</button>
+        </div>
+
+    </div>
     <div class="overlay" onclick="hidePopup()"></div>
 
     <script>
@@ -226,25 +247,113 @@
             document.querySelector(".overlay").style.display = "block";
         }
 
+
+        function showPopUpPlay() {
+            // Menampilkan popup window dan overlay
+            document.getElementById("popup-play").style.display = "flex";
+            document.querySelector(".overlay").style.display = "block";
+        }
+
         function hidePopup() {
             // Menyembunyikan popup window dan overlay
             document.getElementById("popup").style.display = "none";
             document.querySelector(".overlay").style.display = "none";
         }
-        function playSong() {
-            // Kode untuk memulai pemutaran lagu
-            alert("Memulai pemutaran lagu...");
+
+        async function downloadSong(id_song) {
+            try {
+                console.log(id_song)
+                let response = await fetch(`/hijau/download-song/${id_song}/`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+
+                    },
+                });
+
+                let data = await response.json();
+                if (!data.success) {
+                    alert(data.message);
+                    window.location.href = `/hijau/song-detail/${id_song}/`;
+                } else {
+                    alert(data.message);
+                    window.location.href = `/hijau/song-detail/${id_song}/`;
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+            }
         }
 
-        function addToPlaylist() {
-            // Kode untuk menambah lagu ke dalam playlist
-            alert("Menambahkan lagu ke dalam playlist...");
+
+        async function addSong(event, id_song) {
+            event.preventDefault()
+            try {
+
+                let addedPlaylst = document.getElementById("playlist-dropdown").value;
+                hidePopup()
+
+                console.log("testestes")
+                console.log(id_song)
+                let response = await fetch(`/hijau/add-song-detail/${id_song}/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}',
+
+                    },
+                    body: JSON.stringify({
+                        'playlist': addedPlaylst,
+                    })
+                });
+
+                let data = await response.json();
+                if (!data.success) {
+                    alert(data.message);
+                    window.location.href = `/hijau/song-detail/${id_song}/`;
+                } else {
+                    alert(data.message);
+                    window.location.href = `/hijau/song-detail/${id_song}/`;
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+            }
         }
 
-        function downloadSong() {
-            // Kode untuk mengunduh lagu
-            alert("Mengunduh lagu...");
+        async function playSong(event, id_song) {
+            try {
+
+                let playPct = document.getElementById("playPct").value;
+                hidePopup()
+
+                let response = await fetch(`/hijau/play-song/${id_song}/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}',
+
+                    },
+                    body: JSON.stringify({
+                        'percentage': playPct,
+                    })
+                });
+
+                let data = await response.json();
+                if (!data.success) {
+                    alert(data.message);
+                    window.location.href = `/hijau/song-detail/${id_song}/`;
+                } else {
+                    alert(data.message);
+                    window.location.href = `/hijau/song-detail/${id_song}/`;
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+            }
         }
+
+
     </script>
 
 </body>
