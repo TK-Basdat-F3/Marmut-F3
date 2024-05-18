@@ -139,7 +139,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 SUPABASE_URL = os.getenv('postgres://postgres.ibfqonevwbcwcluqqrkx:[TugasBasdat]@aws-0-ap-southeast-1.pooler.supabase.com:5432/postgres')
 SUPABASE_KEY = os.getenv('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImliZnFvbmV2d2Jjd2NsdXFxcmt4Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcxMzgwMTgxMSwiZXhwIjoyMDI5Mzc3ODExfQ.Gq8gdn_uOCgJ1er-3w6ddm5mdKoGZ-pLlZo6CKmivG8')
+AUTHENTICATION_BACKENDS = [
+    'main.backends.CustomAuthBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
 
 LOGIN_URL = '/login/'
 
-SESSION_ENGINE = 'django.contrib.sessions.backends.db' 
+CSRF_TRUSTED_ORIGINS = ['https://marmut-f3-production.up.railway.app/']

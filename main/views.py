@@ -79,19 +79,16 @@ def login_user(request):
                 request.session['kota_asal'] = user.kota_asal
                 request.session['gender'] = "Perempuan" if user.gender == 0 else "Laki-laki"
 
-                try:
-                    if 'Artist' in roles:
-                        request.session['songs'] = get_songs_by_artist(username)
-                    elif 'Songwriter' in roles:
-                        request.session['songs'] = get_songs_by_songwriter(username)
-                    elif 'Artist' and 'Songwriter' in roles:
-                        request.session['songs'] = get_songs_by_artist(username) + get_songs_by_songwriter(username)
-                    elif 'Podcaster' in roles:
-                        request.session['podcasts'] = get_podcasts_by_podcaster(username)
-                except Exception as e:
-                    print(f"Error in setting session data: {e}")
-                    messages.error(request, 'Error in setting session data. Please try again.')
+                request.session['playlists'] = get_user_playlists_by_user(username)
 
+                if 'Artist' in roles:
+                    request.session['songs_by_artist'] = get_songs_by_artist(username)
+                if 'Songwriter' in roles:
+                    request.session['songs_by_songwriter'] = get_songs_by_songwriter(username)
+                # elif 'Artist' and 'Songwriter' in roles:
+                #     request.session['songs'] = get_songs_by_artist(username) + get_songs_by_songwriter(username)
+                if 'Podcaster' in roles:
+                    request.session['podcasts'] = get_podcasts_by_podcaster(username)
                 return redirect('main:dashboard_user')
         else:
             messages.info(request, 'Sorry, incorrect username or password. Please try again.')
@@ -109,6 +106,7 @@ def logout_user(request):
 
 # @login_required
 def dashboard_user(request):
+    request.session['premium_status'] = request.session.get('premium_status')
     return render(request, "dashboard_user.html")
 
 # @login_required
