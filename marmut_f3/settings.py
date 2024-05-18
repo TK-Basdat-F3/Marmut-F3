@@ -145,3 +145,5 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 LOGIN_URL = '/login/'
+
+CSRF_TRUSTED_ORIGINS = ['https://marmut-f3-production.up.railway.app/']

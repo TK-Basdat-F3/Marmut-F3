@@ -32,18 +32,18 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for i in "x"|ljust:10 %}
+                                {% for song in request.session.downloaded_songs %}
                                 <tr>
-                                    <td style="text-align: left; width: 324px;">Cinta satu malam</td>
-                                    <td style="width: 324px;">Sus Rini</td>
-                                    <td>20/02/2024</td>
+                                    <td style="text-align: left; width: 324px;">{{ song.1 }}</td>
+                                    <td style="width: 324px;">{{ song.2 }}</td>
+                                    <td>20/05/2024</td>
                                     <td style="width: 132px;">
                                         <div style="width: 132px; height: 24px; display: flex; gap: 10px;">
-                                            <a href="#" style="text-decoration: none; color: inherit;"></a>
+                                            <a href="{% url 'hijau:detail-song' %}" style="text-decoration: none; color: inherit;">
                                                 <button class="kuning-detail-btn">Lihat</button>
                                             </a>
                                             <div class="container">
-                                                <button type="submit" class="kuning-delete-btn" onclick="openPopup()"><i class="fa-solid fa-trash"></i></button>
+                                                    <button type="submit" class="kuning-delete-btn" onclick="deleteSong('{{ song.0 }}', '{{ song.1 }}')"><i class="fa-solid fa-trash"></i></button>
                                             </div>
                                         </div>
                                     </td>
@@ -62,23 +62,48 @@
         <div class="kuning-blur-layer">
             <div class="kuning-popup" id="popup">
                 <h2 style="padding-top: 20px;">Deleted</h2>
-                <p style="width: 100%; margin-bottom: 40px; font-weight: 400;">Berhasil menghapus lagu dengan judul '<strong>Cinta satu malam</strong>' dari daftar unduhan!</p>
-                <button type="button" onclick="closePopup()">Kembali</button>
-            </div>        
+                <p style="width: 100%; margin-bottom: 40px; font-weight: 400;" id="deleted-song-info"></p>
+                <button type="button" onclick="location.href='/kuning/downloaded_songs/'">Kembali</button>
+            </div>
         </div>
     
         <script>
             function goBack() {
                 window.history.back();
             }
-    
-            function openPopup(){
-                popup.classList.add("kuning-open-popup");
-                document.getElementById("blur").classList.add("popup-active");
-                document.querySelector(".kuning-blur-layer").style.display = "block";
+
+            function deleteSong(songId, songTitle) {
+                fetch(`/kuning/delete_downloaded_song/${songId}/`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}',
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        const songTitle = document.querySelector(`[data-song-id="${songId}"]`).innerText;
+                        const deletedSongInfo = `Berhasil menghapus lagu dengan judul '<strong>${songTitle}</strong>' dari daftar unduhan!`;
+                        document.getElementById("deleted-song-info").innerHTML = deletedSongInfo;
+                        document.getElementById("popup").classList.add("kuning-open-popup");
+                        document.getElementById("blur").classList.add("popup-active");
+                        document.querySelector(".kuning-blur-layer").style.display = "flex";
+                    } else {
+                        alert('Error deleting song');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
             }
+    
+            // function openPopup(){
+            //     popup.classList.add("kuning-open-popup");
+            //     document.getElementById("blur").classList.add("popup-active");
+            //     document.querySelector(".kuning-blur-layer").style.display = "block";
+            // }
             function closePopup(){
-                popup.classList.remove("kuning-open-popup");
+                document.getElementById("popup").classList.remove("kuning-open-popup");
                 document.getElementById("blur").classList.remove("popup-active");
                 document.querySelector(".kuning-blur-layer").style.display = "none";
             }
@@ -132,7 +157,7 @@ tbody tr:hover {
 }
 
 .kuning-detail-btn {
-    width: 150px;
+    width: 82px;
     height: 24px;
     border-radius: 25px;
     border: 1px solid #4070F4;
@@ -167,19 +192,21 @@ tbody tr:hover {
     background: #282424;
     border-radius: 8px;
     position: absolute;
-    top: 0;
+    top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) scale(0.1);
+    transform: translate(-50%, -50%);
+    display: none;
     text-align: center;
-    padding: 0 40px 30px;
-    visibility: hidden;
-    transition: transform 0.4s, top 0.4s;
+    padding: 20px;
 }
 
 .kuning-open-popup {
-    visibility: visible;
-    top: 50%;
-    transform: translate(-50%, -50%) scale(1);
+    display: block;
+}
+
+.popup-active {
+    pointer-events: none;
+    opacity: 0.5;
 }
 
 .kuning-blur-layer {
@@ -188,35 +215,11 @@ tbody tr:hover {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.25);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    z-index: 99;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 1;
     display: none;
-}
-
-.col#blur.popup-active .kuning-blur-layer {
-    display: block;
-}
-
-.kuning-popup img {
-    width: 100px;
-    margin-top: -50px;
-    border: 50%;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-.kuning-popup button {
-    width: 100%;
-    height: 45px;
-    border-radius: 25px;
-    border: none;
-    background: #4070F4;
-    color: white;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
+    justify-content: center;
+    align-items: center;
 }
 </style>
 {% endblock content %}

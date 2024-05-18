@@ -12,7 +12,6 @@ import psycopg2
 from marmut_f3 import settings
 from utilities.helper import query
 from django.http.response import JsonResponse
-
 from utilities.helper import query
 from .forms import SignupFormPengguna, SignupFormLabel
 from django.shortcuts import render
@@ -31,26 +30,24 @@ def main_reg(request):
 
 def register_user(request):
     form = SignupFormPengguna()
-
     if request.method == "POST":
         form = SignupFormPengguna(request.POST)
         if form.is_valid():
             form.save()
             messages.success(request, 'Your account has been successfully created!')
             return redirect('main:login')
-    context = {'form':form, 'form2':form}
+    context = {'form': form, 'form2': form}
     return render(request, 'register.html', context)
 
 def register_label(request):
     form2 = SignupFormLabel()
-
     if request.method == "POST":
         form = SignupFormPengguna(request.POST)
         if form.is_valid():
             form.save()
             messages.success(request, 'Your account has been successfully created!')
             return redirect('main:login')
-    context = {'form':form, 'form2':form2}
+    context = {'form': form, 'form2': form2}
     return render(request, 'register.html', context)
 
 def login_user(request):
@@ -63,10 +60,12 @@ def login_user(request):
             request.session['premium_status'] = 'Premium' if is_premium else 'Free'
             request.session['roles'] = roles
 
+            check_user_subscription_status(username)
+
             if 'Label' in roles:
-                request.session['nama'] = user[1]
-                request.session['email'] = user[2]
-                request.session['kontak'] = str(user[3])
+                request.session['nama'] = user.nama 
+                request.session['email'] = user.email 
+                request.session['kontak'] = user.kontak 
                 request.session['album'] = get_album_by_label(username)
                 return redirect('main:dashboard_label')
             elif 'Akun' in roles:
@@ -107,12 +106,12 @@ def logout_user(request):
 
 # @login_required
 def dashboard_user(request):
+    request.session['premium_status'] = request.session.get('premium_status')
     return render(request, "dashboard_user.html")
 
 # @login_required
 def dashboard_label(request):
     return render(request, "dashboard_label.html")
-
 
 def authenticate_akun(username, password):
     result = query(f'SELECT * FROM "MARMUT"."akun" WHERE email = \'{username}\'')
@@ -215,6 +214,7 @@ def get_songs_by_songwriter(username):
         song_list.append(song.judul)
         song_list.append(song.nama)
         song_list.append(song.durasi)
+        song_list.append(str(song_id[0]))
         songs.append(song_list)
     print("songs by songwriter: ",songs)
     return songs
@@ -232,6 +232,7 @@ def get_podcasts_by_podcaster(username):
         podcast_list.append(title)
         podcast_list.append(total_episodes)
         podcast_list.append(total_durasi)
+        podcast_list.append(str(id_konten[0]))
         podcasts.append(podcast_list)
     print("podcasts: ", podcasts)
     return podcasts
@@ -249,6 +250,36 @@ def get_album_by_label(username):
         album_list.append(title)
         album_list.append(total_lagu)
         album_list.append(total_durasi)
+        album_list.append(str(id_album[0]))
         albums.append(album_list)
     print("albums: ", albums)
     return albums
+
+def check_user_subscription_status(user_email):
+    connection = None
+    try:
+        # Connect to your PostgreSQL database
+        connection = psycopg2.connect(
+            dbname="your_dbname",
+            user="your_username",
+            password="your_password",
+            host="your_host",
+            port="your_port"
+        )
+        
+        cursor = connection.cursor()
+        
+        # Call the stored procedure
+        cursor.execute("CALL check_and_update_subscription_status(%s)", (user_email,))
+        
+        # Commit the transaction
+        connection.commit()
+        
+        print(f"Checked and updated subscription status for {user_email}")
+        
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(f"Error: {error}")
+    finally:
+        if connection is not None:
+            cursor.close()
+            connection.close()

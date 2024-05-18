@@ -1,6 +1,6 @@
 {% extends "base.html" %}
-
 {% load static %}
+
 {% block meta %}
 <!DOCTYPE html>
 <html lang="en">
@@ -13,46 +13,67 @@
     <title>Marmut</title>
 </head>
 <body>
-    {% include 'navbar_artist.html' %}  
+    {% if 'Label' in request.session.roles %}
+        {% include 'navbar_label.html' %}
+    {% elif 'Artist' in request.session.roles or 'Songwriter' in request.session.roles %}
+        {% include 'navbar_artist.html' %}
+    {% endif %}
+</body>
+</html>
 {% endblock meta %}
 
 {% block content %}
 <style>
     .container {
-        width: 100%; max-width: 800px; margin: auto;
-        background-color: #AA98A9;
+        width: 100%; max-width: 800px; margin: 150px auto 0;
+        background-color: #AA98A9; 
         color: white; padding: 20px; border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         font-family: 'Montserrat', sans-serif;
     }
-    
-    .royalty-table {
-        width: 100%; border-collapse: collapse; margin-top: 20px;
-        border-radius: 8px; background: #DBB2D1;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    table {
+        width: 100%; border-collapse: collapse;
+        margin-bottom: 20px;
     }
-    
-    .royalty-table th, .royalty-table td {
-        padding: 8px; text-align: left; border-bottom: 1px solid #ddd;
-        color: white;
+    th, td {
+        padding: 10px; text-align: left;
+        border: 1px solid white;
     }
-    
-    .royalty-table th {
+    th {
         background-color: #86608E;
     }
-    
-    .royalty-table tr:nth-child(odd) {
-        background-color: #DBB2D1;
+    td {
+        background-color: #AA98A9;
     }
-    
-    .royalty-table tr:hover {
-        background-color: #C8A2C8;
-    }    
+    tr:hover td {
+        background-color: #BEBFC5; 
+        transition: background-color 0.3s ease;
+    }
+    a button {
+        background-color: #86608E;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 10px 2px;
+        cursor: pointer;
+        border-radius: 8px;
+        transition: background-color 0.3s ease;
+    }
+    a button:hover {
+        background-color: #6d5071;
+    }
 </style>
 
 <div class="container">
     <h2>List Royalti</h2>
-    <table class="royalty-table">
+    {% if error_message %}
+    <p style="color: red;">{{ error_message }}</p>
+    {% endif %}
+    <table>
         <thead>
             <tr>
                 <th>Judul Lagu</th>
@@ -63,17 +84,23 @@
             </tr>
         </thead>
         <tbody>
-            {% for royalty in royalties %}
-            <tr>
-                <td>{{ royalty.judul_lagu }}</td>
-                <td>{{ royalty.judul_album }}</td>
-                <td>{{ royalty.total_play }}</td>
-                <td>{{ royalty.total_download }}</td>
-                <td>Rp {{ royalty.total_royalti }}</td>
-            </tr>
-            {% endfor %}
+            {% if royalties %}
+                {% for royalty in royalties %}
+                <tr>
+                    <td>{{ royalty.judul_lagu }}</td>
+                    <td>{{ royalty.judul_album }}</td>
+                    <td>{{ royalty.total_play }}</td>
+                    <td>{{ royalty.total_download }}</td>
+                    <td>Rp {{ royalty.total_royalti }}</td>
+                </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="5">No royalties found.</td>
+                </tr>
+            {% endif %}
         </tbody>
     </table>
+    <a href="{% url 'merah:label_manage' %}"><button>Back to Manage Albums</button></a>
 </div>
-
-{% endblock %}
+{% endblock content %}

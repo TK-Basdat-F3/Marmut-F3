@@ -15,7 +15,7 @@
     <!-- ===== Boxicons CSS ===== -->
     <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
 
-     <title>Responsive Navigation Menu Bar</title>
+     <title>Navbar - User</title>
 </head>
 <body>
     <nav>
@@ -30,12 +30,16 @@
                 </div>
 
                 <ul class="nav-links">
-                    <li><a href="#">Chart</a></li>
-                    <li><a href="#">Kelola Paylist</a></li>
+                    <li><a href="{% url 'main:dashboard_user' %}">Dashboard</a></li>
+                    <li><a href="{% url 'biru:chart_list' %}">Chart</a></li>
+                    <li><a href="{% url 'hijau:kelola_playlist' %}">Kelola Playlist</a></li>
                     <li><a href="{% url 'kuning:subscribe_menu' %}">Langganan Paket</a></li>
-                    <li><a href="#">Register</a></li>
+                    {% if request.session.premium_status == 'Premium' %}
+                        <li><a href="{% url 'kuning:downloaded_songs' %}">Kelola Downloaded Songs</a></li>
+                    {% endif %}
+                    <li><a href="{% url 'kuning:search_content' %}">Search Bar</a></li>
                     <li><a href="{% url 'main:logout' %}">Logout</a></li>
-                </ul>
+                </ul>               
             </div>
 
             <div class="darkLight-searchBox">
