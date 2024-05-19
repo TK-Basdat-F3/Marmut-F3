@@ -18,16 +18,20 @@ from django.shortcuts import render
 from django.db import OperationalError, ProgrammingError, connection
 from django.http import HttpResponseNotFound
 from uuid import UUID
+from django.views.decorators.csrf import csrf_exempt
 
+@csrf_exempt
 def show_main(request):
     context = {
         'class': 'basdat f',
     }
     return render(request, "main.html", context)
 
+@csrf_exempt
 def main_reg(request):
     return render(request, "main_reg.html")
 
+@csrf_exempt
 def register_user(request):
     form = SignupFormPengguna()
     if request.method == "POST":
@@ -39,6 +43,7 @@ def register_user(request):
     context = {'form': form, 'form2': form}
     return render(request, 'register.html', context)
 
+@csrf_exempt
 def register_label(request):
     form2 = SignupFormLabel()
     if request.method == "POST":
@@ -50,6 +55,7 @@ def register_label(request):
     context = {'form': form, 'form2': form2}
     return render(request, 'register.html', context)
 
+@csrf_exempt
 def login_user(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -98,6 +104,7 @@ def login_user(request):
     else:
         return render(request, 'login.html')
 
+@csrf_exempt
 def logout_user(request):
     logout(request)
     response = HttpResponseRedirect(reverse('main:login'))
@@ -105,14 +112,17 @@ def logout_user(request):
     return response
 
 # @login_required
+@csrf_exempt
 def dashboard_user(request):
     request.session['premium_status'] = request.session.get('premium_status')
     return render(request, "dashboard_user.html")
 
 # @login_required
+@csrf_exempt
 def dashboard_label(request):
     return render(request, "dashboard_label.html")
 
+@csrf_exempt
 def authenticate_akun(username, password):
     result = query(f'SELECT * FROM "MARMUT"."akun" WHERE email = \'{username}\'')
     akun = result[0] if result else None
@@ -156,6 +166,7 @@ def authenticate_akun(username, password):
     else:
         return None, False, []
 
+@csrf_exempt
 def get_roles_by_email(username):
     roles = []
     artist = query(f'SELECT * FROM "MARMUT"."artist" WHERE email_akun = \'{username}\'')
@@ -172,6 +183,7 @@ def get_roles_by_email(username):
     
     return roles
 
+@csrf_exempt
 def get_user_playlists_by_user(username):
     playlists = query(f'''
                       SELECT up.judul 
@@ -183,6 +195,7 @@ def get_user_playlists_by_user(username):
         return playlists
     return playlists[0]
 
+@csrf_exempt
 def get_songs_by_artist(username):
     artist_id = query(f'SELECT id FROM "MARMUT"."artist" WHERE email_akun = \'{username}\'')[0][0]
     print("artist_id: ", artist_id)
@@ -197,6 +210,7 @@ def get_songs_by_artist(username):
     print("songs: ", songs)
     return songs
 
+@csrf_exempt
 def get_songs_by_songwriter(username):
     songwriter_id = query(f'SELECT id FROM "MARMUT"."songwriter" WHERE email_akun = \'{username}\'')[0][0]
     song_ids = query(f'SELECT id_song FROM "MARMUT"."songwriter_write_song" WHERE id_songwriter = \'{songwriter_id}\'')
@@ -219,6 +233,7 @@ def get_songs_by_songwriter(username):
     print("songs by songwriter: ",songs)
     return songs
 
+@csrf_exempt
 def get_podcasts_by_podcaster(username):
     podcaster_email = query(f'SELECT email FROM "MARMUT"."podcaster" WHERE email = \'{username}\'')[0][0]
     id_konten_list = query(f'SELECT id_konten FROM "MARMUT"."podcast" WHERE email_podcaster = \'{podcaster_email}\'')
@@ -237,6 +252,7 @@ def get_podcasts_by_podcaster(username):
     print("podcasts: ", podcasts)
     return podcasts
 
+@csrf_exempt
 def get_album_by_label(username):
     label_id = query(f'SELECT id FROM "MARMUT"."label" WHERE email = \'{username}\'')[0][0]
     id_album_list = query(f'SELECT id FROM "MARMUT"."album" WHERE id_label = \'{label_id}\'')
@@ -255,6 +271,7 @@ def get_album_by_label(username):
     print("albums: ", albums)
     return albums
 
+@csrf_exempt
 def check_user_subscription_status(user_email):
     connection = None
     try:
