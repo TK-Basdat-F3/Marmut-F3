@@ -17,7 +17,8 @@ from .forms import SignupFormPengguna, SignupFormLabel
 from django.shortcuts import render
 from django.db import OperationalError, ProgrammingError, connection
 from django.http import HttpResponseNotFound
-from uuid import UUID
+import uuid
+from datetime import datetime
 from django.views.decorators.csrf import csrf_exempt
 
 @csrf_exempt
@@ -31,7 +32,78 @@ def show_main(request):
 def main_reg(request):
     return render(request, "main_reg.html")
 
+
 @csrf_exempt
+def registerlabel(request):
+    try:
+        if request.method == 'POST':
+            email = request.POST.get('email')
+            password = request.POST.get('password')
+            nama = request.POST.get('nama')
+            kontak = request.POST.get('kontak')
+
+            id = str(uuid.uuid4())
+
+            insert_label_query = f"""
+            INSERT INTO "MARMUT"."label" (id, email, password, nama, kontak)
+            VALUES ('{id}', '{email}', '{password}', '{nama}', '{kontak}')
+            """
+            print(f"Executing insert_label_query: {insert_label_query}")
+
+            with connection.cursor() as cursor:
+                cursor.execute(insert_label_query)
+
+            success_message = "Berhasil mendaftar sebagai Label."
+            return render(request, 'login.html')
+        else:
+            return render(request, 'registerlabel.html')
+    except Exception as e:
+        return JsonResponse({'success': 'false', 'message': str(e)})
+
+@csrf_exempt
+def registeruser(request):
+    try:
+        if request.method == 'POST':
+            email = request.POST.get('email')
+            password = request.POST.get('password')
+            nama = request.POST.get('nama')
+            tempat_lahir = request.POST.get('tempat_lahir')
+            kota_asal = request.POST.get('kota_asal')
+            tanggal_lahir_str = request.POST.get('tanggal_lahir')
+            tanggal_lahir = None
+            if tanggal_lahir_str:
+                tanggal_lahir = datetime.strptime(tanggal_lahir_str, '%Y-%m-%d').date()
+            gender = request.POST.get('gender')
+
+            is_verified = False
+            roles = request.POST.getlist('role')
+
+            insert_akun_query = f"""
+            INSERT INTO "MARMUT"."akun" (email, password, nama, tempat_lahir, kota_asal, tanggal_lahir, gender, is_verified)
+            VALUES ('{email}', '{password}', '{nama}', '{tempat_lahir}', '{kota_asal}', '{tanggal_lahir}', '{gender}', {is_verified})
+            """
+
+            with connection.cursor() as cursor:
+                cursor.execute(insert_akun_query)
+
+                for role in roles:
+                    if role == 'artist':
+                        cursor.execute(f"INSERT INTO \"MARMUT\".\"artist\" (id, email_akun) VALUES ('{str(uuid.uuid4())}', '{email}')")
+                    elif role == 'songwriter':
+                        cursor.execute(f"INSERT INTO \"MARMUT\".\"songwriter\" (id, email_akun) VALUES ('{str(uuid.uuid4())}', '{email}')")
+                    elif role == 'podcaster':
+                        cursor.execute(f"INSERT INTO \"MARMUT\".\"podcaster\" (email) VALUES ('{email}')")
+
+                if roles:
+                    is_verified = True
+                    cursor.execute(f"UPDATE \"MARMUT\".\"akun\" SET is_verified = {is_verified} WHERE email = '{email}'")
+
+            return render(request, 'login.html')
+        else:
+            return render(request, 'registeruser.html')
+    except Exception as e:
+        return JsonResponse({'success': 'false', 'message': str(e)})
+    
 def register_user(request):
     form = SignupFormPengguna()
     if request.method == "POST":

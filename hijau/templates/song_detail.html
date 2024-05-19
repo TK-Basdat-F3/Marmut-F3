@@ -1,0 +1,363 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+
+{% include 'navbar_pengguna.html' %}
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marmut</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+    rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+{% endblock meta %}
+{% block content %}
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Lagu</title>
+    <style>
+        html,
+        body {
+            height: 100%;
+            background: linear-gradient(180deg, #6C95B2 0%, #181414 100%);
+            font-family: 'Montserrat', sans-serif;
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
+
+
+
+        .container {
+            margin: 0 auto;
+            padding: 5%;
+
+            display: flex;
+            flex-direction: column;
+            align-content: space-between;
+            align-items: center;
+            justify-content: center;
+        }
+
+
+
+        h2 {
+            text-align: center;
+        }
+
+
+        .song-actions button {
+            width: 200px;
+            height: 50px;
+            cursor: pointer;
+            background-color: black;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 8px 16px;
+            margin-top: 30px;
+            margin-right: 10px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .song-actions button:hover {
+            background-color: #6C95B2;
+            color: black;
+        }
+
+        .detail-song {
+            width: 80%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            align-content: center;
+            justify-content: center;
+        }
+
+        .popup,
+        .popup-play {
+
+            display: none;
+            position: fixed;
+            width: 50%;
+            height: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: black;
+            padding: 20px;
+            border: #6C95B2;
+            border-radius: 5px;
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            align-content: center;
+        }
+
+        .popup-content {
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            align-content: center;
+            justify-content: center;
+            width: 80%;
+            height: 80%;
+        }
+
+        .playlist-dropdown {
+            height: 50px;
+            width: 50%;
+            border-radius: 30px;
+        }
+
+        .form-btn {
+            cursor: pointer;
+            background-color: #6C95B2;
+            color: black;
+            border: none;
+            border-radius: 30px;
+            padding: 8px 16px;
+            transition: background-color 0.3s, color 0.3s;
+            width: 200px;
+            height: 50px;
+            margin-top: 5%;
+
+
+        }
+
+        .form-btn:hover {
+            background-color: white;
+            color: black;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h2>Detail Lagu</h2>
+
+        <div class="detail-song">
+            <div style="margin-right: 5%;">
+                <img src="https://i.ibb.co.com/gzbn6zD/cover.png" alt="Gambar Playlist" class="song-img">
+            </div>
+            <div style="display: flex; flex-direction: row;">
+                <div style="margin-right: 20px;">
+                    {% for detail in details %}
+                    <p><strong>Judul:</strong> {{detail.judul}}</p>
+                    <p><strong>Genre(s):</strong></p>
+                    <ul>
+                        {% for genre in genres %}
+                        <li>
+                            <p>{{genre.genre}}</p>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <p><strong>Artist: </strong> {{detail.nama}}</p>
+
+                    <p><strong>Songwriter(s):</strong> </p>
+                    <ul>
+                        {% for songwriter in songwriters %}
+
+                        <li>
+                            <p>{{songwriter.nama}}</p>
+                        </li>
+                        {% endfor %}
+
+                    </ul>
+                </div>
+                <div>
+                    <p><strong>Durasi:</strong> {{detail.durasi}}</p>
+                    <p><strong>Tanggal Rilis:</strong> {{detail.tanggal_rilis}}</p>
+                    <p><strong>Tahun:</strong> {{detail.tahun}}</p>
+                    <p><strong>Total Play:</strong> {{detail.total_play}}</p>
+                    <p><strong>Total Downloads:</strong> {{detail.total_download}}</p>
+                    <p><strong>Album:</strong> {{detail.album}}</p>
+                </div>
+
+                {% endfor %}
+            </div>
+
+
+
+        </div>
+
+        <div class="play-progress" style="width: 100%;">
+            <progress id="play-progress-bar" value="0" max="100" style="width: 100%;"></progress>
+        </div>
+        <div class="song-actions" class="song-actions" class="song-actions"> <button
+                onclick="showPopUpPlay()">Play</button>
+            <button onclick="showPopUp()">Tambah ke Playlist</button>
+            {% if isPremium %}<button onclick="downloadSong('{{id_song}}')">Download</button> {% endif %}
+            <button onclick="history.back()">Kembali</button>
+
+        </div>
+    </div>
+
+    <div id="popup" class="popup">
+        <div class="popup-content">
+            <h1 style="display:flex;justify-content: center; margin-bottom: 100px;">Tambah
+                Lagu ke Playlist</h1>
+
+
+            <form method="POST" onsubmit="addSong(event, '{{id_song}}')">
+                <label for="playlist-dropdown">Pilih Playlist: </label><br>
+                <select id="playlist-dropdown" class="playlist-dropdown" name="playlist-dropdown">
+                    {% for playlist in playlists %}
+                    <option value="{{playlist.id_playlist}}">{{playlist.judul}}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit" class="form-btn" id="submit-btn"
+                    onclick="addSong(event, '{{id_song}}')">Submit</button>
+            </form>
+            <button class="form-btn" onclick="hidePopup()">Cancel</button>
+
+        </div>
+
+
+
+    </div>
+    <div id="popup-play" class="popup-play">
+        <div class="popup-content">
+            <h1 style="display:flex;justify-content: center; margin-bottom: 100px;">Play Song</h1>
+
+
+            <form method="POST" onsubmit="playSong(event,'{{id_song}}')">
+                {% csrf_token %}
+
+                <label for="playPct" class="form__label">Play Percentage:</label><br>
+                <input type="input" class="form__field" placeholder="Percentage (int)" name="playPct" id='playPct'
+                    required /><br><br>
+                <button class="form-btn" type="submit" onclick="playSong(event,'{{id_song}}')">Add</button>
+            </form>
+
+
+            <button class="form-btn" onclick="hidePopup()">Cancel</button>
+        </div>
+
+    </div>
+    <div class="overlay" onclick="hidePopup()"></div>
+
+    <script>
+        function showPopUp() {
+            // Menampilkan popup window dan overlay
+            document.getElementById("popup").style.display = "flex";
+            document.querySelector(".overlay").style.display = "block";
+        }
+
+
+        function showPopUpPlay() {
+            // Menampilkan popup window dan overlay
+            document.getElementById("popup-play").style.display = "flex";
+            document.querySelector(".overlay").style.display = "block";
+        }
+
+        function hidePopup() {
+            // Menyembunyikan popup window dan overlay
+            document.getElementById("popup").style.display = "none";
+            document.querySelector(".overlay").style.display = "none";
+        }
+
+        async function downloadSong(id_song) {
+            try {
+                console.log(id_song)
+                let response = await fetch(`/hijau/download-song/${id_song}/`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+
+                    },
+                });
+
+                let data = await response.json();
+                if (!data.success) {
+                    alert(data.message);
+                    window.location.href = `/hijau/song-detail/${id_song}/`;
+                } else {
+                    alert(data.message);
+                    window.location.href = `/hijau/song-detail/${id_song}/`;
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+
+        async function addSong(event, id_song) {
+            event.preventDefault()
+            try {
+
+                let addedPlaylst = document.getElementById("playlist-dropdown").value;
+                hidePopup()
+
+                console.log("testestes")
+                console.log(id_song)
+                let response = await fetch(`/hijau/add-song-detail/${id_song}/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}',
+
+                    },
+                    body: JSON.stringify({
+                        'playlist': addedPlaylst,
+                    })
+                });
+
+                let data = await response.json();
+                if (!data.success) {
+                    alert(data.message);
+                    window.location.href = `/hijau/song-detail/${id_song}/`;
+                } else {
+                    alert(data.message);
+                    window.location.href = `/hijau/song-detail/${id_song}/`;
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        async function playSong(event, id_song) {
+            try {
+
+                let playPct = document.getElementById("playPct").value;
+                hidePopup()
+
+                let response = await fetch(`/hijau/play-song/${id_song}/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}',
+
+                    },
+                    body: JSON.stringify({
+                        'percentage': playPct,
+                    })
+                });
+
+                let data = await response.json();
+                if (!data.success) {
+                    alert(data.message);
+                    window.location.href = `/hijau/song-detail/${id_song}/`;
+                } else {
+                    alert(data.message);
+                    window.location.href = `/hijau/song-detail/${id_song}/`;
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+
+    </script>
+
+</body>
+
+</html>
+
+{% endblock content %}

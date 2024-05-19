@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Label</title>
+    {% block meta %}
+        <title>Register Label</title>
+    {% endblock meta %}
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        section {
+            background-image: url(https://img.freepik.com/free-photo/3d-music-related-scene_23-2151125037.jpg?t=st=1714553240~exp=1714556840~hmac=2fcc35d9c23ad9ef261f2f5756e2d57f42a8dc2de495458fa7ed754475c7d015&w=826);
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            height: 100vh;
+        }
+
+        .register {
+            font-family: Inter, sans-serif; font-weight: regular;
+            width: 600px;
+            background-color: #0f0f0f;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+            border-radius: 3%;
+            color: white;
+            position: absolute;
+            transform: translate(-50%, -50%);
+            top: 50%;
+            left: 50%;
+        }
+
+        table {
+            color: white;
+        }
+
+        input {
+            font-family: Inter, sans-serif; font-weight: regular;
+        }
+
+        a {
+            color: wheat;
+        }
+
+        .button {
+            align-items: center;
+            appearance: none;
+            background-image: radial-gradient(100% 100% at 100% 0, #8a3ffc 0, #5520a5 100%);
+            border: 0;
+            border-radius: 6px;
+            box-shadow: rgba(45, 35, 66, .4) 0 2px 4px, rgba(45, 35, 66, .3) 0 7px 13px -3px, rgba(58, 65, 111, .5) 0 -3px 0 inset;
+            box-sizing: border-box;
+            color: #fff;
+            cursor: pointer;
+            display: inline-flex;
+            font-family: "JetBrains Mono", monospace;
+            height: 40px;
+            justify-content: center;
+            line-height: 1;
+            list-style: none;
+            overflow: hidden;
+            padding-left: 16px;
+            padding-right: 16px;
+            position: relative;
+            text-align: left;
+            text-decoration: none;
+            transition: box-shadow .15s, transform .15s;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+            white-space: nowrap;
+            will-change: box-shadow, transform;
+            font-size: 18px;
+        }
+
+        .button:focus {
+            box-shadow: #3c4fe0 0 0 0 1.5px inset, rgba(45, 35, 66, .4) 0 2px 4px, rgba(45, 35, 66, .3) 0 7px 13px -3px, #3c4fe0 0 -3px 0 inset;
+        }
+
+        .button:hover {
+            box-shadow: rgba(45, 35, 66, .4) 0 4px 8px, rgba(45, 35, 66, .3) 0 7px 13px -3px, #3c4fe0 0 -3px 0 inset;
+            transform: translateY(-2px);
+        }
+
+        .button:active {
+            box-shadow: #3c4fe0 0 3px 7px inset;
+            transform: translateY(2px);
+        }
+    </style>
+</head>
+<body>
+    {% include 'navbar_guest.html' %}
+    {% block content %}
+    <section>
+        <div class="register">
+            <h1>Daftar sebagai Label</h1>
+            <form method="post" action="{% url 'main:registerlabel' %}">
+                {% csrf_token %}
+                <div>
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div>
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <div>
+                    <label for="nama">Nama:</label>
+                    <input type="text" id="nama" name="nama" required>
+                </div>
+                <div>
+                    <label for="kontak">Kontak:</label>
+                    <input type="text" id="kontak" name="kontak" required>
+                </div>
+                <button class="button" type="submit">Daftar</button>
+            </form>
+            <a href="{% url 'main:login' %}">Sudah punya akun? Login di sini</a>
+        </div>
+    </section>
+    {% endblock content %}
+</body>
+</html>

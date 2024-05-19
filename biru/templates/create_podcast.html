@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 
-{% include 'navbar_pengguna.html' %}
+{% include 'navbar_podcaster.html' %}
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RU MELIHAT CHART</title>
+    <title>CREATE EPISODE</title>
     <style>
         body {
             background-color: #121212; /* Warna latar belakang hitam */
@@ -57,6 +58,10 @@
             color: #cccccc; /* Warna tautan saat dihover */
         }
 
+        input, textarea {
+            width: 100%;
+        }
+
         .action-button, .kembali-button {
             padding: 6px 12px;
             border: none;
@@ -76,39 +81,29 @@
 <body>
     <div class="container">
 
-        <h2>Chart Detail</h2>
+        <h2>Create Podcast</h2>
         <div class="chart-detail">
-            <p>Tipe: {{ nama_chart }}</p>
-            <td><a href="{% url 'biru:chart_list'%}" class="action-button">Kembali</a></td>
+            <p>Tambah podcast baru!</p>
         </div>
+        <form action="#" method="POST">
+            <div class="form-group">
+                <label for="judul">Judul:</label><br>
+                <input type="text" id="judul_podcast" name="judul" required>
+            </div>
+            <div class="form-group">
+                <label>Genres:</label>
+                <div style="display: flex; flex-wrap: wrap;">
+                    {% for genre in genres %}
+                        <div style="flex: 1 0 25%; padding: 5px;">
+                            <label><input type="checkbox" name="genres" value="{{ genre.genre }}"> {{ genre.genre }}</label>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <input href="{% url 'biru:kelola_podcast' %}" class="kembali-button" type="submit" value="Submit">
+        </form>
 
-        <h2>Daftar Lagu</h2>
-        <table class="chart-detail">
-            <thead>
-                <tr>
-                    <th>Judul Lagu</th>
-                    <th>Oleh</th>
-                    <th>Tanggal Rilis</th>
-                    <th>Total Plays</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for song in songs %}
-                    <tr>
-                        <td>{{ song.judul }}</td>
-                        <td>{{ song.nama }}</td>
-                        <td>{{ song.tanggal_rilis }}</td>
-                        <td>{{ song.total_play }}</td>
-                        <td>
-                            <a href="{% url 'hijau:song_detail' song.id_konten %}" class="action-button">
-                                Lihat
-                            </a>
-                        </td>                        
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
     </div>
 </body>
 </html>
