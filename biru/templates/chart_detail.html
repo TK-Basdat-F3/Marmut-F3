@@ -101,9 +101,9 @@
                         <td>{{ song.tanggal_rilis }}</td>
                         <td>{{ song.total_play }}</td>
                         <td>
-                            <button onclick="window.location.href='#'" class="action-button">
+                            <a href="{% url 'hijau:song_detail' song.id_konten %}" class="action-button">
                                 Lihat
-                            </button>
+                            </a>
                         </td>                        
                     </tr>
                 {% endfor %}
