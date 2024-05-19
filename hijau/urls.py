@@ -20,7 +20,7 @@ urlpatterns = [
     path('delete-song/<uuid:id_playlist>/<uuid:id_song>/',delete_song,name='delete_song'),
 
     path('download-song/<uuid:id_song>/',download_song,name='download_song'),
-
+    path('play_user_playlist/<uuid:id_user_playlist>/<uuid:id_song>/', play_user_playlist, name='play_user_playlist'),
     path('song-detail/<uuid:id_song>/', song_detail, name='song_detail'),
 
 ]
