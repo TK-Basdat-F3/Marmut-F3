@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 
 {% include 'navbar_podcaster.html' %}
+{% load custom_filters %}
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -102,7 +104,9 @@
                     <p>Judul: {{ detail.judul }}</p>
                     <p>Genre(s):</p>
                     <ul>
-                        <li>{{ detail.genre }}</li>
+                        {% for genre in genres %}
+                            <li>{{ genre }}</li>
+                        {% endfor %}
                     </ul>
                     <td><a href="{% url 'main:dashboard_user' %}" class="kembali-button">Kembali</a></td>
                 </div>
@@ -110,7 +114,7 @@
             <div class="area-container">
                 <div class="area">
                     <p>Podcaster: {{ detail.nama }}</p>
-                    <p>Total Durasi: {{ detail.durasi }}</p>
+                    <p>Total Durasi: {{ detail.durasi|durasi_format }}</p>
                     <p>Tanggal Rilis: {{ detail.tanggal_rilis }}</p>
                     <p>Tahun: {{ detail.tahun }}</p>
                 </div>
@@ -131,7 +135,7 @@
                     <tr>
                         <td>{{ episode.judul }}</td>
                         <td>{{ episode.deskripsi }}</td>
-                        <td>{{ episode.durasi }}</td>
+                        <td>{{ durasi }}</td>
                         <td>{{ episode.tanggal_rilis }}</td>                        
                     </tr>
                 {% endfor %}

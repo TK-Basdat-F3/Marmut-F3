@@ -9,6 +9,17 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.db import connection
 
+def format_durasi(menit):
+    if menit is None:
+        return '0 jam 0 menit'
+    else :
+        jam = menit // 60
+        sisa_menit = menit % 60
+        if jam > 0:
+            return f'{jam} jam {sisa_menit} menit'
+        else :
+            return f'{sisa_menit} menit'
+        
 def has_role(request, required_roles):
     user_roles = request.session.get('roles', [])
     return any(role in user_roles for role in required_roles)
@@ -19,7 +30,6 @@ def querys(sql, params=None):
         columns = [col[0] for col in cursor.description]
         return [dict(zip(columns, row)) for row in cursor.fetchall()]
     
-# @login_required
 def chart_list(request):
     charts = querys('SELECT * FROM "MARMUT"."chart"')
     return render(request, 'chart_list.html', {'charts': charts})
@@ -89,16 +99,21 @@ def play_podcast(request, id_podcast):
             WHERE episode.id_konten_podcast = %s
         ''', [id_podcast])
 
+        genres_query = querys('SELECT genre FROM "MARMUT"."genre" WHERE id_konten = %s', [id_podcast])
+        if isinstance(genres_query, list):
+            genres = [genre['genre'] for genre in genres_query]
+        else:
+            genres = []
+
         return render(request, 'play_podcast.html',{
             'podcast': podcast,
+            'genres': genres,
             'detail': detail,
             'episodes' : episode_query
         })
+    
     except Exception as e:
         return JsonResponse({'success': 'false', 'message': str(e)}, status=500)
-
-from django.shortcuts import render
-from django.http import JsonResponse
 
 def kelola_podcast(request):
     try:
@@ -136,12 +151,6 @@ def kelola_podcast(request):
         })
     except Exception as e:
         return JsonResponse({'success': 'false', 'message': str(e)}, status=500)
-
-
-from django.http import JsonResponse
-from django.shortcuts import render
-from django.views.decorators.csrf import csrf_exempt
-import uuid
 
 @csrf_exempt
 def create_podcast(request):
@@ -200,23 +209,39 @@ def create_podcast(request):
         return JsonResponse({'success': 'false', 'message': str(e)}, status=500)
 
 
+from django.db import transaction
+
 def delete_podcast(request, id_podcast):
     if not has_role(request, ['Podcaster']):
         return redirect('main:login')
 
     if request.method == 'POST':
-        delete_podcast_query = f'DELETE FROM "MARMUT"."podcast" WHERE id_konten = \'{id_podcast}\''
-        result = query(delete_podcast_query)
-        if type(result) != int:
-            return JsonResponse({'success': 'false', 'message': str(result)}, status=200)
+        try:
+            # Mulai transaksi
+            with transaction.atomic():
+                # Hapus semua episode terkait dengan podcast
+                delete_episodes_query = f'DELETE FROM "MARMUT"."episode" WHERE id_konten_podcast = \'{id_podcast}\''
+                episode_result = query(delete_episodes_query)
+                if isinstance(episode_result, Exception):
+                    return JsonResponse({'success': 'false', 'message': str(episode_result)}, status=200)
+                
+                # Setelah semua episode dihapus, baru hapus podcast
+                delete_podcast_query = f'DELETE FROM "MARMUT"."podcast" WHERE id_konten = \'{id_podcast}\''
+                podcast_result = query(delete_podcast_query)
+                if isinstance(podcast_result, Exception):
+                    return JsonResponse({'success': 'false', 'message': str(podcast_result)}, status=200)
 
-        return redirect('biru:kelola_podcast')
+                # Jika berhasil, redirect ke halaman kelola podcast
+                return redirect('biru:kelola_podcast')
+        except Exception as e:
+            return JsonResponse({'success': 'false', 'message': str(e)}, status=500)
 
-    podcast = query(f'SELECT * FROM "MARMUT"."album" WHERE id = \'{id_podcast}\'')
+    podcast = query(f'SELECT * FROM "MARMUT"."podcast" WHERE id_konten = \'{id_podcast}\'')
     if not podcast:
         return redirect('biru:kelola_podcast')
 
     return render(request, 'delete_album.html', {'podcast': podcast})
+
 
 def daftar_episode(request, id_podcast): 
     try:
@@ -272,7 +297,7 @@ def delete_episode(request, id_podcast):
         # Redirect to the episode list page after successful deletion
         return redirect('biru:daftar_episode', id_podcast=id_podcast)
 
-    return JsonResponse({'success': 'false', 'message': 'Invalid request method'}, status=400)   
+    return JsonResponse({'success': 'false', 'message': 'Invalid request method'}, status=400)     
 
 @csrf_exempt
 def create_episode(request, id_podcast):

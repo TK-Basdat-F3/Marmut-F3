@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 
 {% include 'navbar_podcaster.html' %}
+{% load custom_filters %}
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -118,7 +120,7 @@
                 <tr>
                     <td>{{ episode.judul }}</td>
                     <td>{{ episode.deskripsi }}</td>
-                    <td>{{ episode.durasi }}</td>
+                    <td>{{ episode.durasi|durasi_format }}</td>
                     <td>{{ episode.tanggal_rilis }}</td> 
                     <td>
                         <form method="post" action="{% url 'biru:delete_episode' detail.id_konten %}" style="display:inline;">

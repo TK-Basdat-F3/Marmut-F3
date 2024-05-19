@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 {% include 'navbar_podcaster.html' %}
+{% load custom_filters %}
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -106,7 +108,7 @@
                             <tr>
                                 <td>{{ podcast.judul }}</td>
                                 <td>{{ podcast.jumlah_episode }}</td>
-                                <td>{{ podcast.total_durasi }}</td>
+                                <td>{{ podcast.total_durasi|durasi_format }}</td>
                                 <td>
                                     <a class="action-button detail-btn" href="{% url 'biru:daftar_episode' podcast.id_konten %}">Lihat Daftar Episode</a>
                                     <a class="action-button edit-btn" href="{% url 'biru:create_episode' podcast.id_konten %}">Tambah Episode</a>
