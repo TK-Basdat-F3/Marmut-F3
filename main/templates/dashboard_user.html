@@ -177,7 +177,7 @@
                         {% else %}
                         <div class="col" style="flex-basis: 50%; color: white;">
                             {% for podcast in request.session.podcasts %}
-                            <a href="#" style="text-decoration: none; color: inherit;">
+                            <a href="{% url 'biru:play_podcast' podcast.3 %}" style="text-decoration: none; color: inherit;">
                                 <div class="card" onmouseenter="startScroll(this)" onmouseleave="stopScroll(this)" style="width: 195px; height: 255px; display: inline-block; border-radius: 8px; padding: 12px 13px; margin: 16px 0px; margin-right: 8px; box-sizing: border-box;  overflow: hidden;">
                                     <div style="width: 170px; height: 225px; ">
                                         <div class="col" style="flex-direction: column; justify-content: flex-start; align-items: flex-start; display: inline-flex;">
