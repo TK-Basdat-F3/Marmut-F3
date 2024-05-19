@@ -79,19 +79,16 @@ def login_user(request):
                 request.session['kota_asal'] = user.kota_asal
                 request.session['gender'] = "Perempuan" if user.gender == 0 else "Laki-laki"
 
-                try:
-                    if 'Artist' in roles:
-                        request.session['songs'] = get_songs_by_artist(username)
-                    elif 'Songwriter' in roles:
-                        request.session['songs'] = get_songs_by_songwriter(username)
-                    elif 'Artist' and 'Songwriter' in roles:
-                        request.session['songs'] = get_songs_by_artist(username) + get_songs_by_songwriter(username)
-                    elif 'Podcaster' in roles:
-                        request.session['podcasts'] = get_podcasts_by_podcaster(username)
-                except Exception as e:
-                    print(f"Error in setting session data: {e}")
-                    messages.error(request, 'Error in setting session data. Please try again.')
+                request.session['playlists'] = get_user_playlists_by_user(username)
 
+                if 'Artist' in roles:
+                    request.session['songs_by_artist'] = get_songs_by_artist(username)
+                if 'Songwriter' in roles:
+                    request.session['songs_by_songwriter'] = get_songs_by_songwriter(username)
+                # elif 'Artist' and 'Songwriter' in roles:
+                #     request.session['songs'] = get_songs_by_artist(username) + get_songs_by_songwriter(username)
+                if 'Podcaster' in roles:
+                    request.session['podcasts'] = get_podcasts_by_podcaster(username)
                 return redirect('main:dashboard_user')
         else:
             messages.info(request, 'Sorry, incorrect username or password. Please try again.')
@@ -109,6 +106,7 @@ def logout_user(request):
 
 # @login_required
 def dashboard_user(request):
+    request.session['premium_status'] = request.session.get('premium_status')
     return render(request, "dashboard_user.html")
 
 # @login_required
@@ -119,17 +117,10 @@ def authenticate_akun(username, password):
     result = query(f'SELECT * FROM "MARMUT"."akun" WHERE email = \'{username}\'')
     akun = result[0] if result else None
     
-    # Debugging: Print the query result for akun
-    print(f"akun query result: {result}")
-
     if not akun:
         print("User not found in 'akun', checking 'label' table")
         result = query(f'SELECT * FROM "MARMUT"."label" WHERE email = \'{username}\' AND password = \'{password}\'')
         label = result[0] if result else None
-        
-        # Debugging: Print the query result for label
-        print(f"label query result: {result}")
-
         if label:
             user = label
             role = 'Label'
@@ -137,7 +128,7 @@ def authenticate_akun(username, password):
             user = None
             role = None
     else:
-        if akun[1] == password:  # Assuming the password is at index 1
+        if akun.password == password:
             user = akun
             role = 'Akun'
         else:
@@ -147,25 +138,19 @@ def authenticate_akun(username, password):
     if user:
         premium_status = query(f'SELECT * FROM "MARMUT"."premium" WHERE email = \'{username}\'')
         
-        # Debugging: Print the premium status
-        print(f"premium_status: {premium_status}")
-
         if premium_status:
             premium_id = premium_status[0]
             expired_premium = query(f'SELECT * FROM "MARMUT"."transaction" WHERE email = \'{username}\' AND timestamp_berakhir < CURRENT_DATE')
             if expired_premium:
                 query(f'DELETE FROM "MARMUT"."downloaded_song" WHERE email_downloader = \'{premium_id}\'')
                 query(f'DELETE FROM "MARMUT"."premium" WHERE email = \'{premium_id}\'')
-
+        
         roles = []
         if role == 'Akun':
             roles.append('Akun')
             roles += get_roles_by_email(username)
         else:
             roles.append('Label')
-
-        # Debugging: Print the final user, premium status, and roles
-        print(f"Authenticated User: {user}, Premium Status: {premium_status}, Roles: {roles}")
 
         return user, premium_status, roles
     else:
