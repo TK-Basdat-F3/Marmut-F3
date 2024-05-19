@@ -135,7 +135,7 @@
                     <tr>
                         <td>{{ episode.judul }}</td>
                         <td>{{ episode.deskripsi }}</td>
-                        <td>{{ durasi }}</td>
+                        <td>{{ episode.durasi|durasi_format }}</td>
                         <td>{{ episode.tanggal_rilis }}</td>                        
                     </tr>
                 {% endfor %}
