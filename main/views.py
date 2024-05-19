@@ -81,14 +81,8 @@ def registeruser(request):
             VALUES ('{email}', '{password}', '{nama}', '{tempat_lahir}', '{kota_asal}', '{tanggal_lahir}', '{gender}', {is_verified})
             """
 
-            insert_nonpremium_query = f"""
-            INSERT INTO "MARMUT"."nonpremium" (email)
-            VALUES ('{email}')
-            """
-
             with connection.cursor() as cursor:
                 cursor.execute(insert_akun_query)
-                cursor.execute(insert_nonpremium_query)
 
                 for role in roles:
                     if role == 'artist':
@@ -102,8 +96,7 @@ def registeruser(request):
                     is_verified = True
                     cursor.execute(f"UPDATE \"MARMUT\".\"akun\" SET is_verified = {is_verified} WHERE email = '{email}'")
 
-            success_message = "Berhasil mendaftar sebagai Pengguna."
-            return JsonResponse({'success': 'true', 'message': success_message})
+            return render(request, 'login.html')
         else:
             return render(request, 'registeruser.html')
     except Exception as e:
