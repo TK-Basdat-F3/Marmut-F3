@@ -103,7 +103,8 @@ def registeruser(request):
             return render(request, 'registeruser.html')
     except Exception as e:
         return JsonResponse({'success': 'false', 'message': str(e)})
-    
+
+@csrf_exempt  
 def register_user(request):
     form = SignupFormPengguna()
     if request.method == "POST":
