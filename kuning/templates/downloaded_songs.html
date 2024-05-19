@@ -1,7 +1,19 @@
 {% extends 'base.html' %}
 
 {% block meta %}
-{% include 'navbar_pengguna.html' %}
+
+{% if 'Artist' in request.session.roles %}
+    {% include 'navbar_artist.html' %}
+{% elif 'Label' in request.session.roles %}
+    {% include 'navbar_label.html' %}
+{% elif 'Podcaster' in request.session.roles %}
+    {% include 'navbar_podcaster.html' %}
+{% elif 'Pengguna' in request.session.roles %}
+    {% include 'navbar_pengguna.html' %}
+{% else %}
+    {% include 'navbar_guest.html' %}
+{% endif %}
+
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">  
 {% endblock meta %}

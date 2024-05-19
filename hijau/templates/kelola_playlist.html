@@ -2,7 +2,18 @@
 
 {% block meta %}
 
-{% include 'navbar_pengguna.html' %}
+{% if 'Artist' in request.session.roles %}
+    {% include 'navbar_artist.html' %}
+{% elif 'Label' in request.session.roles %}
+    {% include 'navbar_label.html' %}
+{% elif 'Podcaster' in request.session.roles %}
+    {% include 'navbar_podcaster.html' %}
+{% elif 'Pengguna' in request.session.roles %}
+    {% include 'navbar_pengguna.html' %}
+{% else %}
+    {% include 'navbar_guest.html' %}
+{% endif %}
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Marmut</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
