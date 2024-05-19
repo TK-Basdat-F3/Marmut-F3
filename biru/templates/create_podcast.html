@@ -89,7 +89,7 @@
                 <label for="judul">Judul:</label><br>
                 <input type="text" id="judul_podcast" name="judul" required>
             </div>
-            <div class="form-group" style="overflow-y: auto; max-height: 200px;">
+            <div class="form-group">
                 <label>Genres:</label>
                 <div style="display: flex; flex-wrap: wrap;">
                     {% for genre in genres %}
@@ -100,7 +100,7 @@
                 </div>
             </div>
             
-            <input class="kembali-button" type="submit" value="Submit">
+            <input href="{% url 'biru:kelola_podcast' %}" class="kembali-button" type="submit" value="Submit">
         </form>
 
     </div>

@@ -88,15 +88,15 @@
                     <tr>
                         <td>{{ chart.tipe }}</td>
                         <td>
-                            <button onclick="window.location.href='{% url 'biru:chart_detail' chart.id_playlist chart.tipe%}';" class="action-button">
+                            <a href="{% url 'biru:chart_detail' chart.id_playlist chart.tipe%}" class="action-button">
                                 Lihat Daftar Lagu
-                            </button>
+                            </a>
                         </td>                                                                    
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
-        <td><button onclick="window.location.href='{% url 'main:dashboard_user'%}';" class="action-button">Kembali</button></td>
+        <td><a href="{% url 'main:dashboard_user'%}" class="action-button">Kembali</a></td>
             </tbody>
         </table>
     </div>

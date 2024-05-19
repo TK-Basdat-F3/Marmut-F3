@@ -65,6 +65,21 @@
             background-color: #0056b3;
         }
 
+        .delete-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 5px;
+            background-color: #dc3545;
+            color: white;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .delete-btn:hover {
+            background-color: #a01e2b;
+        }
+
         .add-podcast-button {
             margin-top: 20px;
             padding: 10px 20px;
@@ -75,7 +90,6 @@
 <body>
     <div style="text-align: center; padding: 20px;">
         <h2>User Podcast</h2>
-        
         <div id="podcast-info">
             {% if podcasts %}
                 <table id="podcast-table">
@@ -95,8 +109,13 @@
                                 <td>{{ podcast.total_durasi }}</td>
                                 <td>
                                     <a class="action-button detail-btn" href="{% url 'biru:daftar_episode' podcast.id_konten %}">Lihat Daftar Episode</a>
-                                    <a class="action-button edit-btn" href="#">Tambah Episode</a>
-                                    <a class="action-button delete-btn" href="#">Hapus</a>
+                                    <a class="action-button edit-btn" href="{% url 'biru:create_episode' podcast.id_konten %}">Tambah Episode</a>
+                                    <a>
+                                        <form method="post" action="{% url 'biru:delete_podcast' podcast.id_konten %}" style="display:inline;">
+                                            {% csrf_token %}
+                                            <button type="submit" class="action-button delete-btn" onclick="return confirm('Apakah Anda yakin ingin menghapus podcast ini?')">Hapus</button>
+                                        </form>
+                                    </a> 
                                 </td>                       
                             </tr>
                         {% endfor %}
@@ -105,7 +124,7 @@
             {% else %}
                 <p id="no-podcast-msg">Anda Belum Memiliki Podcast</p>
             {% endif %}
-            <button onclick="window.location.href='{% url 'biru:create_episode' %}'" class="action-button">Tambah Podcast</button>
+            <a href="{% url 'biru:create_podcast' %}" class="action-button">Tambah Podcast</a>
         </div>
     </div>
 </body>

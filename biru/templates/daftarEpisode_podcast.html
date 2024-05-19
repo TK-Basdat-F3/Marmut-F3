@@ -53,6 +53,20 @@
             background-color: #c82333;
         }
 
+        .kembali-button {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 5px;
+            background-color: #356adc;
+            color: white;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        .kembali-button:hover {
+            background-color: #232ec8;
+        }
+
         .container {
             max-width: 800px;
             margin: 100px auto;
@@ -88,7 +102,7 @@
 
 <div class="container">
     <h2>Daftar Episode pada Podcast {{ detail.judul }}</h2>
-
+    <td><a href="{% url 'biru:kelola_podcast'%}" class="kembali-button">Kembali</a></td>
     <table class="episode-list">
         <thead>
             <tr>
@@ -105,8 +119,14 @@
                     <td>{{ episode.judul }}</td>
                     <td>{{ episode.deskripsi }}</td>
                     <td>{{ episode.durasi }}</td>
-                    <td>{{ episode.tanggal_rilis }}</td>    
-                    <td><button class="action-button">Hapus</button></td>                    
+                    <td>{{ episode.tanggal_rilis }}</td> 
+                    <td>
+                        <form method="post" action="{% url 'biru:delete_episode' detail.id_konten %}" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="id_episode" value="{{ episode.id_episode }}">
+                            <button type="submit" class="action-button" onclick="return confirm('Apakah Anda yakin ingin menghapus episode ini?')">Hapus</button>
+                        </form>
+                    </td>                                      
                 </tr>
             {% endfor %}
         </tbody>
