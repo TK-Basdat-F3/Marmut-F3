@@ -125,7 +125,8 @@
             border-radius: 30px;
         }
 
-        .popup {
+        .popup,
+        .popup-play {
 
             display: none;
             position: fixed;
@@ -189,41 +190,45 @@
     <div class="container">
         <div class="playlist-info">
 
-            <img src="https://i.ibb.co/rxdjLzN/cover.png" alt="Gambar Playlist" class="playlist-img">
+            <img src="https://i.ibb.co.com/gzbn6zD/cover.png" alt="Gambar Playlist" class="playlist-img">
 
 
+            {% for detail in details %}
             <div style=" width: 30%;">
-                <h1>Playlist 1</h1>
-                <p><strong>Pembuat Playlist:</strong> John Doe</p>
-                <p><strong>Jumlah Lagu:</strong> 10</p>
-                <p><strong>Total Durasi:</strong> 45:30</p>
-                <p><strong>Tanggal Dibuat:</strong> 2024-04-30</p>
-                <p><strong>Deskripsi:</strong> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis quos
-                    odio amet unde, officia eius ullam laudantium, praesentium, nihil iusto laboriosam nesciunt tempore
-                    pariatur vero impedit recusandae incidunt esse rerum!</p>
+                <h1>{{detail.judul}}</h1>
+                <p><strong>Pembuat Playlist:</strong> {{detail.email_pembuat}}</p>
+                <p><strong>Jumlah Lagu:</strong> {{detail.jumlah_lagu}}</p>
+                <p><strong>Total Durasi:</strong> {{detail.total_durasi}}</p>
+                <p><strong>Tanggal Dibuat:</strong> {{detail.tanggal_dibuat}}</p>
+                <p><strong>Deskripsi:</strong> {{detail.deskripsi}}</p>
             </div>
 
         </div>
         <div class="playlist-actions">
-            <button onclick="shufflePlay()">Shuffle Play</button>
+            <button
+                onclick="shufflePlay(event, '{{playlistId}}', '{{detail.id_user_playlist}}', '{{detail.email_pembuat}}')">Shuffle
+                Play</button>
             <button onclick="showPopUp()">Tambah Lagu</button>
+            <button onclick="history.back()">Kembali</button>
+
         </div>
+        {% endfor %}
+
 
         <ul id="song">
-            {% for i in "x"|ljust:10 %} <li class="song-card">
+            {% for song in songs %} <li class="song-card">
                 <div style="flex-direction: row; display: flex; align-items: center;"><img
-                        src="https://i.ibb.co/rxdjLzN/cover.png" alt="Gambar Playlist" class="song-img">
+                        src="https://i.ibb.co.com/gzbn6zD/cover.png" alt="Gambar Playlist" class="song-img">
 
                     <div class="song-info">
-                        <h3>Song 1</h3>
-                        <p>Writer 1</p>
-                        <p>03.00</p>
+                        <h3>{{song.judul}}</h3>
+                        <p>{{song.penyanyi}}</p>
+                        <p>{{song.durasi}} menit</p>
                     </div>
                 </div>
                 <div class="song-actions">
-                    <a href="{% url 'hijau:detail-song' %}"><button>Lihat</button></a>
-                    <button>Play</button>
-                    <button onclick="deletePlaylist('Playlist 1')">Hapus</button>
+                    <a href="{% url 'hijau:song_detail' song.id %}"><button>Lihat</button></a>
+                    <a href="{% url 'hijau:delete_song' playlistId song.id %}"><button>Hapus</button></a>
                 </div>
 
             </li> {% endfor %}
@@ -239,18 +244,24 @@
                 Lagu</h1>
 
 
+            <form method="POST" onsubmit="addSong(event, '{{playlistId}}')">
+                {% csrf_token %}
+                <label for="song-dropdown">Pilih Lagu: </label><br>
+                <select id="song-dropdown" class="song-dropdown" name="song-dropdown">
+                    {% for song in popupSongs %}
+                    <option value={{song.id_konten}}>{{song.judul}}</option>
+                    {% endfor %}
+                </select>
+                <button class="form-btn" type="submit" onclick="addSong(event, '{{playlistId}}')">Add</button>
+            </form>
 
-            <select id="song-dropdown" class="song-dropdown">
-                <option value="lagu1">Lagu 1</option>
-                <option value="lagu2">Lagu 2</option>
-                <option value="lagu3">Lagu 3</option>
-            </select>
+
             <button class="form-btn" onclick="hidePopup()">Cancel</button>
         </div>
-
-
-
     </div>
+
+
+
 
     <div class="overlay" onclick="hidePopup()"></div>
 
@@ -262,18 +273,79 @@
             document.querySelector(".overlay").style.display = "block";
         }
 
+
         function hidePopup() {
             // Menyembunyikan popup window dan overlay
             document.getElementById("popup").style.display = "none";
             document.querySelector(".overlay").style.display = "none";
         }
-        function shufflePlay() {
-            // Fungsi untuk shuffle playlist
+
+        async function shufflePlay(event, id_playlist, id_user_playlist, email_pembuat) {
+            event.preventDefault()
+            try {
+
+                hidePopup()
+
+                console.log(id_playlist)
+                let response = await fetch(`/hijau/playlist-detail/shuffle-play/${id_user_playlist}/${id_playlist}/${email_pembuat}/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}',
+
+                    },
+
+                });
+
+                let data = await response.json();
+                if (!data.success) {
+                    alert(data.message);
+                    window.location.href = `/hijau/playlist-detail/${id_playlist}/`;
+                } else {
+                    alert(data.message);
+                    window.location.href = `/hijau/playlist-detail/${id_playlist}/`;
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+            }
         }
 
-        function addSong() {
-            // Fungsi untuk menambah lagu ke playlist
+        async function addSong(event, id_playlist) {
+            event.preventDefault()
+            try {
+
+                let addedSong = document.getElementById("song-dropdown").value;
+                hidePopup()
+
+                console.log(id_playlist)
+                let response = await fetch(`/hijau/add-song/${id_playlist}/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}',
+
+                    },
+                    body: JSON.stringify({
+                        'song-dropdown': addedSong,
+                    })
+                });
+
+                let data = await response.json();
+                if (!data.success) {
+                    alert(data.message);
+                    window.location.href = `/hijau/playlist-detail/${id_playlist}/`;
+                } else {
+                    alert(data.message);
+                    window.location.href = `/hijau/playlist-detail/${id_playlist}/`;
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+            }
         }
+
+
     </script>
 
 </body>
